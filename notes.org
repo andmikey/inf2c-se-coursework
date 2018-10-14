@@ -93,3 +93,5 @@
 - How are transactions handled?
   - Through a broker or does the system handle it itself?
 - Are other auction house professionals involved in process, other than auctioneers?
+- Can a lot contain item from multiple sellers?
+- Do the items in a lot have separate descriptions? 
