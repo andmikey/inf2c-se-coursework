@@ -1,0 +1,45 @@
+* Coursework 1: Requirements document
+** Stakeholders
+1. Auction house
+2. Auctioneer
+3. Buyer
+4. Seller
+5. Members of the public
+6. App provider
+** System state
+- Lists of auctions. Auction has:
+  - List of lots
+  - Associated auctioneer
+  - Time + date of auctoin
+- Lot has:
+  - Description (text / photo)
+  - High / low estimates
+  - Reserve price
+  - Associated seller
+  - List of interested buyers
+  - Associated auction
+- Buyer has:
+  - Id
+  - Personal information
+  - Banking information
+  - Contact information
+  - List of interested lots
+  - Lits of lots with active bid (?)
+- Seller has:
+  - Id
+  - Personal information
+  - Banking information
+  - Contact information
+  - List of associated lots (that they are selling)
+- A bid has:
+  - Whether it is an increment or jump bid
+  - The value of the bid
+  - The bidder making the bid
+  - The lot being bid on
+** Use-cases
+
+** Use case diagram
+
+** Non-functional requirements
+
+** Ambiguities, subtleties, incompleteness
