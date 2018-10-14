@@ -1,2 +1,2 @@
 #!/bin/bash
-git pull && pdflatex "Coursework 1.pdf"
+git pull && ./compile && ./show
