@@ -1,0 +1,2 @@
+#!/bin/bash
+pdflatex "Coursework 1.pdf"
