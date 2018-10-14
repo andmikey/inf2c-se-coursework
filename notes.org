@@ -92,3 +92,4 @@
 - Can lot information be amended after it is added?
 - How are transactions handled?
   - Through a broker or does the system handle it itself?
+- Are other auction house professionals involved in process, other than auctioneers?
