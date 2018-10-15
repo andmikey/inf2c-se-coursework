@@ -38,6 +38,7 @@ The system consists of five major state components:
 \item {\it Buyers}: Buyers have personal information, contact details, and bank information. They also have a list of lots which they have marked their interest in. If a lot they have subscribed to is active, they store all bids they have made on the lot with special reference to the last bid they made.
 \item {\it Sellers}: Sellers, much like Buyers, have personal information, contact details, and bank information attached. They also keep a list of lots that they currently have registered with the Auction House.
 \end{itemize}
+
 \section{Use Cases}
 
 \section{Use case diagram}
@@ -45,5 +46,53 @@ The system consists of five major state components:
 \section{Non-Functional Requirements}
 
 \section{Ambiguities, Subtleties, Incompleteness}
-
+\begin{enumerate}
+\item What information about a lot is visible to various users? We can consider lot characteristics like:
+  \begin{itemize}
+  \item High / low estimates --- this can be useful for both members of the public and buyers to be able to filter lot search by price. However, it may be that a seller may desire this to be hidden from public view like the reserve price. 
+  \item Which auction it is being sold in, and the time and date --- it is more desirable for this to be available to buyers, and less so for members of the public. Hiding this information from members of the public would encourage them to sign up as buyers, while it is essential that buyers be able to know when an item they are interested in is being sold. It might also be possible to hide this at a more granular level, eg. the time/date of an auction associated with a lot is only shown to buyers if they show interest in that item
+  \item Seller's commission / buyer's premium by item if appropriate --- it would make sense to show seller's commission to the seller of a lot only, while buyer's premium may be shown to buyers and optionally members of the public
+  \end{itemize}
+\item Is the seller's commission, buyer's premium, bid increment:
+  \begin{itemize}
+  \item Different according to the lot they are associated with?
+  \item Set on an auction-level?
+  \item Decided by the auction house for all items?
+  \end{itemize}
+  Either of the three could be reasonable approaches, but would require differing implementations in software, with the third option being the simplest.
+\item How do buyers and sellers register with the system? There could be two possible approaches:
+  \begin{itemize}
+  \item Self-registration through the app
+  \item Registration through the auction house - in this case, who in the auction house would perform this operation, and what role would they require in the system to do so?
+  \end{itemize}
+\item What information is contained in the notification sent to a buyer when a bid is placed on an item they are interested in? Obvious candidates include the new price of the item and the time left on the auction; undesireable information may include the identity of the competing bidder
+\item Is the bank account information of a user verified through some verification method? If yes:
+  \begin{itemize}
+  \item What verification method is used? A common method is attempting to withdraw / deposit \pounds 0.01 into the account and confirming the user has received it; other methods may include communicating with the user's bank
+  \item At which stage are payment details verified? Options could include:
+    \begin{itemize}
+    \item At registration --- the natural choice, although this may cause friction in the registration process
+    \item When placing a bid --- this is undesireable if the user is blocked from bidding due to a failed verification, because of the time-sensitive nature of auctions
+    \item On having won an auction --- in this case, what is done if the account fails verification with the auction over?
+    \end{itemize}
+  \end{itemize}
+\item Are on-site and off-site buyers treated any differently by the system? As a corollary, do off-site sellers exist (eg. those who ship the items to the auction house to be sold), and if yes are they also treated differently to on-site sellers?
+\item Do buyers provide contact details as part of their contact information, and if yes:
+  \begin{itemize}
+  \item Is this information validated? A common method would be to send a confirmation PIN to a provided email or phone
+  \item Is it necessary for the auction house staff to be able to contact the buyer after the auction, and if contact information is found to be invalid, how can staff contact the buyer?
+  \end{itemize}
+\item Is collecting payment and providing the buyer the item after the auction has been won a fully automatic process, or does it involve participation from a member of staff at the auction house? If yes, does the app need any provisions to be able to support this?
+\item Does information about a lot remain in the system after it is sold, either in public view (eg. with a `sold' tag) or on the database? For GDPR purposes it may be preferrable to remove information about a lot either immediately or after a predetermined period of time. If lot information is to be removed, is this process automatically done by the system or is it manually done?
+\item Can a person have both a buyer and a seller role --- in order to minimse the amount of information they need to enter when registering, as the two will likely overlap significantly --- or would they need to register separate accounts? If separate accounts are needed, should the app have support for switching between accounts if eg. a person is present at an auction as both a buyer and a seller?
+\item Can lot information be amended after it has been added to the system? If yes, should the system have support for this or will it need to be done manually through a member of staff?
+\item How does the system handle bank transactions? There are two possible scenarios:
+  \begin{itemize}
+  \item The system handles transactions itself. This would require a high level of oversight and testing to adhere to regulatory regulations
+  \item The system handles transactions through some broker, eg. PayPal. This simplifies the process of creating transactions but will add additional cost and external dependencies on an API. 
+  \end{itemize}
+\item Are other auction house staff than auctioneers required to have roles within the app? If yes, what roles do they fulfill?
+\item Can a lot contain items from multiple sellers? 
+\item Does a lot have an overall description, or do the items it is composed of have separate descriptions?
+\end{enumerate}
 \end{document}

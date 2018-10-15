@@ -70,28 +70,27 @@
   - Modular + commented code
   - High unit test code coverage
 ** Ambiguities, subtleties, incompleteness (MA)
-- [ ] What information exactly can the public see about a lot?
-  - [ ] High / low estimate?
-- [ ] Can buyers / sellers see seller's commision / buyer's premium?
-- [ ] How do buyers / sellers register with system?
-  - [ ] Self-registration?
-  - [ ] Registered by auction house?
-    - [ ] Who in the auction house deals with this?
-- [ ] Is bid increment associated with one lot, one auction, or all auctions?
-- [ ] Is commision value associated with one lot, one auction, or all auctions?
-- [ ] What is in the bid notification?
-  - [ ] Price of new bid?
-- [ ] Is bank account info verified beforehand?
-- [ ] Different treatment for on-site / off-site buyers?
-- [ ] Do buyers need to provide contact details?
-  - [ ] If not, how does the auction house get in contact with them if something is wrong?
-- [ ] Can the purchase be stopped after the lot has gone through
-  - [ ] Is payment etc an automatic or manual process?
-- [ ] Does information about a lot remain after it is sold?
-- [ ] Can a person have both a buyer and seller role, or do they need a separate account for both?
-- [ ] Can lot information be amended after it is added?
-- [ ] How are transactions handled?
-  - [ ] Through a broker or does the system handle it itself?
-- [ ] Are other auction house professionals involved in process, other than auctioneers?
-- [ ] Can a lot contain item from multiple sellers?
-- [ ] Do the items in a lot have separate descriptions? 
+- [X] What information exactly can the public see about a lot?
+  - [X] High / low estimate?
+- [X] Can buyers / sellers see seller's commision / buyer's premium?
+- [X] How do buyers / sellers register with system?
+  - [X] Self-registration?
+  - [X] Registered by auction house?
+    - [X] Who in the auction house deals with this?
+- [X] Is bid increment associated with one lot, one auction, or all auctions?
+- [X] What is in the bid notification?
+  - [X] Price of new bid?
+- [X] Is bank account info verified beforehand?
+- [X] Different treatment for on-site / off-site buyers?
+- [X] Do buyers need to provide contact details?
+  - [X] If not, how does the auction house get in contact with them if something is wrong?
+- [X] Can the purchase be stopped after the lot has gone through
+  - [X] Is payment etc an automatic or manual process?
+- [X] Does information about a lot remain after it is sold?
+- [X] Can a person have both a buyer and seller role, or do they need a separate account for both?
+- [X] Can lot information be amended after it is added?
+- [X] How are transactions handled?
+  - [X] Through a broker or does the system handle it itself?
+- [X] Are other auction house professionals involved in process, other than auctioneers?
+- [X] Can a lot contain item from multiple sellers?
+- [X] Do the items in a lot have separate descriptions? 
