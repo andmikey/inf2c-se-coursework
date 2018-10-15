@@ -40,8 +40,8 @@
 ** Use-cases (MA)
 1. Register buyer
 2. Note interest in lot
-3. Bid on lot
-4. Close lot auction
+3. (F) Bid on lot
+4. (F) Close lot auction 
 5. Lost lot / add lot listing
 6. Browse lots in online catalogue
 7. Start lot auction
