@@ -42,12 +42,71 @@ The system consists of five major state components:
 
 \section{Use Cases}
 \subsection{Bid on lot}
+{\bf Primary actor: } Buyer
+\\{\bf Supporting actors: } 
+\\{\bf Summary: } Buyer places a bid on a lot.
+\\{\bf Precondition: } The lot is listed on the system. The lot is currently being auctioned (ie. it is not pre-auction and the auction has not already ended).  
+\\{\bf Trigger: } Buyer presses button in interface to bid on lot.
+\\{\bf Guarantee: } Buyer's bid on lot is recorded, and if appropriate, current bid price of lot is updated. 
+\\{\bf Main Success Scenarios: } 
+\begin{enumerate}
+\item System records bid information in log
+\item System updates current bid price on item 
+\item Buyers who are interested in the item are informed that a new bid has been placed on the item
+\end{enumerate}
+  {\bf Extensions: }
+\begin{itemize}
+\item [2a.] Bid is increment bid
+\item [2b.] Bid is jump bid 
+\item [2c.] Bid is insufficient
+\end{itemize}
+{\bf Stakeholders and interests: }
+\\{\em Buyer} looks to bid on lots they are interested in
+\\{\em Seller} looks to sell their lot
+\\{\em Auction house} want to assist in selling the lot in order to collect commission 
 \subsection{Close lot auction}
+{\bf Primary actor: } Auctioneer 
+\\{\bf Supporting actors: } Buyer, seller
+\\{\bf Summary: } Auctioneer declares auction closed and lot is removed from auction; relevant parties are notified, and appropriate financial transactions are executed
+\\{\bf Precondition: } Lot has gone on auction, auctioneer has allowed time for bids to be made
+\\{\bf Trigger: } Auctioneer assesses that there are no more bids to be made
+\\{\bf Guarantee: } Lot is removed from auction; appropriate parties are notified about change of status; financial transactions are successfully executed if appropriate
+\\{\bf Main Success Scenarios: }
+\begin{enumerate}
+\item Auctioneer closes bidding; no further bids can be made and the lot status is removed from auction
+\item Hammer price and winning buyer are recorded in system
+\item Item is recorded as sold
+\item Buyers who are interested in the item are informed that the item has been sold
+\item Hammer price plus buyer's premium is deducted from winning buyer's account
+\item Hammer price minus seller's commission is debited to seller's account
+\end{enumerate}
+{\bf Extensions: }
+\begin{itemize}
+\item [3a.] Hammer price is below reserve price
+\item [5a.] Buyer's account cannot be charged 
+\item [6a.] Seller's account cannot receive payment
+\end{itemize}
+{\bf Stakeholders and interests: }
 \subsection{Register buyer}
+{\bf Primary actor: } Member of staff at auction house
+\\{\bf Supporting actors: }
+\\{\bf Description: }
 \subsection{Note interest in lot}
+{\bf Primary actor: } Buyer
+\\{\bf Supporting actors: }
+\\{\bf Description: }
 \subsection{Add lot listing}
+{\bf Primary actor: } Member of staff at auction house
+\\{\bf Supporting actors: } Seller
+\\{\bf Description: } 
 \subsection{Browse lots in auction catalogue}
+{\bf Primary actor: } Buyer
+\\{\bf Supporting actors: }
+\\{\bf Description: } 
 \subsection{Start lot auction}
+{\bf Primary actor: } Auctioneer
+\\{\bf Supporting actors: } Buyers
+\\{\bf Description: }
 
 \section{Use case diagram}
 
@@ -132,5 +191,6 @@ Non-Functional Requirements are categorized into five sections:
 \item Are other auction house staff than auctioneers required to have roles within the app? If yes, what roles do they fulfill?
 \item Can a lot contain items from multiple sellers? 
 \item Does a lot have an overall description, or do the items it is composed of have separate descriptions?
+\item Is payment transferred to seller after payment has been received from buyer, or immediately after sale? The latter may introduce problems if the buyer is unable to pay, while the former may produce delays in payment which are undesirable to the seller
 \end{enumerate}
 \end{document}
