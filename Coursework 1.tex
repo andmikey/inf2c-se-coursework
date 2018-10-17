@@ -144,23 +144,23 @@ The system sets the lot to be in the state of being auctioned, setting the initi
 \section{Use case diagram}
 \begin{centering}
 \begin{tikzpicture}
-    \begin{umlsystem}[x=4, y=2, fill=red!10]{Use-case diagram for Auctionista} 
-    \umlusecase[y=2]{Bid on lot}
-    \umlusecase[x=4, y=2]{Close lot auction}
-    \umlusecase[y=4]{Register buyer}
-    \umlusecase[y=6]{Note interest in lot}
-    \umlusecase[x=4]{Add lot listing}
-    \umlusecase[y=0]{Browse}
-    \umlusecase[x=4, y=4]{Start lot auction}
+    \begin{umlsystem}[x=4, y=2, fill=red!10]{Use case diagram for Auctionista} 
+    \umlusecase[y=2, width=5em]{Bid on lot}
+    \umlusecase[x=4, y=2, width=5em]{Close lot auction}
+    \umlusecase[y=4, width=5em]{Register buyer}
+    \umlusecase[y=6, width=5em]{Note interest in lot}
+    \umlusecase[x=4, width=5em]{Add lot listing}
+    \umlusecase[y=0, width=5em]{Browse lots in auction catalogue}
+    \umlusecase[x=4, y=4, width=5em]{Start lot auction}
 \end{umlsystem} 
  
-    \umlactor[x=12, y=8]{Auction house}
-    \umlactor[x=12, y=5]{Auctioneer}
-    \umlactor[y=6]{Buyer}
-    \umlactor[x=12, y=2]{Seller}
-    \umlactor[x=3]{Member of the public}
-    \umlactor[x=7]{Expert}
-    \umlactor[x=10]{Lot display professional}
+    \umlactor[x=13, y=8]{Auction house}
+    \umlactor[x=13, y=5]{Auctioneer}
+    \umlactor[x=-1, y=6]{Buyer}
+    \umlactor[x=13, y=2]{Seller}
+    \umlactor[x=3, y=-1]{Member of the public}
+    \umlactor[x=7, y=-1]{Expert}
+    \umlactor[x=10, y=-1]{Lot display professional}
 
     \umlassoc{Buyer}{usecase-1}
     \umlassoc{Auctioneer}{usecase-2}
