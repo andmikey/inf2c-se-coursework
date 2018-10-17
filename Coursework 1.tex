@@ -81,7 +81,7 @@ The system consists of five major state components:
 \item Auctioneer closes bidding; no further bids can be made and the lot status is removed from auction
 \item Hammer price and winning buyer are recorded in system
 \item Item is recorded as sold
-\item Buyers who are interested in the item are informed that the item has been sold
+\item Buyers who are interested in the item are informed that the item has been sold, perhaps also informing them of final sale price and id of the successful buyer
 \item Hammer price plus buyer's premium is deducted from winning buyer's account. This is done either by the system directly or using some external provider. 
 \item Hammer price minus seller's commission is debited to seller's account. This is done either by the system directly or using some external provider. 
 \end{enumerate}
@@ -92,6 +92,10 @@ The system consists of five major state components:
 \item [6a.] Seller's account cannot receive payment. The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the seller in order to fix payment details. Once this is fixed, the system re-attempts step 6. 
 \end{itemize}
 {\bf Stakeholders and interests: }
+\\{\em Winning buyer} wishes to own the item by paying for it
+\\{\em Non-winning buyers} wish to be informed about sale of lot
+\\{\em Seller} wishes to sell their lot and gain payment from sale
+\\{\em Auction house} wishes to facilitate the sale of the lot in order to collect commission
 \subsection{Register buyer}
 {\bf Primary actor: } Member of staff at auction house
 \\{\bf Supporting actors: } Buyer
@@ -104,15 +108,37 @@ The system consists of five major state components:
 \subsection{Add lot listing}
 {\bf Primary actor: } Member of staff at auction house
 \\{\bf Supporting actors: } Seller
-\\{\bf Description: } 
+\\{\bf Description: } A seller wishing to list their lot on the auction house app will contact the auction house staff in order to facilitate this. The auction house staff will then assist the seller with uploading to the system the lot, including the following information:
+\begin{itemize}
+\item Reserve price, to be decided by the seller
+\item Lot description, including text and pictures
+\item High and low estimate, likely decided by the auction house in conjunction with the seller
+\item Bid increment if this is set on a by-lot basis
+\end{itemize}
+
+Once this lot addition is approved, the system will place the lot in a state where it can be browsed by buyers and members of the public through the app.
+
 \subsection{Browse lots in auction catalogue}
-{\bf Primary actor: } Buyer
+{\bf Primary actor: } Buyer, member of public
 \\{\bf Supporting actors: }
-\\{\bf Description: } 
+\\{\bf Description: } A buyer or member of the public wishes to view available lots. The system will show the available lots (those which have not been sold yet) with their associated attributes, and perhaps also lots which have already been sold. The system may allow the user to filter by such attributes as auction date, high/low estimate, or seller id. 
+
+The system may show parts of lot information to some but not all users, for example:
+\begin{itemize}
+  \item Hiding reserve price from all users other than auction house staff and the seller who owns the lot
+  \item Hiding high/low estimates from buyers until they indicate interest in the lot
+  \item Hiding all information about the lot other than its name and description from members of the public
+\end{itemize}
 \subsection{Start lot auction}
 {\bf Primary actor: } Auctioneer
 \\{\bf Supporting actors: } Buyers
-\\{\bf Description: }
+\\{\bf Description: } Once the set start time and date of a lot's auction is reached, the lot's auction must begin. This could be triggered:
+\begin{enumerate}
+\item By the system itself upon the set start time and date being reached. This is desirable if full automation of the lot auction is desired, but this approach may cause problems if the auctioneer is not present to close the auction. 
+\item By the auctioneer in the app. This is desirable if delays can be expected in the start-time of the auction (eg. an auction may start late because of previous delays earlier in the day) or if the start time of the auction is specified vaguely. 
+\end{enumerate}
+
+The system sets the lot to be in the state of being auctioned, setting the initial price as decided by the auctioneer or the low estimate, and allows buyers to begin to place bids on the item. 
 
 \section{Use case diagram}
 
