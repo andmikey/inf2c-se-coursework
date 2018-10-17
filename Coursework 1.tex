@@ -1,6 +1,7 @@
 \documentclass[titlepage, 12pt]{extarticle}
 \usepackage[margin=1in]{geometry}
-
+\usepackage{tikz}
+\usepackage{tikz-uml}
 \begin{document}
 \title{{\bf Inf2C: Software Engineering \\Coursework 1 \vspace{2em}\\ Capturing requirements for an auction house system}}
 \author{
@@ -141,7 +142,40 @@ The system may show parts of lot information to some but not all users, for exam
 The system sets the lot to be in the state of being auctioned, setting the initial price as decided by the auctioneer or the low estimate, and allows buyers to begin to place bids on the item. 
 
 \section{Use case diagram}
+\begin{centering}
+\begin{tikzpicture}
+    \begin{umlsystem}[x=4, y=2, fill=red!10]{Use-case diagram for Auctionista} 
+    \umlusecase[y=2]{Bid on lot}
+    \umlusecase[x=4, y=2]{Close lot auction}
+    \umlusecase[y=4]{Register buyer}
+    \umlusecase[y=6]{Note interest in lot}
+    \umlusecase[x=4]{Add lot listing}
+    \umlusecase[y=0]{Browse}
+    \umlusecase[x=4, y=4]{Start lot auction}
+\end{umlsystem} 
+ 
+    \umlactor[x=12, y=8]{Auction house}
+    \umlactor[x=12, y=5]{Auctioneer}
+    \umlactor[y=6]{Buyer}
+    \umlactor[x=12, y=2]{Seller}
+    \umlactor[x=3]{Member of the public}
+    \umlactor[x=7]{Expert}
+    \umlactor[x=10]{Lot display professional}
 
+    \umlassoc{Buyer}{usecase-1}
+    \umlassoc{Auctioneer}{usecase-2}
+    \umlassoc{Auction house}{usecase-3}
+    \umlassoc{Buyer}{usecase-3}
+    \umlassoc{Buyer}{usecase-4}
+    \umlassoc{Lot display professional}{usecase-5}
+    \umlassoc{Seller}{usecase-5}
+    \umlassoc{Expert}{usecase-5}
+    \umlassoc{Buyer}{usecase-6}
+    \umlassoc{Member of the public}{usecase-6}
+    \umlassoc{Auctioneer}{usecase-7}
+    
+\end{tikzpicture}
+\end{centering}
 \section{Non-Functional Requirements}
 Non-Functional Requirements are categorized into five sections:
 \subsection{Security}
