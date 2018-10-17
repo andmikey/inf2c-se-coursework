@@ -13,20 +13,16 @@
 \maketitle
 
 \section{Introduction}
-\subsection{App Name}
-Auctionista
-
-\subsection{App Description}
-...
+This document captures the requirements of an app for the Auld Reekie Auction House, codenamed {\it Auctionista}. 
 
 \section{Stakeholders}
 We can consider the following stakeholders:
 \begin{itemize}
-\item {\it Auction House}: the Auction House wants to replace its existing bidding system with a software that will
-    \begin{itemize}
-    \item Perform existing in-house functions that the auction house currently manages manually. such taking in new bids.
-    \item Open up new features to their clients (bidders, sellers, and the public) so that lots can be viewed, edited, and bid on through an online interface and without being physically present.
-    \end{itemize}
+\item {\it Auction House}: the Auction House wants to replace its existing bidding system with a software that will:
+  \begin{itemize}
+  \item Perform existing in-house functions that the auction house currently manages manually. such taking in new bids.
+  \item Open up new features to their clients (bidders, sellers, and the public) so that lots can be viewed, edited, and bid on through an online interface and without being physically present.
+  \end{itemize}
 \item {\it Auctioneer}: Manages auctions and oversees the bidding process by taking in new bids. They want to be aware of bids as they come in through the platform, and want to notify those involved in the bidding process as things change.
 \item {\it Buyer}: Watches and bids on lots under auction. They want to see lots and their associated images, descriptions, and valuations, and want to mark interest for and bid on the lots that they want.
 \item {\it Seller}: Brings lots to the auction and lists their starting prices and reserve prices. They want to be able to manage their lots and their images, descriptions, and valuations. They want to be notified about bids on their lots and told of the final prices (hammer and hammer minus seller's commision) of any lots they have sent up for auction.
@@ -49,29 +45,33 @@ The system consists of five major state components:
 \subsection{Bid on lot}
 {\bf Primary actor: } Buyer
 \\{\bf Supporting actors: } 
-\\{\bf Summary: } Buyer places a bid on a lot.
+\\{\bf Summary: } Buyer places a bid on a lot and the lot's price is updated as needed. 
 \\{\bf Precondition: } The lot is listed on the system. The lot is currently being auctioned (ie. it is not pre-auction and the auction has not already ended).  
 \\{\bf Trigger: } Buyer presses button in interface to bid on lot.
 \\{\bf Guarantee: } Buyer's bid on lot is recorded, and if appropriate, current bid price of lot is updated. 
 \\{\bf Main Success Scenarios: } 
 \begin{enumerate}
-\item System records bid information in log
-\item System updates current bid price on item 
-\item Buyers who are interested in the item are informed that a new bid has been placed on the item
+\item System records bid information in log; this will include the identity of the buyer, whether the bid was an increment or a jump bid, the associated lot, and the new price of the lot. 
+\item System updates current bid price on lot and propogates this to all buyers also looking at the lot. 
+\item Buyers who are interested in the item are informed that a new bid has been placed on the lot
 \end{enumerate}
   {\bf Extensions: }
 \begin{itemize}
-\item [2a.] Bid is increment bid
-\item [2b.] Bid is jump bid 
-\item [2c.] Bid is insufficient
+\item [2a.] Bid is increment bid of value $i$. System updates the lot's current bid price $c$ to be $c = c + i$.
+\item [2b.] Bid is jump bid of value $j$. If $j < f$, with $f$ being the fixed bid increment, we go to 2c. Otherwise we update the lot's current bid price $c = c + f$.
+\item [2c.] Bid is insufficient. We display an error message to the buyer informing them that placing a bid has failed and wait for the buyer to bid again. 
 \end{itemize}
 {\bf Stakeholders and interests: }
 \\{\em Buyer} looks to bid on lots they are interested in
 \\{\em Seller} looks to sell their lot
-\\{\em Auction house} want to assist in selling the lot in order to collect commission 
+\\{\em Auction house} want to assist in selling the lot in order to collect commission
+\\{\bf Notes:}
+\begin{itemize}
+  \item A non-functional requirement associated with this use-case is that the system must be able to handle bids in an ACID-adhering way: more specifically, if two bids are placed at the same time (or within a very small time interval) there must be a way of deciding which is to be treated as having come first. There must therefore be a very small (<1s) latency on bid placement and update of a lot's current bid price. 
+\end{itemize}
 \subsection{Close lot auction}
 {\bf Primary actor: } Auctioneer 
-\\{\bf Supporting actors: } Buyer, seller
+\\{\bf Supporting actors: } Buyer, seller, auction house staff
 \\{\bf Summary: } Auctioneer declares auction closed and lot is removed from auction; relevant parties are notified, and appropriate financial transactions are executed
 \\{\bf Precondition: } Lot has gone on auction, auctioneer has allowed time for bids to be made
 \\{\bf Trigger: } Auctioneer assesses that there are no more bids to be made
@@ -82,14 +82,14 @@ The system consists of five major state components:
 \item Hammer price and winning buyer are recorded in system
 \item Item is recorded as sold
 \item Buyers who are interested in the item are informed that the item has been sold
-\item Hammer price plus buyer's premium is deducted from winning buyer's account
-\item Hammer price minus seller's commission is debited to seller's account
+\item Hammer price plus buyer's premium is deducted from winning buyer's account. This is done either by the system directly or using some external provider. 
+\item Hammer price minus seller's commission is debited to seller's account. This is done either by the system directly or using some external provider. 
 \end{enumerate}
 {\bf Extensions: }
 \begin{itemize}
-\item [3a.] Hammer price is below reserve price
-\item [5a.] Buyer's account cannot be charged 
-\item [6a.] Seller's account cannot receive payment
+\item [3a.] Hammer price is below reserve price. The lot auction is unsuccessful and we finish the scenario here. The lot is removed from auction and the seller is notified that the item did not sell. 
+\item [5a.] Buyer's account cannot be charged.  The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the buyer in order to fix payment details. Once this is fixed, the system re-attempts step 5. 
+\item [6a.] Seller's account cannot receive payment. The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the seller in order to fix payment details. Once this is fixed, the system re-attempts step 6. 
 \end{itemize}
 {\bf Stakeholders and interests: }
 \subsection{Register buyer}
