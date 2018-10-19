@@ -32,7 +32,7 @@ We can consider the following stakeholders:
 \item {\it Auction House:} the Auction House wants to replace its existing bidding system with a software that will:
   \begin{itemize}
   \item Perform existing in-house functions that the auction house currently manages manually. such taking in new bids;
-  \item Open up new features to their clients (bidders, sellers, and the public) so that lots can be viewed, edited, and bid on through an online interface and without being physically present.
+  \item Open up new features to their clients (buyers, sellers, and the public) so that lots can be viewed, edited, and bid on through an online interface and without being physically present.
   \end{itemize}
   Their value from the system is to facilitate lot auctions in order to collect commissions from sales.
 \item {\it Auctioneer:} Manages auctions and oversees the bidding process by taking in new bids. They want to be aware of bids as they come in through the platform, and want to notify those involved in the bidding process as things change. Their value from the system is for it to allow them to perform their work duties through a simple digital interface, and to provide a way to manage their associated auctions.
@@ -40,8 +40,7 @@ We can consider the following stakeholders:
 \item {\it Seller:} Brings lots to the auction and provides information about a lot (description, reserve price). They want to be able to manage their lots and their images, descriptions, and valuations. They want to be notified about bids on their lots and told of the final prices (hammer and hammer minus seller's commision) of any lots they have put up for auction. Their primary value from the system is being able to sell their lots. 
 \item {\it Member of the Public:} Wants to peruse the existing lots. A member of the public without an existing account wants to be able to see some details about a lot --- lot description --- while not being able to see all of it or bid on it. Their value from the system is to be able to see the lots available at the auction house. 
 \item {\it Expert:} Wants to assist the seller in putting a lot up for auction, providing valuations for high / low estimates. They need access similar to that of a Member of the Public, but with additional abilities to contact the seller and negotiate aspects of a lot. Their value from the system is to provide a digital interface to perform their work duties. 
-\item {\it Lot Display Professional:} For lack of a better term, these are the professionals involved in taking photos and writing descriptions of a lot. They are interested in the multimedia capabilities of a lot's listing, as that will affect their process for marketing it and making attractive to potential bidders. Their value from the system is also to provide a digital interface to perform their work duties. 
-\item {\it App Provider:} The group responsible for maintenance of the hardware and software involved in distributing the app and keeping the app running. These may be in-house professionals for the Auction House or another contracted agency. They are interested in the simplicity of maintaining and distributing the software and handling its interconnection between other stakeholders.
+\item {\it Lot Display Professional:} These are the professionals involved in taking photos and writing descriptions of a lot. They are interested in the multimedia capabilities of a lot's listing, as that will affect their process for marketing it and making attractive to potential buyers. Their value from the system is to provide a digital interface to perform their work duties. 
 \end{itemize}
 \section{System State}
 The system consists of five major state components:
@@ -65,7 +64,7 @@ The system consists of five major state components:
     \item A high/low estimate.
     \item A description, consisting of text and images. Note that if a lot has multiple items, each of these items may have their own description.
     \item A reserve price, only visible to the seller and auctioneer
-    \item A list of interested bidders, not visible to other users, who have marked their interest on the lot before the lot has gone on auction.
+    \item A list of interested buyers, not visible to other users, who have marked their interest on the lot before the lot has gone on auction.
     \item If the lot is actively on auction, a list of bids placed on the item and a current selling price.
     \item If the lot has been sold, information about the final winning bid.
     \end{enumerate}
@@ -141,7 +140,7 @@ The system consists of five major state components:
 \begin{itemize}
 \item [1a.] It may be desirable for the auctioneer to decide the winning buyer, rather than the system, in order to avoid sniping (a bid being placed after the auctioneer has decided the auction is to be closed, but before the auction is actually closed). 
 \item [2a.] Hammer price is below reserve price. The lot auction is unsuccessful and we finish the scenario here. The lot is removed from auction and the seller is notified that the lot did not sell.
-\item [3a.] It may be desirable for the unsuccessful buyers to be informed also of the winning bidder and price the lot was sold for. 
+\item [3a.] It may be desirable for the unsuccessful buyers to be informed also of the winning buyer and price the lot was sold for. 
 \item [4a.] Buyer's account cannot be charged.  The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the buyer in order to fix payment details. Once this is fixed, the system re-attempts step 5.
 \item [4b.] The payment may be taken either by the system directly communicating with the buyer's bank, or through a third-party intermediary
 \item [5a.] Seller's account cannot receive payment. The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the seller in order to fix payment details. Once this is fixed, the system re-attempts step 6.
@@ -246,12 +245,12 @@ Non-Functional Requirements are categorized into five sections:
     \end{itemize}
 \item {\it Bank Transactions:} Bank transactions, since they deal with money, are especially sensitive to tampering. Such transactions, as well as the personal data required to make them, must be encrypted and verified beforehand to make sure both eavesdropping and untoward manipulation of the transaction are impossible. 
 \\Encrypting all transactions, for example by using a protocol such as HTTPS, would be a useful step in this direction, as it would mean traffic cannot be tampered with or eavesdropped on by someone else in the network.
-\item {\it Anonymity:} A bidder may want to keep their identity secret in high-profile contexts. In this case, the personal data of a user must be secured so that authentication must be duly provided to access this personal data. Furthermore, a log must exist so that administratie changes can be correctly audited and reverted in the unlikely event of a breach.
+\item {\it Anonymity:} A buyer may want to keep their identity secret in high-profile contexts. In this case, the personal data of a user must be secured so that authentication must be duly provided to access this personal data. Furthermore, a log must exist so that administratie changes can be correctly audited and reverted in the unlikely event of a breach.
 \\Providing different levels of administrator access would be a good step towards this goal. This way, critical maintenance can be performed by some of the staff using one level of administrative access, without exposing to them important and more privileged data.
 \end{itemize}
 \subsection{Usability}
 \begin{itemize}
-\item {\it Internationalisation Support:} Bidders may hail from a variety of countries and backgrounds, and to capture the largest number of potential bidders an auction house must target them through support for their language. This extends to currencies especially - when dealing with large bids, different currencies may be used to pay a single sum. Conversion with these currencies must be exact.
+\item {\it Internationalisation Support:} Buyers may hail from a variety of countries and backgrounds, and to capture the largest number of potential buyer an auction house must target them through support for their language. This extends to currencies especially - when dealing with large bids, different currencies may be used to pay a single sum. Conversion with these currencies must be exact.
 \\Many standards bodies have initiatives regarding internationalisation and accessibility, so that different interfaces may be read and translated in a commonly understood way. One of the most well-known of these initiatives is the World Wide Web Consortium's i18n initiative. It would be useful to read over these documents when designing and writing internationalization into the software.
 \item {\it Simple Interface:} Since the bidding process is fast-moving and high-value, customers cannot be encumbered by the interface in making their decisions. The interface must be streamlined towards the fundamental functions of auctioning, such as bidding, setting a hammer price, or listing a lot.
 \item {\it Multi-Platform Support:} Clients will use a variety of platforms to access the auction house, as will members of the public. Clients that are accessing the platform from afar especially may be on the go and need mobile platform support.
@@ -300,7 +299,7 @@ Non-Functional Requirements are categorized into five sections:
   \item Self-registration through the app
   \item Registration through the auction house - in this case, who in the auction house would perform this operation, and what role would they require in the system to do so?
   \end{itemize}
-\item What information is contained in the notification sent to a buyer when a bid is placed on an lot they are interested in? Obvious candidates include the new price of the lot and the time left on the auction; undesireable information may include the identity of the competing bidder
+\item What information is contained in the notification sent to a buyer when a bid is placed on an lot they are interested in? Obvious candidates include the new price of the lot and the time left on the auction; undesireable information may include the identity of the competing buyer
 \item Is the bank account information of a user verified through some verification method? If yes:
   \begin{itemize}
   \item What verification method is used? A common method is attempting to withdraw / deposit \pounds 0.01 into the account and confirming the user has received it; other methods may include communicating with the user's bank
