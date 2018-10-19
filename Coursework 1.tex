@@ -219,18 +219,23 @@ Non-Functional Requirements are categorized into five sections:
 \subsection{Performance}
 \begin{itemize}
 \item {\it Scalability:} As auctions may happen simultaneously, as the auction house may expand to multiple venues, and as the auction house attracts more clients, the system must not become slow or sluggish. The ability to scale up and down as needed by the business is critical.
+\\ Cloud services, such as Google Cloud Compute and Amazon Web Services, have a huge number of customizations in this area so that assets such as servers can be spun up and down dynamically as demand and system load changes.
 \item {\it Low-Latency / Low-Bandwidth:} Customers in transit or from afar will be placing bids. Since the placing of a bid can represent major investment, and the acceptance of a bid affects the outcome of an auction seriously, all bids must be delivered quickly and even over patchy connections. This requires many of the transactions to have little network overhead.
+\\Websockets allow small data packages to be sent over a constantly enabled connection. This would allow rapid transactions between the system and a client, ideal for bids and notifications. 
+\\Such products as Google firebase build upon this to provide support for patchy networks, by caching data locally on the client and syncing it as necessary.
 \item {\it Low-Cost Computer Support:} Similar to Multi-Platform Support under the Usability subsection, Clients may be connecting through limited PCs or underpowered mobile devices. The interface to bid must not slow down on such devices. This may involve choosing investing development time into platform-specific optimizations and fixes.
 \end{itemize}
 \subsection{Reliability}
 \begin{itemize}
-\item {\it Concurrency Management (ACID):} Transactions, especially bids, will come in asynchronously but must be processed sychronously and durably. Using a database that follows the ACID principles would be strong first step towards making sure that bids processed in the correct order and not made to overlap or interfere with one another.
+\item {\it Concurrency Management (ACID):} Transactions, especially bids, will come in asynchronously but must be processed sychronously and durably. 
+\\Using a database that follows the ACID principles would ensure that bids processed in the correct order and not made to overlap or interfere with one another.
 \item {\it Integration Testing:} Failure in the middle of an auction is not an option. All user scenarios and actions that a user can take would best be adequately tested using some automated testing framework.
 \end{itemize}
 \subsection{Maintainability}
 \begin{itemize}
 \item {\it Conceptual Modularization:} In order to speed up training, understanding, and diagnosing the system, the program must be properly split into easily-digested modules that relate to a specific concept or process that is needed. This way, whenever an error occurs, it is self-evident what it causes by where it comes from. Whenever a new feature is needed, it is self-evident where the new feature should go and feature creep can be avoided.
 \item {\it Unit Testing:} Often, valuable hours are wasted on chasing errors due to regressions or diagnosing an in-production problem. The hot-fixing of production problems may also gradually introduce more and more cruft into a code-base, making ithard to predict and maintain further down the road. Unit testing is ideal for catching bugs early and keeping regressions out of the code-base on every change.
+\\Testing harnesses abound for most languages - QuickCheck for Haskell, JUnit for Java, and assert, Jasime, and MochaJS for JavaScript are a few of the examples that can be provided.
 \end{itemize}
 
 \section{Ambiguities, Subtleties, Incompleteness}
