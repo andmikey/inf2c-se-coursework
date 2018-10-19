@@ -4,6 +4,8 @@
 \usepackage{tikz-uml}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{eurosym}
+
 \lhead{Inf2C: SE Coursework 1}
 \rhead{s1703773 \& s1737075}
 \cfoot{\thepage~/~\pageref{LastPage}}
@@ -238,22 +240,26 @@ We note that this use case diagram only includes {\em primary actors} in order t
 Non-Functional Requirements are categorised into five sections:
 \subsection{Security}
 \begin{itemize}
-\item {\it Bidding Authentication:} The auction process for a lot, and placing bids for a lot, must be restricted to users that have proper authentication as buyers and that have shown interest in the lot before auction. Therefore, the authentication system must be well secured to prevent people who do not meet these requirements from having access. There must be no possibility of a user elevating their access without explicit permission from the auction house. 
+\item {\it Bidding Authentication:} The auction process for a lot, and placing bids for a lot, must be restricted to users that have proper authentication as buyers and possibly also restricted to those that have shown interest in the lot before auction. Therefore, the authentication system must be well secured to prevent people who do not meet these requirements from having access. There must be no possibility of a user elevating their access without explicit permission from the auction house. 
 \\Two techniques may prove useful to this end:
     \begin{itemize}
     \item {\it Authentication Tokens}: Once a user is logged in, provide their client with a token. This token will be provided to authenticate all future dealings, instead of a password. This means that even if the user is snooped on, only their current session is compromised, not their login details for the foreseeable future.
     \item {\it Permission System}: Each token or set of credentials has a certain level of access. This level determines whether and how they can view and manipulate data in other tables. Any transaction must be authenticated against the user's access level.
     \end{itemize}
-\item {\it Bank Transactions:} Bank transactions, since they deal with money, are especially sensitive to tampering. Such transactions, as well as the personal data required to make them, must be encrypted and verified beforehand to make sure both eavesdropping and untoward manipulation of the transaction are impossible. 
-\\Encrypting all transactions, for example by using a protocol such as HTTPS, would be a useful step in this direction, as it would mean traffic cannot be tampered with or eavesdropped on by someone else in the network.
-\item {\it Anonymity:} A bidder may want to keep their identity secret in high-profile contexts. In this case, the personal data of a user must be secured so that authentication must be duly provided to access this personal data. Furthermore, a log must exist so that administrate changes can be correctly audited and reverted in the unlikely event of a breach.
+\item {\it Bank Transactions:} Bank transactions, being financial in nature, are especially sensitive to tampering. Such transactions, as well as the personal data required to make them, must be encrypted and verified beforehand to make sure both eavesdropping and untoward manipulation of the transaction are impossible. 
+  \\ At a minimum, all connections should be made over HTTPS with Extended Validation Certificates. This will mean that:
+  \begin{enumerate}
+  \item Traffic cannot be tampered with or eavesdropped on by someone else in the network, as HTTPS is a secure protocol. This will provide reassurance to both the auction house and its customers that financial data is kept safe.
+  \item Through using Extended Validation (EV) certificates, buyers and sellers are assured of the identity of the auction house. Using EV certificates is considered by many to be industry-standard when the organisation must perform financial transactions.
+  \end{enumerate}
+\item {\it Anonymity:} A bidder may want to keep their identity secret in high-profile contexts. In this case, the personal data of a user must be secured so that authentication must be duly provided to access this personal data. At a minimum we would expect that buyers and sellers cannot see each others' information: seeing this is restricted only to certain auction staff if necessary. Furthermore, a log must exist so that administrate changes can be correctly audited and reverted in the unlikely event of a breach.
 \\Providing different levels of administrator access would be a good step towards this goal. This way, critical maintenance can be performed by some of the staff using one level of administrative access, without exposing to them important and more privileged data.
 \end{itemize}
 \subsection{Usability}
 \begin{itemize}
-\item {\it Internationalisation Support:} Bidders may hail from a variety of countries and backgrounds, and to capture the largest number of potential bidders an auction house must target them through support for their language. This extends to currencies especially - when dealing with large bids, different currencies may be used to pay a single sum. Conversion with these currencies must be exact.
-\\Many standards bodies have initiatives regarding internationalisation and accessibility, so that different interfaces may be read and translated in a commonly understood way. One of the most well-known of these initiatives is the World Wide Web Consortium's i18n initiative. It would be useful to read over these documents when designing and writing internationalisation into the software.
-\item {\it Simple Interface:} Since the bidding process is fast-moving and high-value, customers cannot be encumbered by the interface in making their decisions. The interface must be streamlined towards the fundamental functions of auctioning, such as bidding, setting a hammer price, or listing a lot.
+\item {\it Internationalisation Support:} Bidders may hail from a variety of countries and backgrounds, and to capture the largest number of potential bidders an auction house should target them through support for their language and currency. Currency support will be especially important: when dealing with large bids, different currencies may be used to pay a single sum. Conversion with these currencies must be exact. At a minimum the system must support transactions in GBP (\pounds), but USD (\$) and EUR (\euro) may also be desired.
+\\Regarding language, we expect support for the English language at a minimum. Depending on the auction house's clientele, support for other languages (eg. Scots) may also be desired. Many standards bodies have initiatives regarding internationalisation and accessibility, so that different interfaces may be read and translated in a commonly understood way. One of the most well-known of these initiatives is the World Wide Web Consortium's (W3C) i18n initiative. It would be useful to read over these documents when designing and writing internationalisation into the software; additionally, the W3C provides a tool for assessing the internationalization of a page \footnote{https://validator.w3.org/i18n-checker/}, which would be an effective way to quantitatively assess the level of international support of the app.
+\item {\it Simple Interface:} Since the bidding process is fast-moving and high-value, customers cannot be encumbered by the interface in making their decisions. The interface must be streamlined towards the fundamental functions of auctioning, such as bidding, setting a hammer price, listing a lot, or closing the auction.
 \item {\it Multi-Platform Support:} Clients will use a variety of platforms to access the auction house, as will members of the public. Clients that are accessing the platform from afar especially may be on the go and need mobile platform support.
 \\The web as a platform is known for compatibility with many devices, and has very strong mobile interface support.
 \item {\it Notification Customizability:} Information overload is a serious concern in a fast-moving context such as an active bidding session. Customers must be given only the notifications they need in order to carry out their bids, and auctioneers must only receive the notifications necessary to administrate an auction.
@@ -265,7 +271,7 @@ Non-Functional Requirements are categorised into five sections:
 \item {\it Low-Latency / Low-Bandwidth:} Customers in transit or from afar will be placing bids. Since the placing of a bid can represent major investment, and the acceptance of a bid affects the outcome of an auction seriously, all bids must be delivered quickly and even over patchy connections. This requires many of the transactions to have little network overhead.
 \\Websockets allow small data packages to be sent over a constantly enabled connection. This would allow rapid transactions between the system and a client, ideal for bids and notifications. 
 \\Such products as Google firebase build upon this to provide support for patchy networks, by caching data locally on the client and syncing it as necessary.
-\item {\it Low-Cost Computer Support:} Similar to Multi-Platform Support under the Usability subsection, Clients may be connecting through limited PCs or under-powered mobile devices. The interface to bid must not slow down on such devices. This may involve choosing investing development time into platform-specific optimisations and fixes.
+\item {\it Low-Cost Computer Support:} Similar to Multi-Platform Support under the usability subsection, clients may be connecting through limited PCs or under-powered mobile devices. The interface to bid must not slow down on such devices. This may involve choosing investing development time into platform-specific optimisations and fixes. The auction house may choose to perform a survey of possible users in order to assess which platforms they will most likely need to support.
 \end{itemize}
 \subsection{Reliability}
 \begin{itemize}
@@ -277,7 +283,8 @@ Non-Functional Requirements are categorised into five sections:
 \begin{itemize}
 \item {\it Conceptual Modularization:} In order to speed up training, understanding, and diagnosing the system, the program must be properly split into easily-digested modules that relate to a specific concept or process that is needed. This way, whenever an error occurs, it is self-evident what it causes by where it comes from. Whenever a new feature is needed, it is self-evident where the new feature should go and feature creep can be avoided.
 \item {\it Unit Testing:} Often, valuable hours are wasted on chasing errors due to regressions or diagnosing an in-production problem. The hot-fixing of production problems may also gradually introduce more and more cruft into a code-base, making it hard to predict and maintain further down the road. Unit testing is ideal for catching bugs early and keeping regressions out of the code-base on every change.
-\\Testing harnesses abound for most languages - QuickCheck for Haskell, JUnit for Java, and assert, Jasime, and MochaJS for JavaScript are a few of the examples that can be provided.
+  \\Testing harnesses abound for most languages - QuickCheck for Haskell, JUnit for Java, and assert, Jasime, and MochaJS for JavaScript are a few of the examples that can be provided.
+  \\It is desirable to aim for 95\% code coverage over the system.
 \end{itemize}
 
 \section{Ambiguities, Subtleties, Incompleteness}
