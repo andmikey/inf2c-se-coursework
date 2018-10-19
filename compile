@@ -1,2 +1,3 @@
 #!/bin/bash
 pdflatex "Coursework 1.tex"
+pdflatex "Coursework 1.tex"
