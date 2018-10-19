@@ -196,15 +196,24 @@ We note that this use case diagram only includes {\em primary actors} in order t
 Non-Functional Requirements are categorized into five sections:
 \subsection{Security}
 \begin{itemize}
-\item {\it Bidding Authentication:} The auction process for a lot, and placing bids for a lot, must be resticted to users that have proper authentication as buyers and that have shown interest in the lot before auction. Therefore, the authentication system must be well secured to prevent people who do not meet these requirements from having access. There must be no possibility of a user elevating their access without explicit permission from the auction house.
-\item {\it Bank Transactions:} Bank transactions, since they deal with money, are especially sensitive to tampering. Such transactions, as well as the personal data required to make them, must be encrypted and verified beforehand to make sure both eavesdropping and untoward manipulation of the transaction are impossible.
+\item {\it Bidding Authentication:} The auction process for a lot, and placing bids for a lot, must be resticted to users that have proper authentication as buyers and that have shown interest in the lot before auction. Therefore, the authentication system must be well secured to prevent people who do not meet these requirements from having access. There must be no possibility of a user elevating their access without explicit permission from the auction house. 
+\\Two techniques may prove useful to this end:
+    \begin{itemize}
+    \item {\it Authentication Tokens}: Once a user is logged in, provide their client with a token. This token will be provided to authenticate all future dealings, instead of a password. This means that even if the user is snooped on, only their current session is compromised, not their login details for the foreseeable future.
+    \item {\it Permission System}: Each token or set of credentials has a certain level of access. This level determines whether and how they can view and manipulate data in other tables. Any trasaction must be authenticated against the user's access level.
+    \end{itemize}
+\item {\it Bank Transactions:} Bank transactions, since they deal with money, are especially sensitive to tampering. Such transactions, as well as the personal data required to make them, must be encrypted and verified beforehand to make sure both eavesdropping and untoward manipulation of the transaction are impossible. 
+\\Encrypting all transactions, for example by using a protocol such as HTTPS, would be a useful step in this direction, as it would mean traffic cannot be tampered with or eavesdropped on by someone else in the network.
 \item {\it Anonymity:} A bidder may want to keep their identity secret in high-profile contexts. In this case, the personal data of a user must be secured so that authentication must be duly provided to access this personal data. Furthermore, a log must exist so that administratie changes can be correctly audited and reverted in the unlikely event of a breach.
+\\Providing different levels of administrator access would be a good step towards this goal. This way, critical maintenance can be performed by some of the staff using one level of administrative access, without exposing to them important and more privileged data.
 \end{itemize}
 \subsection{Usability}
 \begin{itemize}
 \item {\it Internationalisation Support:} Bidders may hail from a variety of countries and backgrounds, and to capture the largest number of potential bidders an auction house must target them through support for their language. This extends to currencies especially - when dealing with large bids, different currencies may be used to pay a single sum. Conversion with these currencies must be exact.
+\\Many standards bodies have initiatives regarding internationalisation and accessibility, so that different interfaces may be read and translated in a commonly understood way. One of the most well-known of these initiatives is the World Wide Web Consortium's i18n initiative. It would be useful to read over these documents when designing and writing internationalization into the software.
 \item {\it Simple Interface:} Since the bidding process is fast-moving and high-value, customers cannot be encumbered by the interface in making their decisions. The interface must be streamlined towards the fundamental functions of auctioning, such as bidding, setting a hammer price, or listing a lot.
 \item {\it Multi-Platform Support:} Clients will use a variety of platforms to access the auction house, as will members of the public. Clients that are accessing the platform from afar especially may be on the go and need mobile platform support.
+\\The web as a platform is known for compatibility with many devices, and has very strong mobile interface support.
 \item {\it Notification Customizability:} Information overload is a serious concern in a fast-moving context such as an active bidding session. Customers must be given only the notifications they need in order to carry out their bids, and auctioneers must only receive the notifications necessary to administrate an auction.
 \end{itemize}
 \subsection{Performance}
