@@ -31,26 +31,68 @@ We can consider the following stakeholders:
 \begin{itemize}
 \item {\it Auction House:} the Auction House wants to replace its existing bidding system with a software that will:
   \begin{itemize}
-  \item Perform existing in-house functions that the auction house currently manages manually. such taking in new bids.
+  \item Perform existing in-house functions that the auction house currently manages manually. such taking in new bids;
   \item Open up new features to their clients (bidders, sellers, and the public) so that lots can be viewed, edited, and bid on through an online interface and without being physically present.
   \end{itemize}
-\item {\it Auctioneer:} Manages auctions and oversees the bidding process by taking in new bids. They want to be aware of bids as they come in through the platform, and want to notify those involved in the bidding process as things change.
-\item {\it Buyer:} Watches and bids on lots under auction. They want to see lots and their associated images, descriptions, and valuations, and want to mark interest for and bid on the lots that they want.
-\item {\it Seller:} Brings lots to the auction and lists their starting prices and reserve prices. They want to be able to manage their lots and their images, descriptions, and valuations. They want to be notified about bids on their lots and told of the final prices (hammer and hammer minus seller's commision) of any lots they have sent up for auction.
-\item {\it Member of the Public:} Wants to peruse the existing lots. A member of the public without an existing account needs access to seeing lots and possibly their valuations without knowing more important, buyer/seller-only details.
-\item {\it Expert:} Helps to evaluate a given lot and guide the process of setting up a lot, especially its valuations. They need access similar to that of a Member of the Public, but with additional abilities to contact the seller and negotiate aspects of a lot.
-\item {\it Lot Display Professional:} For lack of a better term, these are the professionals involved in taking photos and writing descriptions of a lot. They are interested in the multimedia capabilities of a lot's listing, as that will affect their process for marketing it and making attractive to potential bidders.
-\item {\it App Provider:} The group responsible for maintenance of the hardware and software involved in distributing the app and keeping the app running. These may be in-house professionals for the Auction House or a another contracted agency. They are interested in the simplicity of maintaining and distributing the software and handling its interconnection between other stakeholders.
+  Their value from the system is to facilitate lot auctions in order to collect commissions from sales.
+\item {\it Auctioneer:} Manages auctions and oversees the bidding process by taking in new bids. They want to be aware of bids as they come in through the platform, and want to notify those involved in the bidding process as things change. Their value from the system is for it to allow them to perform their work duties through a simple digital interface, and to provide a way to manage their associated auctions.
+\item {\it Buyer:} Watches and bids on lots under auction. They want to see lots and their associated images, descriptions, and valuations, and want to mark interest for and bid on the lots that they want. Their primary value from the system is being able to purchase lots that they desire. 
+\item {\it Seller:} Brings lots to the auction and provides information about a lot (description, reserve price). They want to be able to manage their lots and their images, descriptions, and valuations. They want to be notified about bids on their lots and told of the final prices (hammer and hammer minus seller's commision) of any lots they have put up for auction. Their primary value from the system is being able to sell their lots. 
+\item {\it Member of the Public:} Wants to peruse the existing lots. A member of the public without an existing account wants to be able to see some details about a lot --- lot description --- while not being able to see all of it or bid on it. Their value from the system is to be able to see the lots available at the auction house. 
+\item {\it Expert:} Wants to assist the seller in putting a lot up for auction, providing valuations for high / low estimates. They need access similar to that of a Member of the Public, but with additional abilities to contact the seller and negotiate aspects of a lot. Their value from the system is to provide a digital interface to perform their work duties. 
+\item {\it Lot Display Professional:} For lack of a better term, these are the professionals involved in taking photos and writing descriptions of a lot. They are interested in the multimedia capabilities of a lot's listing, as that will affect their process for marketing it and making attractive to potential bidders. Their value from the system is also to provide a digital interface to perform their work duties. 
+\item {\it App Provider:} The group responsible for maintenance of the hardware and software involved in distributing the app and keeping the app running. These may be in-house professionals for the Auction House or another contracted agency. They are interested in the simplicity of maintaining and distributing the software and handling its interconnection between other stakeholders.
 \end{itemize}
 \section{System State}
 The system consists of five major state components:
-\begin{itemize}
-\item {\it Auctions:} A list of auctions is kept which each have a list of associated Lots and a list of associated Auctioneers, as well as a minimum bid increment. Each auction also has a start date and time. If the auction is in progress, it has whatever lot is currently on auction.
-\item {\it Auctioneers:} Auctioneers administrate the process of an auction. They keep a list of all auctions they will administrate.
-\item {\it Lots:} Lots have an associated seller that sells them and an auction at which they will be auctioned off. A lot also has a high/low estimate, a description, and images. If the lot has multiple items, each lot may come with its own description and images. A reserve price (which will only be visible to the seller) and a list of interested bidders, which have marked their interest before the lot has gone on auction. If the lot is actively on auction or has now been auctioned off, a list of bids is kept along with the final, winning bid.
-\item {\it Buyers:} Buyers have personal information, contact details, and bank information. They also have a list of lots which they have marked their interest in. If a lot they have subscribed to is active, they store all bids they have made on the lot with special reference to the last bid they made.
-\item {\it Sellers:} Sellers, much like Buyers, have personal information, contact details, and bank information attached. They also keep a list of lots that they currently have registered with the Auction House.
-\end{itemize}
+\begin{enumerate}
+\item {\it Auctions:} The auction house keeps a list of auctions. Each auction will have:
+  \begin{enumerate}
+  \item A list of associated lots.
+  \item A list of associated auctioneers.
+  \item A minimum bid increment (whether this increment is set on a by-lot or by-auction basis is discussed in section 7).
+  \item A start date and time
+  \item If the auction is in process, which lot is on auction
+  \end{enumerate} 
+\item {\it Auctioneers:} Auctioneers administrate the process of an auction. Associated with an auctioneer is:
+  \begin{enumerate}
+    \item A list of all auctions they will administrate.
+  \end{enumerate}
+\item {\it Lots:} Lots have:
+  \begin{enumerate}
+    \item An associated seller.
+    \item An associated auction, and possibly their location within that auction (ie. when they will be auctioned).
+    \item A high/low estimate.
+    \item A description, consisting of text and images. Note that if a lot has multiple items, each of these items may have their own description.
+    \item A reserve price, only visible to the seller and auctioneer
+    \item A list of interested bidders, not visible to other users, who have marked their interest on the lot before the lot has gone on auction.
+    \item If the lot is actively on auction, a list of bids placed on the item and a current selling price.
+    \item If the lot has been sold, information about the final winning bid.
+    \end{enumerate}
+
+    A lot may have an associated auction status:
+    \begin{enumerate}
+      \item Pre-auction
+      \item Currently being auctioned
+      \item Post-auction, sold
+      \item Post-auction, not met reserve price
+    \end{enumerate}
+\item {\it Buyers:} Buyers have:
+  \begin{enumerate}
+    \item Associated personal information (eg. name, address)
+    \item Contact details (eg. telephone number or email)
+    \item Payment information, ie. bank account details
+    \item A list of lots they have marked their interest in
+    \item A list of bids they have made on lots
+  \end{enumerate}
+\item {\it Sellers:} Sellers, much like Buyers, have:
+  \begin{enumerate}
+    \item Associated personal information (eg. name, address)
+    \item Contact details (eg. telephone number or email)
+    \item Payment information, ie. bank account details
+    \item A list of lots they have currently registered with the auction house, including their status
+  \end{enumerate}
+\end{enumerate}
 
 \section{Use Cases}
 \subsection{Bid on lot}
@@ -273,6 +315,7 @@ Non-Functional Requirements are categorized into five sections:
 \item Are other auction house staff than auctioneers required to have roles within the app? If yes, what roles do they fulfill?
 \item Can a lot contain items from multiple sellers? 
 \item Does a lot have an overall description, or do the items it is composed of have separate descriptions?
-\item Is payment transferred to seller after payment has been received from buyer, or immediately after sale? The latter may introduce problems if the buyer is unable to pay, while the former may produce delays in payment which are undesirable to the seller
+\item Is payment transferred to seller after payment has been received from buyer, or immediately after sale? The latter may introduce problems if the buyer is unable to pay, while the former may produce delays in payment which are undesirable to the seller.
+\item Can a buyer mark their interest in a lot while the lot is on auction, or only before it is auctioned?
 \end{enumerate}
 \end{document}
