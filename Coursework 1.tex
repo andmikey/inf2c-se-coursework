@@ -4,6 +4,8 @@
 \usepackage{tikz-uml}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{eurosym}
+
 \lhead{Inf2C: SE Coursework 1}
 \rhead{s1703773 \& s1737075}
 \cfoot{\thepage~/~\pageref{LastPage}}
@@ -37,7 +39,7 @@ We can consider the following stakeholders:
   Their value from the system is to facilitate lot auctions in order to collect commissions from sales.
 \item {\it Auctioneer:} Manages auctions and oversees the bidding process by taking in new bids. They want to be aware of bids as they come in through the platform, and want to notify those involved in the bidding process as things change. Their value from the system is for it to allow them to perform their work duties through a simple digital interface, and to provide a way to manage their associated auctions.
 \item {\it Buyer:} Watches and bids on lots under auction. They want to see lots and their associated images, descriptions, and valuations, and want to mark interest for and bid on the lots that they want. Their primary value from the system is being able to purchase lots that they desire. 
-\item {\it Seller:} Brings lots to the auction and provides information about a lot (description, reserve price). They want to be able to manage their lots and their images, descriptions, and valuations. They want to be notified about bids on their lots and told of the final prices (hammer and hammer minus seller's commision) of any lots they have put up for auction. Their primary value from the system is being able to sell their lots. 
+\item {\it Seller:} Brings lots to the auction and provides information about a lot (description, reserve price). They want to be able to manage their lots and their images, descriptions, and valuations. They want to be notified about bids on their lots and told of the final prices (hammer and hammer minus seller's commission) of any lots they have put up for auction. Their primary value from the system is being able to sell their lots. 
 \item {\it Member of the Public:} Wants to peruse the existing lots. A member of the public without an existing account wants to be able to see some details about a lot --- lot description --- while not being able to see all of it or bid on it. Their value from the system is to be able to see the lots available at the auction house. 
 \item {\it Expert:} Wants to assist the seller in putting a lot up for auction, providing valuations for high / low estimates. They need access similar to that of a Member of the Public, but with additional abilities to contact the seller and negotiate aspects of a lot. Their value from the system is to provide a digital interface to perform their work duties. 
 \item {\it Lot Display Professional:} These are the professionals involved in taking photos and writing descriptions of a lot. They are interested in the multimedia capabilities of a lot's listing, as that will affect their process for marketing it and making attractive to potential buyers. Their value from the system is to provide a digital interface to perform their work duties. 
@@ -104,7 +106,7 @@ The system consists of five major state components:
 \\{\bf Main Success Scenarios: } 
 \begin{enumerate}
 \item System records bid information in log; this will include the identity of the buyer, whether the bid was an increment or a jump bid, the time the bid was placed, the associated lot, and the new price of the lot. 
-\item System updates current bid price on lot and propogates this to all buyers also looking at the lot. 
+\item System updates current bid price on lot and propagates this to all buyers also looking at the lot. 
 \item Buyers who are interested in the lot are informed that a new bid has been placed on the lot
 \end{enumerate}
   {\bf Extensions: }
@@ -158,7 +160,7 @@ The system consists of five major state components:
 \subsection{Note interest in lot}
 {\bf Primary actor: } Buyer
 \\{\bf Supporting actors: } None
-\\{\bf Description: } When a buyer wishes to bid on a lot upon its auction, they must mark their interest in a lot. To do this, they press a button in the interface, on the listing for the lot they are interested in. It will then register them as interested and subsribe their account to future notifications about the lot.
+\\{\bf Description: } When a buyer wishes to bid on a lot upon its auction, they must mark their interest in a lot. To do this, they press a button in the interface, on the listing for the lot they are interested in. It will then register them as interested and subscribe their account to future notifications about the lot.
 \\{\bf (A)}: It is ambiguous when low and high estimates, as well as bidding figures and seller details, should be shown. When a buyer marks themselves as interested, we may want to reveal this information if it hasn't been revealed already.
 \subsection{Add lot listing}
 {\bf Primary actor: } Member of staff at auction house
@@ -234,25 +236,29 @@ We note that this use case diagram only includes {\em primary actors} in order t
 \end{centering}
 \newpage
 \section{Non-Functional Requirements}
-Non-Functional Requirements are categorized into five sections:
+Non-Functional Requirements are categorised into five sections:
 \subsection{Security}
 \begin{itemize}
-\item {\it Bidding Authentication:} The auction process for a lot, and placing bids for a lot, must be resticted to users that have proper authentication as buyers and that have shown interest in the lot before auction. Therefore, the authentication system must be well secured to prevent people who do not meet these requirements from having access. There must be no possibility of a user elevating their access without explicit permission from the auction house. 
+\item {\it Bidding Authentication:} The auction process for a lot, and placing bids for a lot, must be restricted to users that have proper authentication as buyers and possibly also restricted to those that have shown interest in the lot before auction. Therefore, the authentication system must be well secured to prevent people who do not meet these requirements from having access. There must be no possibility of a user elevating their access without explicit permission from the auction house. 
 \\Two techniques may prove useful to this end:
     \begin{itemize}
     \item {\it Authentication Tokens}: Once a user is logged in, provide their client with a token. This token will be provided to authenticate all future dealings, instead of a password. This means that even if the user is snooped on, only their current session is compromised, not their login details for the foreseeable future.
-    \item {\it Permission System}: Each token or set of credentials has a certain level of access. This level determines whether and how they can view and manipulate data in other tables. Any trasaction must be authenticated against the user's access level.
+    \item {\it Permission System}: Each token or set of credentials has a certain level of access. This level determines whether and how they can view and manipulate data in other tables. Any transaction must be authenticated against the user's access level.
     \end{itemize}
-\item {\it Bank Transactions:} Bank transactions, since they deal with money, are especially sensitive to tampering. Such transactions, as well as the personal data required to make them, must be encrypted and verified beforehand to make sure both eavesdropping and untoward manipulation of the transaction are impossible. 
-\\Encrypting all transactions, for example by using a protocol such as HTTPS, would be a useful step in this direction, as it would mean traffic cannot be tampered with or eavesdropped on by someone else in the network.
-\item {\it Anonymity:} A buyer may want to keep their identity secret in high-profile contexts. In this case, the personal data of a user must be secured so that authentication must be duly provided to access this personal data. Furthermore, a log must exist so that administratie changes can be correctly audited and reverted in the unlikely event of a breach.
+\item {\it Bank Transactions:} Bank transactions, being financial in nature, are especially sensitive to tampering. Such transactions, as well as the personal data required to make them, must be encrypted and verified beforehand to make sure both eavesdropping and untoward manipulation of the transaction are impossible. 
+  \\ At a minimum, all connections should be made over HTTPS with Extended Validation Certificates. This will mean that:
+  \begin{enumerate}
+  \item Traffic cannot be tampered with or eavesdropped on by someone else in the network, as HTTPS is a secure protocol. This will provide reassurance to both the auction house and its customers that financial data is kept safe.
+  \item Through using Extended Validation (EV) certificates, buyers and sellers are assured of the identity of the auction house. Using EV certificates is considered by many to be industry-standard when the organisation must perform financial transactions.
+  \end{enumerate}
+\item {\it Anonymity:} A buyer may want to keep their identity secret in high-profile contexts. In this case, the personal data of a user must be secured so that authentication must be duly provided to access this personal data. At a minimum we would expect that buyers and sellers cannot see each others' information: seeing this is restricted only to certain auction staff if necessary. Furthermore, a log must exist so that administrate changes can be correctly audited and reverted in the unlikely event of a breach.
 \\Providing different levels of administrator access would be a good step towards this goal. This way, critical maintenance can be performed by some of the staff using one level of administrative access, without exposing to them important and more privileged data.
 \end{itemize}
 \subsection{Usability}
 \begin{itemize}
-\item {\it Internationalisation Support:} Buyers may hail from a variety of countries and backgrounds, and to capture the largest number of potential buyer an auction house must target them through support for their language. This extends to currencies especially - when dealing with large bids, different currencies may be used to pay a single sum. Conversion with these currencies must be exact.
-\\Many standards bodies have initiatives regarding internationalisation and accessibility, so that different interfaces may be read and translated in a commonly understood way. One of the most well-known of these initiatives is the World Wide Web Consortium's i18n initiative. It would be useful to read over these documents when designing and writing internationalization into the software.
-\item {\it Simple Interface:} Since the bidding process is fast-moving and high-value, customers cannot be encumbered by the interface in making their decisions. The interface must be streamlined towards the fundamental functions of auctioning, such as bidding, setting a hammer price, or listing a lot.
+\item {\it Internationalisation Support:} Buyers may hail from a variety of countries and backgrounds, and to capture the largest number of potential buyer an auction house should target them through support for their language and currency. Currency support will be especially important: when dealing with large bids, different currencies may be used to pay a single sum. Conversion with these currencies must be exact. At a minimum the system must support transactions in GBP (\pounds), but USD (\$) and EUR (\euro) may also be desired.
+\\Regarding language, we expect support for the English language at a minimum. Depending on the auction house's clientele, support for other languages (eg. Scots) may also be desired. Many standards bodies have initiatives regarding internationalisation and accessibility, so that different interfaces may be read and translated in a commonly understood way. One of the most well-known of these initiatives is the World Wide Web Consortium's (W3C) i18n initiative. It would be useful to read over these documents when designing and writing internationalisation into the software; additionally, the W3C provides a tool for assessing the internationalization of a page \footnote{https://validator.w3.org/i18n-checker/}, which would be an effective way to quantitatively assess the level of international support of the app.
+\item {\it Simple Interface:} Since the bidding process is fast-moving and high-value, customers cannot be encumbered by the interface in making their decisions. The interface must be streamlined towards the fundamental functions of auctioning, such as bidding, setting a hammer price, listing a lot, or closing the auction.
 \item {\it Multi-Platform Support:} Clients will use a variety of platforms to access the auction house, as will members of the public. Clients that are accessing the platform from afar especially may be on the go and need mobile platform support.
 \\The web as a platform is known for compatibility with many devices, and has very strong mobile interface support.
 \item {\it Notification Customizability:} Information overload is a serious concern in a fast-moving context such as an active bidding session. Customers must be given only the notifications they need in order to carry out their bids, and auctioneers must only receive the notifications necessary to administrate an auction.
@@ -264,19 +270,20 @@ Non-Functional Requirements are categorized into five sections:
 \item {\it Low-Latency / Low-Bandwidth:} Customers in transit or from afar will be placing bids. Since the placing of a bid can represent major investment, and the acceptance of a bid affects the outcome of an auction seriously, all bids must be delivered quickly and even over patchy connections. This requires many of the transactions to have little network overhead.
 \\Websockets allow small data packages to be sent over a constantly enabled connection. This would allow rapid transactions between the system and a client, ideal for bids and notifications. 
 \\Such products as Google firebase build upon this to provide support for patchy networks, by caching data locally on the client and syncing it as necessary.
-\item {\it Low-Cost Computer Support:} Similar to Multi-Platform Support under the Usability subsection, Clients may be connecting through limited PCs or underpowered mobile devices. The interface to bid must not slow down on such devices. This may involve choosing investing development time into platform-specific optimizations and fixes.
+\item {\it Low-Cost Computer Support:} Similar to Multi-Platform Support under the usability subsection, clients may be connecting through limited PCs or under-powered mobile devices. The interface to bid must not slow down on such devices. This may involve choosing investing development time into platform-specific optimisations and fixes. The auction house may choose to perform a survey of possible users in order to assess which platforms they will most likely need to support.
 \end{itemize}
 \subsection{Reliability}
 \begin{itemize}
-\item {\it Concurrency Management (ACID):} Transactions, especially bids, will come in asynchronously but must be processed sychronously and durably. 
+\item {\it Concurrency Management (ACID):} Transactions, especially bids, will come in asynchronously but must be processed synchronously and durably. 
 \\Using a database that follows the ACID principles would ensure that bids processed in the correct order and not made to overlap or interfere with one another.
 \item {\it Integration Testing:} Failure in the middle of an auction is not an option. All user scenarios and actions that a user can take would best be adequately tested using some automated testing framework.
 \end{itemize}
 \subsection{Maintainability}
 \begin{itemize}
 \item {\it Conceptual Modularization:} In order to speed up training, understanding, and diagnosing the system, the program must be properly split into easily-digested modules that relate to a specific concept or process that is needed. This way, whenever an error occurs, it is self-evident what it causes by where it comes from. Whenever a new feature is needed, it is self-evident where the new feature should go and feature creep can be avoided.
-\item {\it Unit Testing:} Often, valuable hours are wasted on chasing errors due to regressions or diagnosing an in-production problem. The hot-fixing of production problems may also gradually introduce more and more cruft into a code-base, making ithard to predict and maintain further down the road. Unit testing is ideal for catching bugs early and keeping regressions out of the code-base on every change.
-\\Testing harnesses abound for most languages - QuickCheck for Haskell, JUnit for Java, and assert, Jasime, and MochaJS for JavaScript are a few of the examples that can be provided.
+\item {\it Unit Testing:} Often, valuable hours are wasted on chasing errors due to regressions or diagnosing an in-production problem. The hot-fixing of production problems may also gradually introduce more and more cruft into a code-base, making it hard to predict and maintain further down the road. Unit testing is ideal for catching bugs early and keeping regressions out of the code-base on every change.
+  \\Testing harnesses abound for most languages - QuickCheck for Haskell, JUnit for Java, and assert, Jasime, and MochaJS for JavaScript are a few of the examples that can be provided.
+  \\It is desirable to aim for 95\% code coverage over the system.
 \end{itemize}
 
 \section{Ambiguities, Subtleties, Incompleteness}
@@ -299,14 +306,14 @@ Non-Functional Requirements are categorized into five sections:
   \item Self-registration through the app
   \item Registration through the auction house - in this case, who in the auction house would perform this operation, and what role would they require in the system to do so?
   \end{itemize}
-\item What information is contained in the notification sent to a buyer when a bid is placed on an lot they are interested in? Obvious candidates include the new price of the lot and the time left on the auction; undesireable information may include the identity of the competing buyer
+\item What information is contained in the notification sent to a buyer when a bid is placed on an lot they are interested in? Obvious candidates include the new price of the lot and the time left on the auction; undesirable information may include the identity of the competing buyer
 \item Is the bank account information of a user verified through some verification method? If yes:
   \begin{itemize}
   \item What verification method is used? A common method is attempting to withdraw / deposit \pounds 0.01 into the account and confirming the user has received it; other methods may include communicating with the user's bank
   \item At which stage are payment details verified? Options could include:
     \begin{itemize}
     \item At registration --- the natural choice, although this may cause friction in the registration process
-    \item When placing a bid --- this is undesireable if the user is blocked from bidding due to a failed verification, because of the time-sensitive nature of auctions
+    \item When placing a bid --- this is undesirable if the user is blocked from bidding due to a failed verification, because of the time-sensitive nature of auctions
     \item On having won an auction --- in this case, what is done if the account fails verification with the auction over?
     \end{itemize}
   \end{itemize}
@@ -317,15 +324,15 @@ Non-Functional Requirements are categorized into five sections:
   \item Is it necessary for the auction house staff to be able to contact the buyer after the auction, and if contact information is found to be invalid, how can staff contact the buyer?
   \end{itemize}
 \item Is collecting payment and providing the buyer the lot after the auction has been won a fully automatic process, or does it involve participation from a member of staff at the auction house? If yes, does the app need any provisions to be able to support this?
-\item Does information about a lot remain in the system after it is sold, either in public view (eg. with a `sold' tag) or on the database? For GDPR purposes it may be preferrable to remove information about a lot either immediately or after a predetermined period of time. If lot information is to be removed, is this process automatically done by the system or is it manually done?
-\item Can a person have both a buyer and a seller role --- in order to minimse the amount of information they need to enter when registering, as the two will likely overlap significantly --- or would they need to register separate accounts? If separate accounts are needed, should the app have support for switching between accounts if eg. a person is present at an auction as both a buyer and a seller?
+\item Does information about a lot remain in the system after it is sold, either in public view (eg. with a `sold' tag) or on the database? For GDPR purposes it may be preferable to remove information about a lot either immediately or after a predetermined period of time. If lot information is to be removed, is this process automatically done by the system or is it manually done?
+\item Can a person have both a buyer and a seller role --- in order to minimise the amount of information they need to enter when registering, as the two will likely overlap significantly --- or would they need to register separate accounts? If separate accounts are needed, should the app have support for switching between accounts if eg. a person is present at an auction as both a buyer and a seller?
 \item Can lot information be amended after it has been added to the system? If yes, should the system have support for this or will it need to be done manually through a member of staff?
 \item How does the system handle bank transactions? There are two possible scenarios:
   \begin{itemize}
   \item The system handles transactions itself. This would require a high level of oversight and testing to adhere to regulatory regulations
   \item The system handles transactions through some broker, eg. PayPal. This simplifies the process of creating transactions but will add additional cost and external dependencies on an API. 
   \end{itemize}
-\item Are other auction house staff than auctioneers required to have roles within the app? If yes, what roles do they fulfill?
+\item Are other auction house staff than auctioneers required to have roles within the app? If yes, what roles do they fulfil?
 \item Can a lot contain items from multiple sellers? 
 \item Does a lot have an overall description, or do the items it is composed of have separate descriptions?
 \item Is payment transferred to seller after payment has been received from buyer, or immediately after sale? The latter may introduce problems if the buyer is unable to pay, while the former may produce delays in payment which are undesirable to the seller.
