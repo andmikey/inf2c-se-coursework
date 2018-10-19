@@ -12,9 +12,9 @@
 }
 \date{October 19, 2018}
 \maketitle
-
 \section{Introduction}
 This document captures the requirements of an app for the Auld Reekie Auction House, codenamed {\it Auctionista}. 
+
 
 \section{Stakeholders}
 We can consider the following stakeholders:
@@ -35,9 +35,9 @@ We can consider the following stakeholders:
 \section{System State}
 The system consists of five major state components:
 \begin{itemize}
-\item {\it Auctions}: A list of auctions is kept which each have a list of associated Lots and a list of associated Auctioneers, as well as a minimum bid increment. Each auction also has a start date and time. If the auction is in progress, it has whatever item is currently on auction.
+\item {\it Auctions}: A list of auctions is kept which each have a list of associated Lots and a list of associated Auctioneers, as well as a minimum bid increment. Each auction also has a start date and time. If the auction is in progress, it has whatever lot is currently on auction.
 \item {\it Auctioneers}: Auctioneers administrate the process of an auction. They keep a list of all auctions they will administrate.
-\item {\it Lots}: Lots have an associated seller that sells them and an auction at which they will be auctioned off. A lot also has a high/low estimate, a description, and images. If the lot has multiple items, each item may come with its own description and images. A reserve price (which will only be visible to the seller) and a list of interested bidders, which have marked their interest before the lot has gone on auction. If the lot is actively on auction or has now been auctioned off, a list of bids is kept along with the final, winning bid.
+\item {\it Lots}: Lots have an associated seller that sells them and an auction at which they will be auctioned off. A lot also has a high/low estimate, a description, and images. If the lot has multiple items, each lot may come with its own description and images. A reserve price (which will only be visible to the seller) and a list of interested bidders, which have marked their interest before the lot has gone on auction. If the lot is actively on auction or has now been auctioned off, a list of bids is kept along with the final, winning bid.
 \item {\it Buyers}: Buyers have personal information, contact details, and bank information. They also have a list of lots which they have marked their interest in. If a lot they have subscribed to is active, they store all bids they have made on the lot with special reference to the last bid they made.
 \item {\it Sellers}: Sellers, much like Buyers, have personal information, contact details, and bank information attached. They also keep a list of lots that they currently have registered with the Auction House.
 \end{itemize}
@@ -52,9 +52,9 @@ The system consists of five major state components:
 \\{\bf Guarantee: } Buyer's bid on lot is recorded, and if appropriate, current bid price of lot is updated. 
 \\{\bf Main Success Scenarios: } 
 \begin{enumerate}
-\item System records bid information in log; this will include the identity of the buyer, whether the bid was an increment or a jump bid, the associated lot, and the new price of the lot. 
+\item System records bid information in log; this will include the identity of the buyer, whether the bid was an increment or a jump bid, the time the bid was placed, the associated lot, and the new price of the lot. 
 \item System updates current bid price on lot and propogates this to all buyers also looking at the lot. 
-\item Buyers who are interested in the item are informed that a new bid has been placed on the lot
+\item Buyers who are interested in the lot are informed that a new bid has been placed on the lot
 \end{enumerate}
   {\bf Extensions: }
 \begin{itemize}
@@ -68,32 +68,35 @@ The system consists of five major state components:
 \\{\em Auction house} want to assist in selling the lot in order to collect commission
 \\{\bf Notes:}
 \begin{itemize}
-  \item A non-functional requirement associated with this use-case is that the system must be able to handle bids in an ACID-adhering way: more specifically, if two bids are placed at the same time (or within a very small time interval) there must be a way of deciding which is to be treated as having come first. There must therefore be a very small (<1s) latency on bid placement and update of a lot's current bid price. 
+  \item A non-functional requirement associated with this use-case is that the system must be able to handle bids in an ACID-adherent way: more specifically, if two bids are placed at the same time (or within a very small time interval) there must be a way of deciding which is to be treated as having come first. There must therefore be a very small (<1s) latency on bid placement and update of a lot's current bid price. 
 \end{itemize}
 \subsection{Close lot auction}
 {\bf Primary actor: } Auctioneer 
-\\{\bf Supporting actors: } Buyer, seller, auction house staff
+\\{\bf Supporting actors: } Buyer, seller, auction house staff, bank
 \\{\bf Summary: } Auctioneer declares auction closed and lot is removed from auction; relevant parties are notified, and appropriate financial transactions are executed
 \\{\bf Precondition: } Lot has gone on auction, auctioneer has allowed time for bids to be made
 \\{\bf Trigger: } Auctioneer assesses that there are no more bids to be made
 \\{\bf Guarantee: } Lot is removed from auction; appropriate parties are notified about change of status; financial transactions are successfully executed if appropriate
 \\{\bf Main Success Scenarios: }
 \begin{enumerate}
-\item Auctioneer closes bidding; no further bids can be made and the lot status is removed from auction
+\item Auctioneer closes bidding; no further bids can be made and the lot is removed from auction
 \item Hammer price and winning buyer are recorded in system
-\item Item is recorded as sold
-\item Buyers who are interested in the item are informed that the item has been sold, perhaps also informing them of final sale price and id of the successful buyer
-\item Hammer price plus buyer's premium is deducted from winning buyer's account. This is done either by the system directly or using some external provider. 
-\item Hammer price minus seller's commission is debited to seller's account. This is done either by the system directly or using some external provider. 
+\item Buyers who are interested in the lot are informed that the lot has been sold
+\item Hammer price plus buyer's premium is deducted from winning buyer's account. 
+\item Hammer price minus seller's commission is debited to seller's account. 
 \end{enumerate}
 {\bf Extensions: }
 \begin{itemize}
-\item [3a.] Hammer price is below reserve price. The lot auction is unsuccessful and we finish the scenario here. The lot is removed from auction and the seller is notified that the item did not sell. 
-\item [5a.] Buyer's account cannot be charged.  The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the buyer in order to fix payment details. Once this is fixed, the system re-attempts step 5. 
-\item [6a.] Seller's account cannot receive payment. The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the seller in order to fix payment details. Once this is fixed, the system re-attempts step 6. 
+\item [1a.] It may be desirable for the auctioneer to decide the winning buyer, rather than the system, in order to avoid sniping (a bid being placed after the auctioneer has decided the auction is to be closed, but before the auction is actually closed). 
+\item [2a.] Hammer price is below reserve price. The lot auction is unsuccessful and we finish the scenario here. The lot is removed from auction and the seller is notified that the lot did not sell.
+\item [3a.] It may be desirable for the unsuccessful buyers to be informed also of the winning bidder and price the lot was sold for. 
+\item [4a.] Buyer's account cannot be charged.  The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the buyer in order to fix payment details. Once this is fixed, the system re-attempts step 5.
+\item [4b.] The payment may be taken either by the system directly communicating with the buyer's bank, or through a third-party intermediary
+\item [5a.] Seller's account cannot receive payment. The system informs auction house staff (eg. through email or an in-app message) that the payment did not go through, and auction house staff attempt to contact the seller in order to fix payment details. Once this is fixed, the system re-attempts step 6.
+\item [5b.] The payment may be taken either by the system directly communicating with the seller's bank, or through a third-party intermediary
 \end{itemize}
 {\bf Stakeholders and interests: }
-\\{\em Winning buyer} wishes to own the item by paying for it
+\\{\em Winning buyer} wishes to own the lot by paying for it
 \\{\em Non-winning buyers} wish to be informed about sale of lot
 \\{\em Seller} wishes to sell their lot and gain payment from sale
 \\{\em Auction house} wishes to facilitate the sale of the lot in order to collect commission
@@ -142,6 +145,8 @@ The system may show parts of lot information to some but not all users, for exam
 The system sets the lot to be in the state of being auctioned, setting the initial price as decided by the auctioneer or the low estimate, and allows buyers to begin to place bids on the item. 
 
 \section{Use case diagram}
+We note that this use case diagram only includes {\em primary actors} in order to maintain visual clarity. Supporting actors for each use case are enumerated in their respective descriptions above.
+\\
 \begin{centering}
 \begin{tikzpicture}
     \begin{umlsystem}[x=4, y=2, fill=red!10]{Use case diagram for Auctionista} 
@@ -213,8 +218,8 @@ Non-Functional Requirements are categorized into five sections:
 \item What information about a lot is visible to various users? We can consider lot characteristics like:
   \begin{itemize}
   \item High / low estimates --- this can be useful for both members of the public and buyers to be able to filter lot search by price. However, it may be that a seller may desire this to be hidden from public view like the reserve price. 
-  \item Which auction it is being sold in, and the time and date --- it is more desirable for this to be available to buyers, and less so for members of the public. Hiding this information from members of the public would encourage them to sign up as buyers, while it is essential that buyers be able to know when an item they are interested in is being sold. It might also be possible to hide this at a more granular level, eg. the time/date of an auction associated with a lot is only shown to buyers if they show interest in that item
-  \item Seller's commission / buyer's premium by item if appropriate --- it would make sense to show seller's commission to the seller of a lot only, while buyer's premium may be shown to buyers and optionally members of the public
+  \item Which auction it is being sold in, and the time and date --- it is more desirable for this to be available to buyers, and less so for members of the public. Hiding this information from members of the public would encourage them to sign up as buyers, while it is essential that buyers be able to know when an lot they are interested in is being sold. It might also be possible to hide this at a more granular level, eg. the time/date of an auction associated with a lot is only shown to buyers if they show interest in that item
+  \item Seller's commission / buyer's premium by lot if appropriate --- it would make sense to show seller's commission to the seller of a lot only, while buyer's premium may be shown to buyers and optionally members of the public
   \end{itemize}
 \item Is the seller's commission, buyer's premium, bid increment:
   \begin{itemize}
@@ -228,7 +233,7 @@ Non-Functional Requirements are categorized into five sections:
   \item Self-registration through the app
   \item Registration through the auction house - in this case, who in the auction house would perform this operation, and what role would they require in the system to do so?
   \end{itemize}
-\item What information is contained in the notification sent to a buyer when a bid is placed on an item they are interested in? Obvious candidates include the new price of the item and the time left on the auction; undesireable information may include the identity of the competing bidder
+\item What information is contained in the notification sent to a buyer when a bid is placed on an lot they are interested in? Obvious candidates include the new price of the lot and the time left on the auction; undesireable information may include the identity of the competing bidder
 \item Is the bank account information of a user verified through some verification method? If yes:
   \begin{itemize}
   \item What verification method is used? A common method is attempting to withdraw / deposit \pounds 0.01 into the account and confirming the user has received it; other methods may include communicating with the user's bank
@@ -245,7 +250,7 @@ Non-Functional Requirements are categorized into five sections:
   \item Is this information validated? A common method would be to send a confirmation PIN to a provided email or phone
   \item Is it necessary for the auction house staff to be able to contact the buyer after the auction, and if contact information is found to be invalid, how can staff contact the buyer?
   \end{itemize}
-\item Is collecting payment and providing the buyer the item after the auction has been won a fully automatic process, or does it involve participation from a member of staff at the auction house? If yes, does the app need any provisions to be able to support this?
+\item Is collecting payment and providing the buyer the lot after the auction has been won a fully automatic process, or does it involve participation from a member of staff at the auction house? If yes, does the app need any provisions to be able to support this?
 \item Does information about a lot remain in the system after it is sold, either in public view (eg. with a `sold' tag) or on the database? For GDPR purposes it may be preferrable to remove information about a lot either immediately or after a predetermined period of time. If lot information is to be removed, is this process automatically done by the system or is it manually done?
 \item Can a person have both a buyer and a seller role --- in order to minimse the amount of information they need to enter when registering, as the two will likely overlap significantly --- or would they need to register separate accounts? If separate accounts are needed, should the app have support for switching between accounts if eg. a person is present at an auction as both a buyer and a seller?
 \item Can lot information be amended after it has been added to the system? If yes, should the system have support for this or will it need to be done manually through a member of staff?
