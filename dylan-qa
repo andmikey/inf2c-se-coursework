@@ -1,0 +1,8 @@
+4.1, Success Scenario 1: Need to log time at which bid came in
+                         ACID-adhering -> ACID-adherent
+4.2, Success Scenario 2: Lot status is -> Lot is
+                         Need to let the auctioneer determine the winner to prevent sniping
+     S S 3: Not required, 1 already covers marking item as sold
+4.2  S S 4: "Perhaps notifying" goes into addons
+     S S 5&6: Move "this is done by either ..." into addons
+GENERAL: Change the term "item" to "lot"
