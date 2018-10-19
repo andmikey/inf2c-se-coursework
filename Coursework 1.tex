@@ -98,27 +98,28 @@ The system consists of five major state components:
 \section{Use Cases}
 \subsection{Bid on lot}
 {\bf Primary actor: } Buyer
-\\{\bf Supporting actors: } 
+\\{\bf Supporting actors: } None
 \\{\bf Summary: } Buyer places a bid on a lot and the lot's price is updated as needed. 
 \\{\bf Precondition: } The lot is listed on the system. The lot is currently being auctioned (ie. it is not pre-auction and the auction has not already ended).  
 \\{\bf Trigger: } Buyer presses button in interface to bid on lot.
 \\{\bf Guarantee: } Buyer's bid on lot is recorded, and if appropriate, current bid price of lot is updated. 
-\\{\bf Main Success Scenarios: } 
+\\{\bf Main Success Scenario: } 
 \begin{enumerate}
 \item System records bid information in log; this will include the identity of the buyer, whether the bid was an increment or a jump bid, the time the bid was placed, the associated lot, and the new price of the lot. 
 \item System updates current bid price on lot and propagates this to all buyers also looking at the lot. 
-\item Buyers who are interested in the lot are informed that a new bid has been placed on the lot
+\item Buyers who are interested in the lot are informed that a new bid has been placed on the lot.
 \end{enumerate}
-  {\bf Extensions: }
+\newpage
+\noindent{\bf Extensions: }
 \begin{itemize}
 \item [2a.] Bid is increment bid of value $i$. System updates the lot's current bid price $c$ to be $c = c + i$.
 \item [2b.] Bid is jump bid of value $j$. If $j < f$, with $f$ being the fixed bid increment, we go to 2c. Otherwise we update the lot's current bid price $c = c + f$.
 \item [2c.] Bid is insufficient. We display an error message to the buyer informing them that placing a bid has failed and wait for the buyer to bid again. 
 \end{itemize}
 {\bf Stakeholders and interests: }
-\\{\em Buyer} looks to bid on lots they are interested in
-\\{\em Seller} looks to sell their lot
-\\{\em Auction house} want to assist in selling the lot in order to collect commission
+\\{\em Buyer} looks to bid on lots they are interested in.
+\\{\em Seller} looks to sell their lot.
+\\{\em Auction house} want to assist in selling the lot in order to collect commission.
 \\{\bf Notes:}
 \begin{itemize}
   \item A non-functional requirement associated with this use-case is that the system must be able to handle bids in an ACID-adherent way: more specifically, if two bids are placed at the same time (or within a very small time interval) there must be a way of deciding which is to be treated as having come first. There must therefore be a very small (<1s) latency on bid placement and update of a lot's current bid price. 
@@ -130,14 +131,15 @@ The system consists of five major state components:
 \\{\bf Precondition: } Lot has gone on auction, auctioneer has allowed time for bids to be made
 \\{\bf Trigger: } Auctioneer assesses that there are no more bids to be made
 \\{\bf Guarantee: } Lot is removed from auction; appropriate parties are notified about change of status; financial transactions are successfully executed if appropriate
-\\{\bf Main Success Scenarios: }
+\\{\bf Main Success Scenario: }
 \begin{enumerate}
-\item Auctioneer closes bidding; no further bids can be made and the lot is removed from auction
-\item Hammer price and winning buyer are recorded in system
-\item Buyers who are interested in the lot are informed that the lot has been sold
+\item Auctioneer closes bidding; no further bids can be made and the lot is removed from auction.
+\item Hammer price and winning buyer are recorded in system.
+\item Buyers who are interested in the lot are informed that the lot has been sold.
 \item Hammer price plus buyer's premium is deducted from winning buyer's account. 
 \item Hammer price minus seller's commission is debited to seller's account. 
 \end{enumerate}
+\newpage \noindent
 {\bf Extensions: }
 \begin{itemize}
 \item [1a.] It may be desirable for the auctioneer to decide the winning buyer, rather than the system, in order to avoid sniping (a bid being placed after the auctioneer has decided the auction is to be closed, but before the auction is actually closed). 
@@ -149,10 +151,10 @@ The system consists of five major state components:
 \item [5b.] The payment may be taken either by the system directly communicating with the seller's bank, or through a third-party intermediary
 \end{itemize}
 {\bf Stakeholders and interests: }
-\\{\em Winning buyer} wishes to own the lot by paying for it
-\\{\em Non-winning buyers} wish to be informed about sale of lot
-\\{\em Seller} wishes to sell their lot and gain payment from sale
-\\{\em Auction house} wishes to facilitate the sale of the lot in order to collect commission
+\\{\em Winning buyer} wishes to own the lot by paying for it.
+\\{\em Non-winning buyers} wish to be informed about sale of lot.
+\\{\em Seller} wishes to sell their lot and gain payment from sale.
+\\{\em Auction house} wishes to facilitate the sale of the lot in order to collect commission.
 \subsection{Register buyer}
 {\bf Primary actor: } Member of staff at auction house
 \\{\bf Supporting actors: } Buyer
@@ -177,7 +179,7 @@ Once this lot addition is approved, the system will place the lot in a state whe
 
 \subsection{Browse lots in auction catalogue}
 {\bf Primary actor: } Buyer, member of public
-\\{\bf Supporting actors: }
+\\{\bf Supporting actors: } None
 \\{\bf Description: } A buyer or member of the public wishes to view available lots. The system will show the available lots (those which have not been sold yet) with their associated attributes, and perhaps also lots which have already been sold. The system may allow the user to filter by such attributes as auction date, high/low estimate, or seller id. 
 
 The system may show parts of lot information to some but not all users, for example:
@@ -195,7 +197,7 @@ The system may show parts of lot information to some but not all users, for exam
 \item By the auctioneer in the app. This is desirable if delays can be expected in the start-time of the auction (eg. an auction may start late because of previous delays earlier in the day) or if the start time of the auction is specified vaguely. 
 \end{enumerate}
 
-The system sets the lot to be in the state of being auctioned, setting the initial price as decided by the auctioneer or the low estimate, and allows buyers to begin to place bids on the item. 
+The system sets the lot to be in the state of being auctioned, setting the initial price as decided by the auctioneer or the low estimate, and allows buyers to begin to place bids on the item. Buyers who have indicated their interest in a lot should be informed that the item is now available to bid on.
 \newpage
 \section{Use case diagram}
 We note that this use case diagram only includes {\em primary actors} in order to maintain visual clarity. Supporting actors for each use case are enumerated in their respective descriptions above.
