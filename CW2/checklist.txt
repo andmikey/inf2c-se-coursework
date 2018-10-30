@@ -1,0 +1,58 @@
+Coursework instructions: https://www.learn.ed.ac.uk/bbcswebdav/pid-3284688-dt-content-rid-6934905_1/courses/INFR080192018-9SV1SEM1/coursework/cw2.pdf
+Sample solution: https://www.learn.ed.ac.uk/bbcswebdav/pid-3284688-dt-content-rid-6980589_1/courses/INFR080192018-9SV1SEM1/coursework/cw2-1718-solution.pdf
+
+
+Introduction:
+
+-  Sentence or two describing whole system
+-  Refer reader to coursework instructions for previous information
+
+
+STATIC MODELS
+
+UML Class model (30%): 
+-  All classes involved
+-  Attribute descriptions must involve types
+-  Operation descriptions must include types of parameters, type of return value 
+-  Only include operations if important for execution of use cases
+-  Don't show getters or setters, or access control information
+-  Could use more than one class diagram: one for associations and dependencies, other for attributes and operations
+-  Associations must include multiplicities
+-  Add role names to associations as needed
+-  Only show associations when they have long lifetimes (beyond use case execution)
+-  Utility classes (eg. money) 
+
+
+High level description (25%):
+-  Include justification for chosen design
+-  What alternatives were considered? Why were choices made?
+-  Have you tried to design software according to principles of good design?
+-  Record assumptions
+
+  
+DYNAMIC MODELS
+UML sequence diagram (25%):
+-  Build for close auction use case
+-  Do show message names, but don't need to show arguments
+-  As needed, show optional / alternative / iterative behavior
+
+
+Behaviour descriptions (20%):
+-  For use cases add lot, note interest, make bid
+-  Textual description of objects involved, flow of messages
+
+
+FURTHER INFORMATION
+Message bursts:
+- Single thread of control
+- View system activity as bursts of messages
+- Each burst is execution of scenario in use case
+
+Messages to actors:
+- Messages are either:
+  - Call messages: cause invocation of operation on message destination object
+  - Reply messages: return of operation invoked by earlier call message
+- Actors sending messages into system at start of burst get reply message at burst end
+- But - some use cases require other actors to also get notification messages
+  - Include singleton MessagingService class 
+  - For each kind of message sent out to actors modelling people in particular roles, include operation to this class that includes argument of type MessagingAddress for specifiying who the message should be sent to, as long as further arguments on information to include
