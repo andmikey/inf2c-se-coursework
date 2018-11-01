@@ -57,15 +57,48 @@ We begin with a model of classes and their attributes and operations:\\\\
     lotsOwned : List \textless Lot\textgreater \\
   }
   {
-    createLots() : \\
+    addLot() : \\
   }
 
+  \umlclass{Auctioneer}{
+    lotsAssigned : List \textless Lot\textgreater \\
+  }
+  {
+    openBidding() : \\
+    closeBidding() : \\
+  }
 
+  \umlclass{Lot}{
+    auctionStatus : enum \\
+    seller : Seller \\
+    auction : Auction \\
+    auctioneer : Auctioneer \\
+    startTime : DateTime \\
+    description : LotDescription \\
+    highEstimate : Float \\
+    lowEstimate : Float \\
+    reservePrice : Float \\
+    interestedBuyers : List \textless Buyer\textgreater \\
+    bidList : List \textless Bid\textgreater \\
+    finalBid : Bid
+  }
+  {
+    Lot() : \\
+    receiveBid() : \\
+    openAuction() : \\
+    closeAuction() : \\
+  }
+
+  \umlclass{Auction}{
+    
+  }{
+
+  }
 \end{tikzpicture}
 \newpage
 Next we give a picture of associations between classes:\\\\
 \begin{tikzpicture}
-
+  % TODO add bid class
   \umlsimpleclass[x=4, y=-6]{Buyer}
   
   \umlsimpleclass[x=0, y=0]{User}
