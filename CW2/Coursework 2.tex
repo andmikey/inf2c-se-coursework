@@ -25,22 +25,52 @@
 
 \section{Introduction}
 We provide a software design for an auction house system, codenamed Auctionista. Our design is consistent with the requirements design undertaken in Coursework 1. We provide UML class models for the key actors involved in the system, and sequence diagrams and behavior descriptions for use-cases identified in Coursework 1. For further details, please refer to the specification for Coursework 2.
-
+\newpage
 \section{Static model}
 \subsection{UML class model}
 We begin with a model of classes and their attributes and operations:\\\\
 \begin{tikzpicture}
-  \umlclass{Buyer}{ details : PersonalDetails \\
-    lotsInterestedIn : List \textless Lot\textgreater}{
+  \umlclass{User}{
   }
+  { browseLots() : \\
+  }
+
+  \umlclass{Registered user}{details : PersonalDetails \\
+    paymentDetails : BankDetails \\
+    username : String \\
+  }{
+    updatePersonalDetails() : \\
+    updatePaymentDetails() : \\
+    createUser() : \\
+  }
+  
+  \umlclass{Buyer}{
+    lotsInterestedIn : List \textless Lot\textgreater \\
+    lotsBidOn : List \textless Lot\textgreater}
+  {
+    markInterestInLot() : \\
+    removeInterestInLot() : \\
+    bidOnLot() : \\
+  }
+
+  \umlclass{Seller}{
+    lotsOwned : List \textless Lot\textgreater \\
+  }
+  {
+    createLots() : \\
+  }
+
+
 \end{tikzpicture}
-\\
+\newpage
 Next we give a picture of associations between classes:\\\\
 \begin{tikzpicture}
 
-  \umlsimpleclass[x=4, y=-3]{Buyer}
+  \umlsimpleclass[x=4, y=-6]{Buyer}
   
   \umlsimpleclass[x=0, y=0]{User}
+
+  \umlsimpleclass[x=4, y=-3]{Registered user}
 
   \umlsimpleclass[x=4, y=0]{Seller}
 
@@ -58,11 +88,13 @@ Next we give a picture of associations between classes:\\\\
   \umlassoc[mult1=1, mult2=*]{Seller}{Lot}
   \umlassoc[mult1=1, mult2=*]{Auction}{Lot}
   \umlassoc[mult1=*, mult2=*]{Auction}{Auctioneer}
-
-  \umlinherit{Buyer}{User}
-  \umlinherit{Seller}{User}
+  
+  \umlinherit{Registered user}{User}
+  \umlinherit{Buyer}{Registered user}
+  \umlinherit{Seller}{Registered user}
   \umlinherit{Guest user}{User}
 \end{tikzpicture}
+\newpage
 \subsection{High-level description}
 
 \section{Dynamic models}
