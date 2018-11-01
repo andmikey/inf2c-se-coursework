@@ -37,6 +37,7 @@ We begin with a model of classes and their attributes and operations:\\\\
 
   \umlclass{Registered user}{details : PersonalDetails \\
     paymentDetails : BankDetails \\
+    contactDetails : ContactDetails \\
     username : String \\
   }{
     updatePersonalDetails() : \\
@@ -46,7 +47,8 @@ We begin with a model of classes and their attributes and operations:\\\\
   
   \umlclass{Buyer}{
     lotsInterestedIn : List \textless Lot\textgreater \\
-    lotsBidOn : List \textless Lot\textgreater}
+    lotsBidOn : List \textless Lot\textgreater
+    bidList : List \textless Bid\textgreater}
   {
     markInterestInLot() : \\
     removeInterestInLot() : \\
@@ -69,7 +71,7 @@ We begin with a model of classes and their attributes and operations:\\\\
   }
 
   \umlclass{Lot}{
-    auctionStatus : enum \\
+    auctionStatus : enum(preAuction, inProgress, postAuction) \\
     seller : Seller \\
     auction : Auction \\
     auctioneer : Auctioneer \\
@@ -78,8 +80,10 @@ We begin with a model of classes and their attributes and operations:\\\\
     highEstimate : Float \\
     lowEstimate : Float \\
     reservePrice : Float \\
+    minimumBidIncrement : Float \\
     interestedBuyers : List \textless Buyer\textgreater \\
     bidList : List \textless Bid\textgreater \\
+    currentPrice : Float \\ 
     finalBid : Bid
   }
   {
@@ -90,9 +94,23 @@ We begin with a model of classes and their attributes and operations:\\\\
   }
 
   \umlclass{Auction}{
-    
+    lots: List \textless Lot\textgreater \\
+    auctioneers: List \textless Lot\textgreater \\
+    startTime : DateTime \\
+    % auction has guaranteed end time, but a lot may not
+    endTime : DateTime \\   
   }{
+    % nb. getters and setters are implied
+  }
 
+  \umlclass{Bid}{
+    lot : Lot \\
+    seller : Seller \\ 
+    bidder : Bidder \\
+    bidType : enum(Increment, JumpBid) \\
+    bidValue : float
+  }{
+    updateLot() : \\
   }
 \end{tikzpicture}
 \newpage
