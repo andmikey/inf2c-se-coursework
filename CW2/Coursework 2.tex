@@ -32,7 +32,7 @@ We begin with a model of classes and their attributes and operations:\\\\
 \begin{tikzpicture}
   \umlclass{User}{
   }
-  { browseLots() : \\
+  { browseLots(void) : void \\
   }
 
   \umlclass{Registered user}{details : PersonalDetails \\
@@ -40,9 +40,7 @@ We begin with a model of classes and their attributes and operations:\\\\
     contactDetails : ContactDetails \\
     username : String \\
   }{
-    updatePersonalDetails() : \\
-    updatePaymentDetails() : \\
-    createUser() : \\
+    User(PersonalDetails, BankDetails, ContactDetails, String) : User\\
   }
   
   \umlclass{Buyer}{
@@ -50,16 +48,16 @@ We begin with a model of classes and their attributes and operations:\\\\
     lotsBidOn : List \textless Lot\textgreater
     bidList : List \textless Bid\textgreater}
   {
-    markInterestInLot() : \\
-    removeInterestInLot() : \\
-    bidOnLot() : \\
+    markInterestInLot(Lot) : boolean \\
+    removeInterestInLot(Lot) : boolean \\
+    bidOnLot(Lot, Bid) : boolean\\
   }
 
   \umlclass{Seller}{
     lotsOwned : List \textless Lot\textgreater \\
   }
   {
-    addLot() : \\
+    addLot(Lot, Auction) : \\
   }
 
   \umlclass{Auctioneer}{
@@ -77,20 +75,23 @@ We begin with a model of classes and their attributes and operations:\\\\
     auctioneer : Auctioneer \\
     startTime : DateTime \\
     description : LotDescription \\
-    highEstimate : Float \\
-    lowEstimate : Float \\
-    reservePrice : Float \\
-    minimumBidIncrement : Float \\
+    highEstimate : Money \\
+    lowEstimate : Money \\
+    reservePrice : Money \\
+    minimumBidIncrement : Money \\
     interestedBuyers : List \textless Buyer\textgreater \\
     bidList : List \textless Bid\textgreater \\
-    currentPrice : Float \\ 
+    currentPrice : Money \\ 
     finalBid : Bid
   }
   {
-    Lot() : \\
-    receiveBid() : \\
-    openAuction() : \\
-    closeAuction() : \\
+    Lot(Money, Money, Money, Money, Seller, Auction) : Lot \\
+    % Lot(highEstimate Money, lowEstimate Money, reservePrice Money, \\
+    % minimumBidIncrement Money, seller Seller, auction Auction)
+    receiveBid(Buyer, Bid) : boolean\\
+    openBidding() : boolean \\
+    closeBidding() : boolean \\
+    setAuctioneer(Auctioneer) : boolean \\
   }
 
   \umlclass{Auction}{
@@ -105,12 +106,12 @@ We begin with a model of classes and their attributes and operations:\\\\
 
   \umlclass{Bid}{
     lot : Lot \\
-    seller : Seller \\ 
-    bidder : Bidder \\
+    seller : Seller \\
+    buyer : Buyer \\
     bidType : enum(Increment, JumpBid) \\
-    bidValue : float
+    bidValue : Money
   }{
-    updateLot() : \\
+    Bid(Lot, Seller, Buyer, bidType, bidValue) : Bid \\
   }
 \end{tikzpicture}
 \newpage
