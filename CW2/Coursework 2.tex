@@ -30,12 +30,12 @@ We provide a software design for an auction house system, codenamed Auctionista.
 \subsection{UML class model}
 We begin with a model of classes and their attributes and operations:\\\\
 \begin{tikzpicture}
-  \umlclass{User}{
+  \umlclass[x=-3.5]{User}{
   }
   { browseLots(void) : void \\
   }
-
-  \umlclass{Registered user}{details : PersonalDetails \\
+  
+  \umlclass[y=-3]{Registered user}{details : PersonalDetails \\
     paymentDetails : BankDetails \\
     contactDetails : ContactDetails \\
     username : String \\
@@ -43,7 +43,7 @@ We begin with a model of classes and their attributes and operations:\\\\
     User(PersonalDetails, BankDetails, ContactDetails, String) : User\\
   }
   
-  \umlclass{Buyer}{
+  \umlclass[y=-7, x=-1.7]{Buyer}{
     lotsInterestedIn : List \textless Lot\textgreater \\
     lotsBidOn : List \textless Lot\textgreater
     bidList : List \textless Bid\textgreater}
@@ -53,23 +53,40 @@ We begin with a model of classes and their attributes and operations:\\\\
     bidOnLot(Lot, Bid) : boolean\\
   }
 
-  \umlclass{Seller}{
+  \umlclass[x = 6, y=-6.3]{Seller}{
     lotsOwned : List \textless Lot\textgreater \\
   }
   {
-    addLot(Lot, Auction) : \\
+    addLot(Lot, Auction) : boolean \\
   }
 
-  \umlclass{Auctioneer}{
+  \umlclass[x=9,y=-3]{Auctioneer}{
     lotsAssigned : List \textless Lot\textgreater \\
   }
   {
-    openBidding() : \\
-    closeBidding() : \\
+    openBidding() : void \\
+    closeBidding() : void \\
   }
 
-  \umlclass{Lot}{
-    auctionStatus : enum(preAuction, inProgress, postAuction) \\
+  \umlclass[x=-2.5, y=-12.2]{Lot}{
+    auctionStatus : Integer \\
+    currentPrice : Money \\ 
+    finalBid : Bid \\
+    interestedBuyers : List \textless Buyer\textgreater \\
+    bidList : List \textless Bid\textgreater \\
+  }
+  {
+    Lot(LotInformation) : Lot \\
+    % Lot(highEstimate Money, lowEstimate Money, reservePrice Money, \\
+    % minimumBidIncrement Money, seller Seller, auction Auction)
+    receiveBid(Buyer, Bid) : boolean\\
+    openBidding() : boolean \\
+    closeBidding() : boolean \\
+    setAuctioneer(Auctioneer) : boolean \\
+  }
+
+  \umlclass[x=6,y=-12.7]{LotInformation}{
+    % separate class as these don't change
     seller : Seller \\
     auction : Auction \\
     auctioneer : Auctioneer \\
@@ -79,21 +96,13 @@ We begin with a model of classes and their attributes and operations:\\\\
     lowEstimate : Money \\
     reservePrice : Money \\
     minimumBidIncrement : Money \\
-    interestedBuyers : List \textless Buyer\textgreater \\
-    bidList : List \textless Bid\textgreater \\
-    currentPrice : Money \\ 
-    finalBid : Bid
   }
   {
-    Lot(Money, Money, Money, Money, Seller, Auction) : Lot \\
-    % Lot(highEstimate Money, lowEstimate Money, reservePrice Money, \\
-    % minimumBidIncrement Money, seller Seller, auction Auction)
-    receiveBid(Buyer, Bid) : boolean\\
-    openBidding() : boolean \\
-    closeBidding() : boolean \\
-    setAuctioneer(Auctioneer) : boolean \\
+    LotInformation(Seller, Auction, Auctioneer, \\DateTime, LotDescription, Money, \\Money, Money, Money) : LotInformation \\
   }
-
+\end{tikzpicture}
+\newpage
+\begin{tikzpicture}
   \umlclass{Auction}{
     lots: List \textless Lot\textgreater \\
     auctioneers: List \textless Lot\textgreater \\
@@ -104,7 +113,7 @@ We begin with a model of classes and their attributes and operations:\\\\
     % nb. getters and setters are implied
   }
 
-  \umlclass{Bid}{
+  \umlclass[y=-4.5]{Bid}{
     lot : Lot \\
     seller : Seller \\
     buyer : Buyer \\
@@ -114,10 +123,12 @@ We begin with a model of classes and their attributes and operations:\\\\
     Bid(Lot, Seller, Buyer, bidType, bidValue) : Bid \\
   }
 
-  \umlclass{Money}{
-
+  \umlclass[x=6]{Money}{
+    value : Float \\
+    currency : String \\
   }
   {
+    Money(Float, String) : Money 
   }
 \end{tikzpicture}
 \newpage
@@ -140,7 +151,7 @@ Next we give a picture of associations between classes:\\\\
 
   \umlsimpleclass[x=9, y=-3]{Lot}
 
-  \umlsimpleclass[x=12, y=-2]{Auction}
+  \umlsimpleclass[x=13, y=-3]{Auction}
 
   \umlsimpleclass[x=9, y=-6]{Bid}
   
@@ -152,7 +163,7 @@ Next we give a picture of associations between classes:\\\\
 
   \node[above, rotate=30] at (bidson-1) {bids on};
   \node[above, rotate=-30] at (owns-1) {owns};
-  \node[below, rotate=20] at (in-1) {in};
+  \node[below, rotate=0] at (in-1) {in};
   \node[below, rotate=-35] at (of-1) {in charge of};
   \node[above, rotate=-90] at (on-1) {placed on};
   
