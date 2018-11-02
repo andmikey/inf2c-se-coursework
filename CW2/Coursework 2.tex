@@ -113,6 +113,12 @@ We begin with a model of classes and their attributes and operations:\\\\
   }{
     Bid(Lot, Seller, Buyer, bidType, bidValue) : Bid \\
   }
+
+  \umlclass{Money}{
+
+  }
+  {
+  }
 \end{tikzpicture}
 \newpage
 Next we give a picture of associations between classes:\\\\
@@ -136,10 +142,19 @@ Next we give a picture of associations between classes:\\\\
 
   \umlsimpleclass[x=12, y=-2]{Auction}
 
-  \umlassoc[mult1=1, mult2=*]{Buyer}{Lot}
-  \umlassoc[mult1=1, mult2=*]{Seller}{Lot}
-  \umlassoc[mult1=1, mult2=*]{Auction}{Lot}
-  \umlassoc[mult1=*, mult2=*]{Auction}{Auctioneer}
+  \umlsimpleclass[x=9, y=-6]{Bid}
+  
+  \umlassoc[mult1=1, mult2=*, name=bidson]{Buyer}{Lot}
+  \umlassoc[mult1=1, mult2=*, name=owns]{Seller}{Lot}
+  \umlassoc[mult1=1, mult2=*, name=in]{Auction}{Lot}
+  \umlassoc[mult1=*, mult2=*, name=of]{Auction}{Auctioneer}
+  \umlassoc[mult1=1, mult2=*, name=on]{Lot}{Bid}
+
+  \node[above, rotate=30] at (bidson-1) {bids on};
+  \node[above, rotate=-30] at (owns-1) {owns};
+  \node[below, rotate=20] at (in-1) {in};
+  \node[below, rotate=-35] at (of-1) {in charge of};
+  \node[above, rotate=-90] at (on-1) {placed on};
   
   \umlinherit{Registered user}{User}
   \umlinherit{Buyer}{Registered user}
