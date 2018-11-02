@@ -43,9 +43,9 @@ We begin with a model of classes and their attributes and operations:\\\\
     User(PersonalDetails, BankDetails, ContactDetails, String) : User\\
   }
   
-  \umlclass[y=-7, x=-1.7]{Buyer}{
+  \umlclass[y=-7.5, x=-2.5]{Buyer}{
     lotsInterestedIn : List \textless Lot\textgreater \\
-    lotsBidOn : List \textless Lot\textgreater
+    lotsBidOn : List \textless Lot\textgreater \\
     bidList : List \textless Bid\textgreater}
   {
     markInterestInLot(Lot) : boolean \\
@@ -68,7 +68,7 @@ We begin with a model of classes and their attributes and operations:\\\\
     closeBidding() : void \\
   }
 
-  \umlclass[x=-2.5, y=-12.2]{Lot}{
+  \umlclass[x=-2.5, y=-13.2]{Lot}{
     auctionStatus : Integer \\
     currentPrice : Money \\ 
     finalBid : Bid \\
