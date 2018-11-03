@@ -36,12 +36,12 @@ We begin with a model of classes and their attributes and operations:\\\\
   { browseLots(void) : void \\
   }
   
-  \umlclass[y=-3]{Registered user}{details : PersonalDetails \\
+  \umlclass[y=-3.2,x=1.8]{RegisteredUser}{details : PersonalDetails \\
     paymentDetails : BankDetails \\
     contactDetails : ContactDetails \\
     username : String \\
   }{
-    User(PersonalDetails, BankDetails, ContactDetails, String) : User\\
+    RegisteredUser(PersonalDetails, BankDetails, ContactDetails, String) : RegisteredUser\\
   }
   
   \umlclass[y=-7.5, x=-2.5]{Buyer}{
@@ -54,14 +54,14 @@ We begin with a model of classes and their attributes and operations:\\\\
     bidOnLot(Lot, Bid) : boolean\\
   }
 
-  \umlclass[x = 6, y=-6.3]{Seller}{
+  \umlclass[x = 6, y=-6.5]{Seller}{
     lotsOwned : List \textless Lot\textgreater \\
   }
   {
     addLot(Lot, Auction) : boolean \\
   }
 
-  \umlclass[x=9,y=-3]{Auctioneer}{
+  \umlclass[x=9,y=0.5]{Auctioneer}{
     lotsAssigned : List \textless Lot\textgreater \\
   }
   {
