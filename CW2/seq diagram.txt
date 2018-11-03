@@ -1,0 +1,62 @@
+participant Auctioneer
+participant Lot
+participant Auctionhouse
+participant Bank
+participant Buyer
+participant Seller
+
+activate Auctioneer
+Auctioneer -> Lot: closeAuction()
+activate Lot
+Lot --> Auctioneer:
+deactivate Lot
+
+deactivate Auctioneer
+
+alt finalPrice < reservePrice
+activate Auctioneer
+Auctioneer -> Auctionhouse: saleFailed(Lot)
+activate Auctionhouse
+Auctionhouse -> Seller: message("Sale failed")
+activate Seller
+Seller -->Auctionhouse: 
+deactivate Seller
+Auctionhouse -->Auctioneer:
+deactivate Auctionhouse
+deactivate Auctioneer
+end
+
+alt finalPrice >= reservePrice
+activate Auctioneer
+
+Auctioneer -> Auctionhouse: saleSucceeded(Lot)
+activate Auctionhouse
+Auctionhouse -> Seller: message("Sale succeeded")
+activate Seller
+Seller -->Auctionhouse: 
+deactivate Seller
+Auctionhouse -> Buyer: message("Lot won")
+activate Buyer
+Buyer -->Auctionhouse: 
+deactivate Buyer
+
+loop for each non-winning buyer
+Auctionhouse --> Buyer: message("Did not win lot")
+activate Buyer
+Buyer --> Auctionhouse:
+deactivate Buyer
+end 
+
+Auctionhouse -> Bank: transfer(buyerDetails, auctionhouseDetails, finalPrice + buyersPremium)
+activate Bank
+Bank -->Auctionhouse:
+deactivate Bank
+
+Auctionhouse -> Bank: transfer(auctionhouseDetails, auctionhouseDetails, finalPrice - sellersCommision)
+activate Bank
+Bank -->Auctionhouse:
+deactivate Bank
+Auctionhouse -->Auctioneer:
+deactivate Auctionhouse
+deactivate Auctioneer
+end 
