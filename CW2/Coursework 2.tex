@@ -75,7 +75,12 @@ Due to its size, this is provided as the last page of the document.
     \item The Auctioneer is informed when a bid is placed on a lot they are in charge of (BidPlacedOnLot). 
   \end{itemize}
 \item {\bf Member of Public: } This user has very restricted privileges, being able only to view catalogue entries. We note that it is an implementation of the Actor interface: this is primarily for maintainability purposes, in case it is decided that members of the public may be allowed to perform more actions --- for example, marking interest in a lot and receiving updates when bids are placed on it.
-\item {\bf Lot: } 
+\item {\bf Lot: } We note the following:
+  \begin{itemize}
+    \item A Lot has a unique ID, provided by the Seller on creation. This can act as a primary key when storing information about this object in a database. 
+    \item We abstract the LotInformation and LotDescription 
+    \item 
+  \end{itemize}
 \item {\bf LotInformation: } This provides the (mostly) static data associated with the lot. While it would also make sense to store all this information in the Lot object, it is cleaner to abstract it to a separate class. By doing this, we separate the attributes of Lot which often change from those which are set at creation, which is beneficial for brevity and simplifies the interpretation of the Lot class. 
 \item {\bf LotStatus: } The Lot Status is, as per Coursework 1, the current state of the Lot. We introduced this state for two reasons:
   \begin{enumerate}
@@ -85,7 +90,15 @@ Due to its size, this is provided as the last page of the document.
 \item {\bf CatalogueEntry: } We assume nothing in particular about the contents of this class. We treat it as the externally-visible representation of a lot, returning it when viewing the catalogue is requested. 
 \item {\bf Bid: } It is logical to create a class to represent a Bid on a lot. A Bid contains all the details required to identify it, allowing us to pass around Bid objects rather than a Bid and its associated Lot object. This ensures loose coupling between objects.
 \item {\bf BidType: } It is logical to separate the type of a lot. As with the other enums, we originally considered having this as an integer, with code within the class itself to handle the different cases. However, using an enum is conceptually much simpler and more straightforward to understand, keeping with good design principles.
-\item {\bf Auctionhouse: } 
+\item {\bf AuctionHouse: } We use the Facade design pattern here, as recommended by the coursework specification. The AuctionHouse object implements an interface to allow all other objects within the system to communicate. It primarily takes call messages associated with a use-case and passes them on to other objects as needed. Additionally, it performs extra steps before doing this based on the information it holds internally, ensuring objects only need to be aware of the bare minimum about their environment and interaction with other classes.
+  \\ We note in particular:
+  \begin{itemize}
+    \item The AuctionHouse maintains an internal map of MessagingAddresses to Actors and vice-versa, so an object wanting to send a message to another object need not know its address, only the object instance itself. This allows us to provide good encapsulation for the messaging system and abstract implementation details from the other objects in the system.
+    \item AuctionHouse sends messages between objects using the MessagingService class, ommited from the class diagram for brevity.
+    \item A method is available for each use-case. While this does run the risk of creating a `God class', this is necessary to allow objects to communicate through the AuctionHouse class, and allows the objects themselves to be modular.
+    \item The viewCatalogue() method does not have a specified argument, and we assume it by default to return the entire catalogue. It may be desirable to allow for filtering the catalogue, either on the back-end or on the front-end, and by not specifying any arguments to this function we leave open the possibility of catalogue filtering on the back-end. 
+    \item The AuctionHouse class also handles payment transfer logic within the closeAuction method. It may be desirable to have this as a separate method, but it is not included for brevity. Additionally, it is assumed (eg. in the sequence diagram) that payments are made using the AuctionHouse account as an intermediary in order to allow the auction house to take their commission from sales.
+  \end{itemize}
 \item {\bf Status: } We assume that a given Status can represent either a success or a failure, allowing us to handle possible errors from classes. Otherwise, we assume nothing in particular about this class and do not include it in the class diagram for purposes of brevity. 
 \end{itemize}
 \section{Dynamic models}
