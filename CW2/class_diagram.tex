@@ -42,7 +42,7 @@
     lotsOwned : List Lot
   }
   {
-    addLot(LotInformation, uniqueId : Integer) : Status \\
+    addLot(LotInformation, uniqueId : Integer) : Lot \\
     receiveMessage(LotUpdateMessage, Lot) : Status
   }
 
@@ -102,7 +102,7 @@
   {
     registerBuyer(Buyer) : Status \\
     registerSeller(Seller) : Status \\
-    addLot(Lot) : Status \\
+    addLot(LotInformation, uniqueId : Integer) : Status \\
     viewCatalogue() : List CatalogueEntry \\
     noteInterest(Buyer, Lot) : Status \\
     openAuction(Lot) : Status \\
