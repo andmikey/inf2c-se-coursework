@@ -82,9 +82,9 @@ Due to its size, this is provided as the last page of the document.
     \item This provides a convenient method of archiving lots by separating them into those that are still active and those that have been sold and therefore are inactive. This could, for example, allow for catalogue search to show archived lots as well as active lots if this is desired.
   \end{enumerate}
 \item {\bf CatalogueEntry: } We assume nothing in particular about the contents of this class. We treat it as the externally-visible representation of a lot, returning it when viewing the catalogue is requested. 
-\item {\bf Bid: }
-\item {\bf BidType: }
-\item {\bf Auctionhouse: }
+\item {\bf Bid: } 
+\item {\bf BidType: } It is logical to separate the type of a lot. As with the other enums, we originally considered having this as an integer, with code within the class itself to handle the different cases. However, using an enum is conceptually much simpler and more straightforward to understand, keeping with good design principles.
+\item {\bf Auctionhouse: } 
 \item {\bf Status: } We assume that a given Status can represent either a success or a failure, allowing us to handle possible errors from classes. Otherwise, we assume nothing in particular about this class and do not include it in the class diagram for purposes of brevity. 
 \end{itemize}
 \section{Dynamic models}
