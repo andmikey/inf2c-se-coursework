@@ -75,6 +75,9 @@ CatalogueEntry status is integer - to be specified - could equally be an enum
 Same with BidType
 Add bankingdetails as a class to be consistent with personal details
 register / add in ah updates appropriate lists in place
-actor provides an interface - left up to subclasses to implement
+actor provides an interface - left up to subclasses to implement - allows for extendability even though all receive the same currently
 viewcatalogue returns list catentry - allows for search
 registereduser refers to anyone logging into the system. client is sellers / buyers
+messages only concern changes in lots, so create an enumerable of the possible changes and send this in a message
+don't need to pass bid to auctioneer as this can be found from the lot.currentBid
+could have seller / buyer inheriying from actor but better to just have client do it as methods are shared
