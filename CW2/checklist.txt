@@ -86,3 +86,4 @@ assume that authorization is contained in payment details
 assume that for buyer LotSold, can tell whether the buyer won the lot and change behavior as appropriate
 assume transfers use auction house account as intermediary - auction house can then take a cut
 no bankingdetails class - assumed to exist anologous to personaldetails
+the seller addlot function calls auctionhouse.createlot and adds it to its list of lots owned
