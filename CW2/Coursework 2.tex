@@ -75,13 +75,17 @@ Due to its size, this is provided as the last page of the document.
   \end{itemize}
 \item {\bf Member of Public: } This user has very restricted privileges, being able only to view catalogue entries. We note that it is an implementation of the Actor interface: this is primarily for maintainability purposes, in case it is decided that members of the public may be allowed to perform more actions --- for example, marking interest in a lot and receiving updates when bids are placed on it.
 \item {\bf Lot: } 
-\item {\bf LotInformation: }
-\item {\bf LotUpdateMessage: }
-\item {\bf LotStatus: }
+\item {\bf LotInformation: } This provides the (mostly) static data associated with the lot. While it would also make sense to store all this information in the Lot object, it is cleaner to abstract it to a separate class. By doing this, we separate the attributes of Lot which often change from those which are set at creation, which is beneficial for brevity and simplifies the interpretation of the Lot class. 
+\item {\bf LotStatus: } The Lot Status is, as per Coursework 1, the current state of the Lot. We introduced this state for two reasons:
+  \begin{enumerate}
+    \item It allows for error-checking: a lot cannot be opened unless it is in a pre-auction state, and closed or bid on unless it is currently on auction.
+    \item This provides a convenient method of archiving lots by separating them into those that are still active and those that have been sold and therefore are inactive. This could, for example, allow for catalogue search to show archived lots as well as active lots if this is desired.
+  \end{enumerate}
+\item {\bf CatalogueEntry: } We assume nothing in particular about the contents of this class. We treat it as the externally-visible representation of a lot, returning it when viewing the catalogue is requested. 
 \item {\bf Bid: }
 \item {\bf BidType: }
 \item {\bf Auctionhouse: }
-\item {\bf Status: }
+\item {\bf Status: } We assume that a given Status can represent either a success or a failure, allowing us to handle possible errors from classes. Otherwise, we assume nothing in particular about this class and do not include it in the class diagram for purposes of brevity. 
 \end{itemize}
 \section{Dynamic models}
 \subsection{UML sequence diagram}
