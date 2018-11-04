@@ -5,6 +5,7 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{pdfpages}
+\usepackage{verbatim}
 
 \lhead{Inf2C: SE Coursework 2}
 \rhead{s1703773 \& s1737075}
@@ -58,8 +59,78 @@ Due to its size, this is provided as the second-to-last page of the document.
 
 \subsection{Behaviour descriptions}
 \subsubsection{Add lot}
+In the {\it Add lot} use case, we assume the seller has already created an instance of LotInformation and has a uniqueId for it.\\
+Now, they want to create a lot for it and add that to their set of lotsOwned, so they start by invoking the addLot method on themselves.\\
+This will involve the AuctionHouse singleton creating new instances of both Lot and CatalogueEntry, and placing them in internal lists. Then, those lot results will be passed back to the seller to add to their own internal list.
+\begin{verbatim}
+seller -- addLot(LotInformation, uniqueId) ---> seller
+  seller ---- createLot(LotInformation, uniqueId) ---> AuctionHouse
+    AuctionHouse -- new Lot(LotInformation, uniqueId) ---> Lot
+    AuctionHouse <- - - - - newLot - - - - - - - - - - - - Lot
+    AuctionHouse -- setLots(newLot) --> AuctionHouse // Add the new lot to the
+                                                     // existing "lots" set
+                                                     // Use implicit setter
+    AuctionHouse -- setCatalogue(newLot) --> AuctionHouse // Create new CatalogueEntry
+                                                          // and add to existing
+                                                          // internal "catalogue" set
+                                                          // Use implicit setter
+  seller <- - newLot - - - - - - - - - - - - - - - - - AuctionHouse
+                                                          // Return new lot to seller
+  seller ---- setLotsOwned(newLot) -> seller // Push the new lot to the internal set
+                                             // of lots owned, "lotsOwned"
+                                             // Use implicit setter
+seller <- - - - - - - - - - - - - - - - - - - - seller
+\end{verbatim}
 \subsubsection{Note interest}
+In the {\it Note interest} use case, we assume the buyer has an instance of lot that they would like to not interest in.\\
+This will begin with invoking markInterestInLot on themselves.
+\begin{verbatim}
+buyer -- markInterestInLot(lot) ---> buyer
+  buyer ---- noteInterest(lot, buyer) ---> AuctionHouse
+    AuctionHouse ---- setInterestedBuyers(buyer) ---> lot
+                                            // Add the buyer to the lot's
+                                            // internal "interestedBuyers" set
+                                            // Use implicit setter
+    AuctionHouse <- - - - - - - - - - - - - - - - - - lot
+  buyer <- - - - - - - - - - - - - - - - - AuctionHouse
+  buyer ---- setInterestedLots(lot) ----> buyer 
+                                            // Add the lot to the buyer's
+                                            // internal "interestedLots" set
+                                            // Use implicit setter
+buyer <- - - - - - - - - - - - - - - buyer
+\end{verbatim}
 \subsubsection{Make bid}
+In the {\it Make bid} use case, we assume the buyer has already created an instance of Bid. The instance of Bid they have created has them as bid.buyer, and the lot they are bidding on as bid.lot. Its value and its type are also already defined.\\
+Now, they want to send that bid out to the lot and have it registered in the system.\\
+This will begin with invoking bidOnLot on themselves. As the message burst propagates, the AuctionHouse will send out relevant changes to the lot in question, and notify other participants.
+\begin{verbatim}
+buyer --- bidOnLot(bid) ---> buyer
+  buyer ---- makeBid(bid) -----> AuctionHouse
+    AuctionHouse --- getLot -------> bid // implicit getter
+    AuctionHouse <- - activeLot <- - bid // return lot which bid refers to
+    AuctionHouse --- receiveBid(bid) ---> activeLot
+    AuctionHouse <- - bidSuccessful - - - activeLot 
+    // If bid is insufficient, simply skip the ensuing loop
+ALT Bid is insufficient // simply return to buyer and skip the remaining operations
+  buyer <- - - bidSuccessful - - AuctionHouse
+buyer <- - bidSuccessful - - buyer
+ENDALT
+ALT Bid is sufficient // continue to notify all relevant actors of new bid
+    AuctionHouse --- receiveMessage(BidPlacedOnLot, bid.lot) 
+                 --> bid.lot.information.auctioneer 
+                // Use implicit getters on current bid to get auctioneer that
+                // is currently in charge
+                // Notify auctioneer of new bid
+    LOOP [over all bid.lot.interestedBuyers] // Use implicit getters on current
+                                             // bid to get all current
+                                             // interested buyers
+      AuctionHouse --- receiveMessage(BidPlacedOnLot, bid.lot) 
+                   --> currentInterestedBuyer
+    ENDLOOP
+  buyer <- - - bidSuccessful - - AuctionHouse
+buyer <- - bidSuccessful - - buyer
+ENDALT
+\end{verbatim}
 
 \includepdf[pages=1,fitpaper]{sequence_diagram}
 \includepdf[pages=1,fitpaper]{class_diagram}
