@@ -16,7 +16,7 @@
 \begin{tikzpicture}
 
   \umlclass[x=26.5,y=-10]{Auctioneer}{
-    assignedLots : Lot
+    assignedLots : List Lot
   }{
     openAuction(Lot) : Status \\
     closeAuction(Lot) : Status \\
@@ -24,7 +24,7 @@
   }
 
   \umlclass[x=17,y=-10]{Buyer}{
-    interestedLots : List Lots
+      interestedLots : List Lot
   }
   {
     viewCatalogue() : List CatalogueEntry\\
