@@ -66,3 +66,15 @@ Use cases:
 6. Open auction (Auctioneer)
 7. Make bid (Buyer)
 8. Close auction (Auctioneer)
+
+
+Discussion:
+Mirror the auctioneer-lot, buyer-lot relationships
+Move LotInformation to a separate class but keep some information associated with CatEntry (changeable)
+CatalogueEntry status is integer - to be specified - could equally be an enum
+Same with BidType
+Add bankingdetails as a class to be consistent with personal details
+register / add in ah updates appropriate lists in place
+actor provides an interface - left up to subclasses to implement
+viewcatalogue returns list catentry - allows for search
+registereduser refers to anyone logging into the system. client is sellers / buyers
