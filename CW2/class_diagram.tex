@@ -7,12 +7,12 @@
 \pagestyle{empty}
 \begin{tikzpicture}
 
-  \umlclass[x=24,y=-9]{Auctioneer}{
+  \umlclass[x=26.5,y=-10]{Auctioneer}{
     assignedLots : Lot
   }{
     openAuction(Lot) : Status \\
     closeAuction(Lot) : Status \\
-    receiveMessage(Bid) % lot bid on
+    receiveMessage(LotUpdateMessage, Lot) : Status
   }
 
   \umlclass[x=17,y=-10]{Buyer}{
@@ -21,14 +21,21 @@
   {
     viewCatalogue() : List CatalogueEntry\\
     bidOnLot(Lot, Bid) : Status\\
-    markInterestInLot(Lot) : Status
+    markInterestInLot(Lot) : Status \\
+    receiveMessage(LotUpdateMessage, Lot): Status
   }
 
-  \umlclass[x=8, y=-10]{Seller}{
+  \umlclass[type=enum,x=7, y=-1]{LotUpdateMessage}{
+    BidPlacedOnLot \\
+    LotOnAuction \\
+    LotSold 
+  }{}
+  \umlclass[x=7, y=-9.5]{Seller}{
     lotsOwned : List Lot
   }
   {
-    addLot(LotInformation, uniqueId : Integer) : Status
+    addLot(LotInformation, uniqueId : Integer) : Status \\
+    receiveMessage(LotUpdateMessage, Lot) : Status
   }
 
   \umlclass[x=2.5, y=-14.5]{Lot}{
@@ -58,7 +65,7 @@
   {
   }
 
-  \umlclass[x=31,y=-10]{MemberOfPublic}{
+  \umlclass[x=31,y=-5]{MemberOfPublic}{
   }
   {
     viewCatalogue() : List CatalogueEntry
@@ -92,7 +99,8 @@
     noteInterest(Buyer, Lot) : Status \\
     openAuction(Lot) : Status \\
     closeAuction(Lot) : Status \\
-    makeBid(Bid) : Status
+    makeBid(Bid) : Status \\
+    getAddress(Actor) : MessagingAddress 
   }
 
   \umlclass[type=interface, x=27, y=-1]{Actor}{
