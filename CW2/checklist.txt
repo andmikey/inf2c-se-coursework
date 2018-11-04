@@ -73,15 +73,15 @@ Mirror the auctioneer-lot, buyer-lot relationships
 Move LotInformation to a separate class but keep some information associated with CatEntry (changeable)
 CatalogueEntry status is integer - to be specified - could equally be an enum
 Same with BidType
-Add bankingdetails as a class to be consistent with personal details
+* Add bankingdetails as a class to be consistent with personal details
 register / add in ah updates appropriate lists in place
-actor provides an interface - left up to subclasses to implement - allows for extendability even though all receive the same currently
+* actor provides an interface - left up to subclasses to implement - allows for extendability even though all receive the same currently
 viewcatalogue returns list catentry - allows for search
-registereduser refers to anyone logging into the system. client is sellers / buyers
-messages only concern changes in lots, so create an enumerable of the possible changes and send this in a message
+* registereduser refers to anyone logging into the system. client is sellers / buyers
+* messages only concern changes in lots, so create an enumerable of the possible changes and send this in a message
 don't need to pass bid to auctioneer as this can be found from the lot.currentBid
 could have seller / buyer inheriying from actor but better to just have client do it as methods are shared
-each seller / buyer / auctioneer have seperate impl, so for good cohesion put the methods in separately rather than in superclass
+- each seller / buyer / auctioneer have seperate impl, so for good cohesion put the methods in separately rather than in superclass
 assume that authorization is contained in payment details
 assume that for buyer LotSold, can tell whether the buyer won the lot and change behavior as appropriate
 assume transfers use auction house account as intermediary - auction house can then take a cut
