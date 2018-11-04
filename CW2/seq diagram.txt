@@ -11,7 +11,9 @@ activate Auctioneer
 Auctioneer -> AuctionHouse: closeAuction(Lot)
 activate AuctionHouse
 AuctionHouse -> Lot: close()
+activate Lot
 Lot --> AuctionHouse: Status
+deactivate Lot
 
 alt Lot already closed (Status failed)
 AuctionHouse --> Auctioneer: Status
