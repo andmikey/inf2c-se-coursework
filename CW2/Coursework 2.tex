@@ -83,7 +83,7 @@ Due to its size, this is provided as the last page of the document.
     \item This provides a convenient method of archiving lots by separating them into those that are still active and those that have been sold and therefore are inactive. This could, for example, allow for catalogue search to show archived lots as well as active lots if this is desired.
   \end{enumerate}
 \item {\bf CatalogueEntry: } We assume nothing in particular about the contents of this class. We treat it as the externally-visible representation of a lot, returning it when viewing the catalogue is requested. 
-\item {\bf Bid: } 
+\item {\bf Bid: } It is logical to create a class to represent a Bid on a lot. A Bid contains all the details required to identify it, allowing us to pass around Bid objects rather than a Bid and its associated Lot object. This ensures loose coupling between objects.
 \item {\bf BidType: } It is logical to separate the type of a lot. As with the other enums, we originally considered having this as an integer, with code within the class itself to handle the different cases. However, using an enum is conceptually much simpler and more straightforward to understand, keeping with good design principles.
 \item {\bf Auctionhouse: } 
 \item {\bf Status: } We assume that a given Status can represent either a success or a failure, allowing us to handle possible errors from classes. Otherwise, we assume nothing in particular about this class and do not include it in the class diagram for purposes of brevity. 
@@ -95,7 +95,13 @@ Due to its size, this is provided as the second-to-last page of the document.
 
 \noindent Some notes on the sequence diagram itself:
 \begin{itemize}
-  \item 
+  \item We leave out details on how the AuctionHouse class gets such variables as account details. These can easily be inferred from the Buyer and Seller objects, and are left out for brevity. 
+  \item We simplify the objects at the top of the sequence diagram, again for brevity. In actuality, we would assume that an external actor would initiate the close method in Auctioneer, and that we would be contacting multiple Buyers.
+  \item We leave the process early in two cases:
+    \begin{itemize}
+      \item If the lot cannot be closed: this occurs if the lot has already been closed or if it was never opened up to auction. In this case we return a failure Status to the Auctioneer.
+      \item Similarly, if one transfer cannot be completed when making, we propagate the failure Status down and do not attempt the other transfers, returning a failure Status to the Auctioneer. This is again excluded for brevity.
+    \end{itemize}
 \end{itemize}
 
 \subsection{Behaviour descriptions}
