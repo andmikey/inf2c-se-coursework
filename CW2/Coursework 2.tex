@@ -39,12 +39,33 @@ Due to its size, this is provided as the last page of the document.
   \item By separating interface and implementation, we follow good design principles.
   \item The Actor class ensures a consistent interface for message exchange using the MessageService singleton.
   \item We can encapsulate the handling of messages of different kinds on a per-object basis, making it easy to maintain and add more message types as needed.
+  \item As each implementation of Actor will have a different way of handling various receiveMessage() instances, we leave these up to the classes to implement, rather than specifying them in Actor. This ensures good cohesion. 
   \end{itemize}
 \item {\bf MessagingService: } Messages are sent and received only for objects which implement the Actor interface. In the case of this system, all messages passed around the system will relate to a lot. This means that we only define methods for Actors to receive messages which pertain to a given Lot and some change in status (see point below). However, we can easily create new receiveMessage() functions for Actors which take different parameters. 
 \item {\bf LotUpdateMessage: } This class specifies all the possible state-changes a lot may undertake. By providing these states as an enum, we ensure maintainability and modularisation: by adding a new possible state to the enum we update all the classes which receive messages pertaining to lots.
 \item {\bf RegisteredUser: } This represents superclass the actors who have an account on the system, allowing us to separate them from members of the public, who we assume to not have accounts. Using inheritance, we ensure consistent behavior for these users. Currently, this is only ensuring that all have a username: however, this is easily extensible to also include, for example, passwords and two-factor-authentication.
 \item {\bf Client: } A subclass of RegisteredUser, this represents Sellers and Buyers. These two actors use the system in a similar way, so we ensure a similar implementation by combining them into a Client superclass. In particular, we ensure that Sellers and Buyers both have personal and banking details set for their accounts. We considered having both Buyer and Seller inherit from RegisteredUser, as Auctioneer does, but decided that the behavior of these two classes needed to be enforced to be similar enough to warrant a superclass. 
-\item {\bf BankingDetails: } This class is excluded from the diagram for brevity: we treat it as analogous to the PersonalDetails class, containing the user's account and authorization details, as needed to make transactions. 
+\item {\bf BankingDetails: } This class is excluded from the diagram for brevity: we treat it as analogous to the PersonalDetails class, containing the user's account and authorization details, as needed to make transactions. We chose to separate BankingClass from RegisteredUser for loose coupling and high cohesion of the components. This way, RegisteredUser does not need to care if the implementation of BankingDetails changes. This could be particularly useful if we decide we need to validate banking details before a user can register: these changes can be handled within the BankingDetails class, which ensures high cohesion as logically bank validation logic may not necessarily belong in a User class.
+\item {\bf Seller: } This represents a Seller actor. We note the following:
+  \begin{itemize}
+  \item An instance of the Seller class has some $n$ lots associated with it, the lots it owns. It makes sense to have this stored as an attribute of the seller: it allows for faster retrieval of the lots associated with a seller, rather than the alternative of polling all lots in the system to check which belong to that seller. 
+  \item A Seller adding a lot calls the addLot method on itself. This method then calls AuctionHouse.addLot, which creates the lot and adds it to the AuctionHouse's list of lots. This is then returned to the Seller who adds it to the list of their lotsOwned.
+  \item We note that the addLot method only needs the LotInformation (described later) and a unique ID associated with the lot, which as per the specification is given to the Seller ahead of time. All other information about a lot can be inferred. However, we note that there is no way given on how an auctioneer is assigned to a lot: we assume this is handled by the auction house staff themselves and do not include how this may be done in the class diagram.
+  \end{itemize}
+\item {\bf Buyer: } We note the following:
+  \begin{itemize}
+  \item Like the Seller class, we maintain a list of lots associated with the Buyer. This has the same benefits of not needing to poll all lots to see which lots the Buyer has marked themselves as interested in every time we wish to display these lots.
+  \item As per the specification, we have a viewCatalogue() function which returns a List of CatalogueEntries, for the user interface to handle as needed. By separating the retrieval logic from the display logic, we ensure high cohesion. 
+  \end{itemize}
+\item {\bf Auctioneer: }
+\item {\bf Member of Public: } This user has very restricted privileges, being able only to view catalogue entries. We note that it is an implementation of the Actor interface: this is primarily for maintainability purposes, in case it is decided that members of the public may be allowed to perform more actions - for example, marking interest in a lot and receiving updates when bids are placed on it.
+\item {\bf Lot: }
+\item {\bf LotInformation: }
+\item {\bf LotUpdateMessage: }
+\item {\bf LotStatus: }
+\item {\bf Bid: }
+\item {\bf BidType: }
+\item {\bf Auctionhouse: }
 \end{itemize}
 \section{Dynamic models}
 \subsection{UML sequence diagram}
