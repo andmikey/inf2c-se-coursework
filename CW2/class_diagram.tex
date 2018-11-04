@@ -31,10 +31,10 @@
     addLot(LotInformation, uniqueId : Integer) : Status
   }
 
-  \umlclass[x=1, y=-14.5]{Lot}{
+  \umlclass[x=2.5, y=-14.5]{Lot}{
     uniqueId : Integer \\
     information : LotInformation \\
-    status : Integer \\
+    status : LotStatus \\
     currentBid : Bid \\
     interestedBuyers : List Buyer \\
     catalogueEntry : CatalogueEntry
@@ -67,12 +67,16 @@
   \umlclass[x=0,y=-21]{Bid}{
     lot : Lot \\
     buyer : Buyer \\
-    bidType : Integer \\
-    bidValue : Money 
+    type : BidType \\
+    value : Money 
   }
   {
   }
 
+  \umlclass[x=3,y=-21,type=enum]{BidType}{Increment \\ Jump}
+
+  \umlclass[x=-2.1, y=-15,type=enum]{LotStatus}{PreAuction \\ InAuction \\ Sold \\ DidNotSell}
+  
   \umlclass[x=25,y=-19]{AuctionHouse}{
     addressbook : Map MessagingAddress Actor \\
     catalogue : List CatalogueEntry \\
