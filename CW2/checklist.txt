@@ -56,3 +56,13 @@ Messages to actors:
 - But - some use cases require other actors to also get notification messages
   - Include singleton MessagingService class 
   - For each kind of message sent out to actors modelling people in particular roles, include operation to this class that includes argument of type MessagingAddress for specifiying who the message should be sent to, as long as further arguments on information to include
+
+Use cases:
+1. Register buyer (Buyer)
+2. Register seller (Seller)
+3. Add lot (Seller)
+4. View catalogue (Member of Public)
+5. Note interest (Buyer)
+6. Open auction (Auctioneer)
+7. Make bid (Buyer)
+8. Close auction (Auctioneer)
