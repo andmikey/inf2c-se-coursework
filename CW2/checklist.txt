@@ -81,3 +81,4 @@ registereduser refers to anyone logging into the system. client is sellers / buy
 messages only concern changes in lots, so create an enumerable of the possible changes and send this in a message
 don't need to pass bid to auctioneer as this can be found from the lot.currentBid
 could have seller / buyer inheriying from actor but better to just have client do it as methods are shared
+each seller / buyer / auctioneer have seperate impl, so for good cohesion put the methods in separately rather than in superclass
