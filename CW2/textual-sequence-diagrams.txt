@@ -1,0 +1,48 @@
+=== Add lot
+
+seller -- addLot(LotInformation, uniqueId) ---> seller
+  seller ---- createLot(LotInformation, uniqueId) ---> AuctionHouse
+    AuctionHouse -- new Lot(LotInformation, uniqueId) ---> Lot
+    AuctionHouse <- - - - - newLot - - - - - - - - - - - - Lot
+    AuctionHouse -- setLots(newLot) --> AuctionHouse // Add the new lot to the
+                                                     // existing "lots" set
+                                                     // Use implicit setter
+    AuctionHouse -- setCatalogue(newLot) --> AuctionHouse // Create new CatalogueEntry
+                                                          // and add to existing
+                                                          // internal "catalogue" set
+                                                          // Use implicit setter
+  seller <- - newLot - - - - - - - - - - - - - - - - - AuctionHouse
+                                                          // Return new lot to seller
+  seller ---- setLotsOwned(newLot) -> seller // Push the new lot to the internal set
+                                             // of lots owned, "lotsOwned"
+                                             // Use implicit setter
+seller <- - - - - - - - - - - - - - - - - - - - seller
+
+=== Note interest
+
+buyer -- markInterestInLot(lot) ---> buyer
+  buyer ---- noteInterest(lot, buyer) ---> AuctionHouse
+    AuctionHouse ---- setInterestedBuyers(buyer) ---> lot
+                                            // Add the buyer to the lot's
+                                            // internal "interestedBuyers" set
+                                            // Use implicit setter
+    AuctionHouse <- - - - - - - - - - - - - - - - - - lot
+  buyer <- - - - - - - - - - - - - - - - - AuctionHouse
+  buyer ---- setInterestedLots(lot) ----> buyer 
+                                            // Add the lot to the buyer's
+                                            // internal "interestedLots" set
+                                            // Use implicit setter
+buyer <- - - - - - - - - - - - - - - buyer
+
+=== Make bid
+
+buyer --- bidOnLot(bid) ---> buyer
+  buyer ---- makeBid(bid) -----> AuctionHouse
+    AuctionHouse --> getLot -------> bid // implicit getter
+    AuctionHouse <- - activeLot <- - bid // return lot which bid refers to
+    AuctionHouse --> receiveBid(bid) ---> activeLot
+    AuctionHouse <- - bidSuccessful - - - activeLot 
+                                         // If bid is insufficient, return
+                                         // unsuccessful
+  buyer <- - - bidSuccessful - - AuctionHouse
+buyer <- - bidSuccessful - - buyer

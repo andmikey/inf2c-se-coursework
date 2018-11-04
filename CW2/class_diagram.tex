@@ -16,7 +16,7 @@
 \begin{tikzpicture}
 
   \umlclass[x=26.5,y=-10]{Auctioneer}{
-    assignedLots : Lot
+    assignedLots : List Lot
   }{
     openAuction(Lot) : Status \\
     closeAuction(Lot) : Status \\
@@ -24,11 +24,11 @@
   }
 
   \umlclass[x=17,y=-10]{Buyer}{
-    interestedLots : List Lots
+      interestedLots : List Lot
   }
   {
     viewCatalogue() : List CatalogueEntry\\
-    bidOnLot(Lot, Bid) : Status\\
+    bidOnLot(Bid) : Status\\
     markInterestInLot(Lot) : Status \\
     receiveMessage(LotUpdateMessage, Lot): Status
   }
@@ -42,7 +42,7 @@
     lotsOwned : List Lot
   }
   {
-    addLot(LotInformation, uniqueId : Integer) : Lot \\
+    addLot(LotInformation, uniqueId : Integer) : Status \\
     receiveMessage(LotUpdateMessage, Lot) : Status
   }
 
@@ -102,7 +102,7 @@
   {
     registerBuyer(Buyer) : Status \\
     registerSeller(Seller) : Status \\
-    addLot(LotInformation, uniqueId : Integer) : Status \\
+    createLot(LotInformation, uniqueId : Integer) : Lot \\
     viewCatalogue() : List CatalogueEntry \\
     noteInterest(Buyer, Lot) : Status \\
     openAuction(Lot) : Status \\
