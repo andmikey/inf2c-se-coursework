@@ -78,8 +78,9 @@ Due to its size, this is provided as the last page of the document.
 \item {\bf Lot: } We note the following:
   \begin{itemize}
     \item A Lot has a unique ID, provided by the Seller on creation. This can act as a primary key when storing information about this object in a database. 
-    \item We abstract the LotInformation and LotDescription 
-    \item 
+    \item We abstract the LotInformation and LotDescription attributes to separate classes, assuming nothing in particular about LotDescription.
+    \item A Lot stores a list of interested buyers associated with it, simplifying the process of notifying interested buyers when a bid is placed on it or when bidding is opened or closed
+    \item We associate a CatalogueEntry with a Lot: we assume this CatalogueEntry is created by AuctionHouse in some internal logic which we omit for brevity.
   \end{itemize}
 \item {\bf LotInformation: } This provides the (mostly) static data associated with the lot. While it would also make sense to store all this information in the Lot object, it is cleaner to abstract it to a separate class. By doing this, we separate the attributes of Lot which often change from those which are set at creation, which is beneficial for brevity and simplifies the interpretation of the Lot class. 
 \item {\bf LotStatus: } The Lot Status is, as per Coursework 1, the current state of the Lot. We introduced this state for two reasons:
