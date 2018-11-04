@@ -1,0 +1,5 @@
+#!/bin/bash
+pdflatex "class_diagram.tex"
+pdflatex "sequence_diagram.tex"
+pdflatex "Coursework 2.tex"
+pdflatex "Coursework 2.tex"
