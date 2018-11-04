@@ -1,0 +1,140 @@
+\documentclass[titlepage, 12pt, a3paper, landscape]{extarticle}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+
+\begin{document}
+\pagestyle{empty}
+\begin{tikzpicture}
+
+  \umlclass[x=24,y=-9]{Auctioneer}{
+    assignedLots : Lot
+  }{
+    openAuction(Lot) : Status \\
+    closeAuction(Lot) : Status \\
+    receiveMessage(Bid) % lot bid on
+  }
+
+  \umlclass[x=17,y=-10]{Buyer}{
+    interestedLots : List Lots
+  }
+  {
+    viewCatalogue() : List CatalogueEntry\\
+    bidOnLot(Lot, Bid) : Status\\
+    markInterestInLot(Lot) : Status
+  }
+
+  \umlclass[x=8, y=-10]{Seller}{
+    lotsOwned : List Lot
+  }
+  {
+    addLot(LotInformation, uniqueId : Integer) : Status
+  }
+
+  \umlclass[x=1, y=-14.5]{Lot}{
+    uniqueId : Integer \\
+    information : LotInformation \\
+    status : Integer \\
+    currentBid : Bid \\
+    interestedBuyers : List Buyer \\
+    catalogueEntry : CatalogueEntry
+  }
+  {
+    receiveBid(Bid) : Status \\
+    open() : Status \\
+    close() : Status
+  }
+
+  \umlclass[x=-0.5,y=-5]{LotInformation}{
+    seller : Seller \\
+    auctioneer : Auctioneer \\
+    startTime : DateTime \\
+    description : LotDescription \\
+    highEstimate : Money \\
+    lowEstimate : Money \\
+    reservePrice : Money \\
+    minimumBidIncrement : Money 
+  }
+  {
+  }
+
+  \umlclass[x=31,y=-10]{MemberOfPublic}{
+  }
+  {
+    viewCatalogue() : List CatalogueEntry
+  }
+
+  \umlclass[x=0,y=-21]{Bid}{
+    lot : Lot \\
+    buyer : Buyer \\
+    bidType : Integer \\
+    bidValue : Money 
+  }
+  {
+  }
+
+  \umlclass[x=25,y=-19]{AuctionHouse}{
+    addressbook : Map MessagingAddress Actor \\
+    catalogue : List CatalogueEntry \\
+    lots : List Lot \\
+    buyers : List Buyer \\
+    sellers : List Seller
+  }
+  {
+    registerBuyer(Buyer) : Status \\
+    registerSeller(Seller) : Status \\
+    addLot(Lot) : Status \\
+    viewCatalogue() : List CatalogueEntry \\
+    noteInterest(Buyer, Lot) : Status \\
+    openAuction(Lot) : Status \\
+    closeAuction(Lot) : Status \\
+    makeBid(Bid) : Status
+  }
+
+  \umlclass[type=interface, x=27, y=-1]{Actor}{
+  }
+  {
+    receiveMessage() \\
+    sendMessage()
+  }
+
+  \umlclass[x=19,y=-2]{RegisteredUser}{
+    username : String \\
+  }
+  {
+    
+  }
+
+  \umlclass[x=11,y=-5]{Client}{
+    personalDetails : PersonalDetails \\
+    bankingDetails : BankingDetails 
+  }
+  {
+  }
+
+  \umlemptyclass[x=11,y=-21]{CatalogueEntry}
+
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Seller}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Buyer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Lot}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{CatalogueEntry}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Auctioneer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{MemberOfPublic}
+
+  \umlassoc[mult1=*, mult2=1]{Bid}{Lot}
+  \umlassoc[mult1=*, mult2=1]{Lot}{Seller}
+  \umlassoc[mult1=1, mult2=1]{LotInformation}{Lot}
+  \umlassoc[mult1=1, mult2=1]{CatalogueEntry}{Lot}
+
+  \umlinherit{Seller}{Client}
+  \umlinherit{Buyer}{Client}
+  
+  \umlinherit{Auctioneer}{RegisteredUser}
+  \umlinherit{Client}{RegisteredUser}
+
+  \umlimpl{MemberOfPublic}{Actor}
+  \umlimpl{Auctioneer}{Actor}
+  \umlimpl{Buyer}{Actor}
+  \umlimpl{Seller}{Actor}
+\end{tikzpicture}
+\end{document}
