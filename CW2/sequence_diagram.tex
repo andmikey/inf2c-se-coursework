@@ -1,9 +1,16 @@
 \documentclass[titlepage, 12pt, a3paper]{extarticle}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{pdfpages}
+\lhead{Inf2C: SE Coursework 1}
+\rhead{s1703773 \& s1737075}
+\cfoot{\thepage~/~4}
+\pagestyle{fancy}
 
 \begin{document}
-\pagestyle{empty}
+\setcounter{page}{3}
 \Huge{Sequence diagram for use-case: Close lot auction}
 \begin{center}
   \includegraphics[width=.9\textwidth,height=.9\textheight,keepaspectratio]{seq.png}
