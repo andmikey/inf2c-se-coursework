@@ -87,3 +87,22 @@ assume that for buyer LotSold, can tell whether the buyer won the lot and change
 assume transfers use auction house account as intermediary - auction house can then take a cut
 no bankingdetails class - assumed to exist anologous to personaldetails
 the seller addlot function calls auctionhouse.createlot and adds it to its list of lots owned
+
+
+notes: criteria for a good design:
+- meets requirements
+- maintainable
+- straightforward to explain
+- makes appropriate use of existing technology, eg. reusable components
+
+cohesion: measure of strength of relationship between pieces of functionality within a component
+high cohesion desirable
+
+coupling: measure of strength of inter-connections between components
+low or loose coupling desirable
+
+other design principles:
+- abstraction (procedural / functional, data)
+- encapsulation / information hiding
+- separation of interface and implementation
+- decompostion, modularisation
