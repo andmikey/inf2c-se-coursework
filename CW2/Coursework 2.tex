@@ -29,162 +29,19 @@ We provide a software design for an auction house system, codenamed Auctionista.
 \newpage
 \section{Static model}
 \subsection{UML class model}
-We begin with a model of classes and their attributes and operations:\\\\
-\begin{tikzpicture}
-  \umlclass[x=-3.5]{User}{
-  }
-  { browseLots(void) : void \\
-  }
-  
-  \umlclass[y=-3.2,x=1.8]{RegisteredUser}{details : PersonalDetails \\
-    paymentDetails : BankDetails \\
-    contactDetails : ContactDetails \\
-    username : String \\
-  }{
-    RegisteredUser(PersonalDetails, BankDetails, ContactDetails, String) : RegisteredUser\\
-  }
-  
-  \umlclass[y=-7.5, x=-2.5]{Buyer}{
-    lotsInterestedIn : List \textless Lot\textgreater \\
-    lotsBidOn : List \textless Lot\textgreater \\
-    bidList : List \textless Bid\textgreater}
-  {
-    markInterestInLot(Lot) : boolean \\
-    removeInterestInLot(Lot) : boolean \\
-    bidOnLot(Lot, Bid) : boolean\\
-  }
+We begin with a model of classes and their attributes and operations.
 
-  \umlclass[x = 6, y=-6.5]{Seller}{
-    lotsOwned : List \textless Lot\textgreater \\
-  }
-  {
-    addLot(Lot, Auction) : boolean \\
-  }
-
-  \umlclass[x=9,y=0.5]{Auctioneer}{
-    lotsAssigned : List \textless Lot\textgreater \\
-  }
-  {
-    openBidding() : void \\
-    closeBidding() : void \\
-  }
-
-  \umlclass[x=-2.5, y=-13.2]{Lot}{
-    information : LotInformation \\
-    auctionStatus : Integer \\
-    currentPrice : Money \\ 
-    finalBid : Bid \\
-    interestedBuyers : List \textless Buyer\textgreater \\
-    bidList : List \textless Bid\textgreater \\
-  }
-  {
-    Lot(LotInformation) : Lot \\
-    % Lot(highEstimate Money, lowEstimate Money, reservePrice Money, \\
-    % minimumBidIncrement Money, seller Seller, auction Auction)
-    receiveBid(Buyer, Bid) : boolean\\
-    openBidding() : boolean \\
-    closeBidding() : boolean \\
-    setAuctioneer(Auctioneer) : boolean \\
-  }
-
-  \umlclass[x=6,y=-12.7]{LotInformation}{
-    % separate class as these don't change
-    seller : Seller \\
-    auction : Auction \\
-    auctioneer : Auctioneer \\
-    startTime : DateTime \\
-    description : LotDescription \\
-    highEstimate : Money \\
-    lowEstimate : Money \\
-    reservePrice : Money \\
-    minimumBidIncrement : Money \\
-  }
-  {
-    LotInformation(Seller, Auction, Auctioneer, \\DateTime, LotDescription, Money, \\Money, Money, Money) : LotInformation \\
-  }
-\end{tikzpicture}
-\newpage
-\begin{tikzpicture}
-  \umlclass{Auction}{
-    lots: List \textless Lot\textgreater \\
-    auctioneers: List \textless Lot\textgreater \\
-    startTime : DateTime \\
-    % auction has guaranteed end time, but a lot may not
-    endTime : DateTime \\   
-  }{
-    % nb. getters and setters are implied
-  }
-
-  \umlclass[y=-4.5]{Bid}{
-    lot : Lot \\
-    seller : Seller \\
-    buyer : Buyer \\
-    bidType : enum(Increment, JumpBid) \\
-    bidValue : Money
-  }{
-    Bid(Lot, Seller, Buyer, bidType, bidValue) : Bid \\
-  }
-
-  \umlclass[x=6]{Money}{
-    value : Float \\
-    currency : String \\
-  }
-  {
-    Money(Float, String) : Money 
-  }
-\end{tikzpicture}
-% \newpage
-\vspace{2em}\\Next we give a picture of associations between classes:\\\\
-\begin{tikzpicture}
-  % TODO add bid class
-  \umlsimpleclass[x=4, y=-6]{Buyer}
-  
-  \umlsimpleclass[x=0, y=0]{User}
-
-  \umlsimpleclass[x=4, y=-3]{Registered user}
-
-  \umlsimpleclass[x=4, y=0]{Seller}
-
-  \umlsimpleclass[x=9, y=0]{Auctioneer}
-
-  \umlsimpleclass[x=0, y=-3]{Guest user}
-
-  \umlsimpleclass[x=0, y=-6]{Auction house}
-
-  \umlsimpleclass[x=9, y=-3]{Lot}
-
-  \umlsimpleclass[x=13, y=-3]{Auction}
-
-  \umlsimpleclass[x=9, y=-6]{Bid}
-  
-  \umlassoc[mult1=1, mult2=*, name=bidson]{Buyer}{Lot}
-  \umlassoc[mult1=1, mult2=*, name=owns]{Seller}{Lot}
-  \umlassoc[mult1=1, mult2=*, name=in]{Auction}{Lot}
-  \umlassoc[mult1=*, mult2=*, name=of]{Auction}{Auctioneer}
-  \umlassoc[mult1=1, mult2=*, name=on]{Lot}{Bid}
-
-  \node[above, rotate=30] at (bidson-1) {bids on};
-  \node[above, rotate=-30] at (owns-1) {owns};
-  \node[below, rotate=0] at (in-1) {in};
-  \node[below, rotate=-35] at (of-1) {in charge of};
-  \node[above, rotate=-90] at (on-1) {placed on};
-  
-  \umlinherit{Registered user}{User}
-  \umlinherit{Buyer}{Registered user}
-  \umlinherit{Seller}{Registered user}
-  \umlinherit{Guest user}{User}
-\end{tikzpicture}
-\newpage
 \subsection{High-level description}
 
 \section{Dynamic models}
 \subsection{UML sequence diagram}
 \subsubsection{Close auction}
-Please see overleaf.
+
 \subsection{Behaviour descriptions}
 \subsubsection{Add lot}
 \subsubsection{Note interest}
 \subsubsection{Make bid}
-\includepdf[pages=1,fitpaper]{sequence_diagram}
+
+
 
 \end{document}
