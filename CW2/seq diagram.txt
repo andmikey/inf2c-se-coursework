@@ -1,62 +1,91 @@
 participant Auctioneer
+participant AuctionHouse
 participant Lot
-participant Auctionhouse
-participant Bank
+participant MessageService
 participant Buyer
 participant Seller
+participant BankingService
 
 activate Auctioneer
-Auctioneer -> Lot: closeAuction()
-activate Lot
-Lot --> Auctioneer:
-deactivate Lot
 
-deactivate Auctioneer
+Auctioneer -> AuctionHouse: closeAuction(Lot)
+activate AuctionHouse
+AuctionHouse -> Lot: close()
+Lot --> AuctionHouse: Status
 
-alt finalPrice < reservePrice
-activate Auctioneer
-Auctioneer -> Auctionhouse: saleFailed(Lot)
-activate Auctionhouse
-Auctionhouse -> Seller: message("Sale failed")
-activate Seller
-Seller -->Auctionhouse: 
-deactivate Seller
-Auctionhouse -->Auctioneer:
-deactivate Auctionhouse
+alt Lot already closed (Status failed)
+AuctionHouse --> Auctioneer: Status
+deactivate AuctionHouse
 deactivate Auctioneer
 end
 
-alt finalPrice >= reservePrice
+alt Reserve price not met
 activate Auctioneer
+activate AuctionHouse
 
-Auctioneer -> Auctionhouse: saleSucceeded(Lot)
-activate Auctionhouse
-Auctionhouse -> Seller: message("Sale succeeded")
+AuctionHouse -> AuctionHouse: getAddress(Seller)
+AuctionHouse -> MessageService: message(sellerAddress : MessagingAddress, LotSold, Lot)
+activate MessageService
+MessageService -> Seller: receiveMessage(LotSold, Lot)
 activate Seller
-Seller -->Auctionhouse: 
+Seller --> MessageService: Status
 deactivate Seller
-Auctionhouse -> Buyer: message("Lot won")
-activate Buyer
-Buyer -->Auctionhouse: 
-deactivate Buyer
+MessageService --> AuctionHouse: Status
+deactivate MessageService
 
-loop for each non-winning buyer
-Auctionhouse --> Buyer: message("Did not win lot")
+loop for each buyer
+AuctionHouse -> AuctionHouse: getAddress(Buyer)
+AuctionHouse -> MessageService: message(buyerAddress : MessagingAddress, LotSold, Lot)
+activate MessageService
+MessageService -> Buyer: receiveMessage(LotSold, Lot)
 activate Buyer
-Buyer --> Auctionhouse:
+Buyer --> MessageService: Status
 deactivate Buyer
+MessageService --> AuctionHouse: Status
+deactivate MessageService
+end 
+AuctionHouse --> Auctioneer: Status
+deactivate AuctionHouse
+deactivate Auctioneer
 end 
 
-Auctionhouse -> Bank: transfer(buyerDetails, auctionhouseDetails, finalPrice + buyersPremium)
-activate Bank
-Bank -->Auctionhouse:
-deactivate Bank
+alt Reserve price met
+activate Auctioneer
+activate AuctionHouse
 
-Auctionhouse -> Bank: transfer(auctionhouseDetails, auctionhouseDetails, finalPrice - sellersCommision)
-activate Bank
-Bank -->Auctionhouse:
-deactivate Bank
-Auctionhouse -->Auctioneer:
-deactivate Auctionhouse
+AuctionHouse -> AuctionHouse: getAddress(Seller)
+AuctionHouse -> MessageService: message(sellerAddress : MessagingAddress, LotSold, Lot)
+activate MessageService
+MessageService -> Seller: receiveMessage(LotSold, Lot)
+activate Seller
+Seller --> MessageService: Status
+deactivate Seller
+MessageService --> AuctionHouse: Status
+deactivate MessageService
+
+loop for each buyer
+AuctionHouse -> AuctionHouse: getAddress(Buyer)
+AuctionHouse -> MessageService: message(buyerAddress : MessagingAddress, LotSold, Lot)
+activate MessageService
+MessageService -> Buyer: receiveMessage(LotSold, Lot)
+activate Buyer
+Buyer --> MessageService: Status
+deactivate Buyer
+MessageService --> AuctionHouse: Status
+deactivate MessageService
+end 
+
+AuctionHouse -> BankingService: transfer(buyerAccount, buyerAuthorization, auctionHouseAccount, finalPrice + buyersPremium)
+activate BankingService
+BankingService --> AuctionHouse: Status
+deactivate BankingService
+
+AuctionHouse -> BankingService: transfer(auctionHouseAccount, auctionHouseAuthorization, sellerAccount, finalPrice - sellersCommission)
+activate BankingService
+BankingService --> AuctionHouse: Status
+deactivate BankingService
+
+AuctionHouse --> Auctioneer: Status
+deactivate AuctionHouse
 deactivate Auctioneer
 end 
