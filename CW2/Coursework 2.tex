@@ -170,7 +170,9 @@ buyer --- bidOnLot(bid) ---> buyer
     AuctionHouse --- getLot -------> bid // implicit getter
     AuctionHouse <- - activeLot <- - bid // return lot which bid refers to
     AuctionHouse --- receiveBid(bid) ---> activeLot
-    AuctionHouse <- - bidSuccessful - - - activeLot 
+    AuctionHouse <- - bidSuccessful - - - activeLot  
+    // bidSuccessful is a Status variable      
+    // containing whether the bid was successfully placed
     // If bid is insufficient, simply skip the ensuing loop
 ALT Bid is insufficient // simply return to buyer and skip the remaining operations
   buyer <- - - bidSuccessful - - AuctionHouse
@@ -180,8 +182,8 @@ ALT Bid is sufficient // continue to notify all relevant actors of new bid
     AuctionHouse --- receiveMessage(BidPlacedOnLot, bid.lot) 
                  --> bid.lot.information.auctioneer 
                 // Use implicit getters on current bid to get auctioneer that
-                // is currently in charge
-                // Notify auctioneer of new bid
+                // is currently in charge of that lot,
+                // and notify auctioneer of new bid
     LOOP [over all bid.lot.interestedBuyers] // Use implicit getters on current
                                              // bid to get all current
                                              // interested buyers
