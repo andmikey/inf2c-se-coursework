@@ -193,7 +193,46 @@ public class MoneyTest {
 	String result = val1.toString();
 	assertEquals("10.00", result);
     }
-    
+
+    @Test    
+    public void compareGreater() {
+        Money val1 = new Money("12.34");
+        Money val2 = new Money("0.66");
+        int result = val1.compareTo(val2);
+        assertEquals(1, result);
+    }
+
+    @Test    
+    public void compareLess() {
+        Money val1 = new Money("12.34");
+        Money val2 = new Money("0.66");
+        int result = val2.compareTo(val1);
+        assertEquals(-1, result);
+    }
+
+    @Test    
+    public void compareSame() {
+        Money val1 = new Money("12.34");
+        int result = val1.compareTo(val1);
+        assertEquals(0, result);
+    }
+
+    @Test    
+    public void compareWithSameRounding() {
+        Money val1 = new Money("12.005");
+	Money val2 = new Money("12.01");
+        int result = val1.compareTo(val2);
+        assertEquals(0, result);
+    }
+
+    @Test    
+    public void compareWithDifferentRounding() {
+        Money val1 = new Money("12.004");
+	Money val2 = new Money("12.01");
+        int result = val1.compareTo(val2);
+        assertEquals(-1, result);
+    }
+
     /*
      * Put all class modifications above.
      ***********************************************************************
