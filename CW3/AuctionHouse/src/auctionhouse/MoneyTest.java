@@ -42,6 +42,45 @@ public class MoneyTest {
         assertEquals("12.00", result.toString());
     }
 
+    @Test    
+    public void testAddVerySmallNumber() {
+        Money val1 = new Money("12");
+        Money val2 = new Money("0.00005");
+        Money result = val1.add(val2);
+        assertEquals("12.00", result.toString());
+    }
+
+    @Test    
+    public void testSub() {
+        Money val1 = new Money("12.34");
+        Money val2 = new Money("0.34");
+        Money result = val1.subtract(val2);
+        assertEquals("12.00", result.toString());
+    }
+
+    @Test    
+    public void testSubNegative() {
+        Money val1 = new Money("12");
+        Money val2 = new Money("-1");
+        Money result = val1.subtract(val2);
+        assertEquals("13.00", result.toString());
+    }
+
+    @Test    
+    public void testSubZero() {
+        Money val1 = new Money("12");
+        Money val2 = new Money("0");
+        Money result = val1.subtract(val2);
+        assertEquals("12.00", result.toString());
+    }
+
+    @Test    
+    public void testSubVerySmallNumber() {
+        Money val1 = new Money("12");
+        Money val2 = new Money("0.00005");
+        Money result = val1.subtract(val2);
+        assertEquals("12.00", result.toString());
+    }
     /*
      * Put all class modifications above.
      ***********************************************************************
