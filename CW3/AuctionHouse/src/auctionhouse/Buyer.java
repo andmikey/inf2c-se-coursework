@@ -23,6 +23,8 @@ public class Buyer {
         return null;
     }
     
+    // Mocked until Bid is implemented
+    //public Status bidOnLot (Bid bid) {
     public Status bidOnLot () {
         return null;
     }
