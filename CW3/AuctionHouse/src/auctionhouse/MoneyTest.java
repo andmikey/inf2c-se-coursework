@@ -81,6 +81,46 @@ public class MoneyTest {
         Money result = val1.subtract(val2);
         assertEquals("12.00", result.toString());
     }
+
+    @Test
+    public void addPercent() {
+	Money val1 = new Money("10");
+	double percent = 10.0;
+	Money result = val1.addPercent(percent);
+	assertEquals("11.00", result.toString());
+    }
+
+    @Test
+    public void addZeroPercent() {
+	Money val1 = new Money("10");
+	double percent = 0.0;
+	Money result = val1.addPercent(percent);
+	assertEquals("10.00", result.toString());
+    }
+    
+    @Test
+    public void addNegativePercent() {
+	Money val1 = new Money("10");
+	double percent = -10.0;
+	Money result = val1.addPercent(percent);
+	assertEquals("9.00", result.toString());
+    }
+    
+    @Test
+    public void addHundredPercent() {
+	Money val1 = new Money("10");
+	double percent = 100.0;
+	Money result = val1.addPercent(percent);
+	assertEquals("20.00", result.toString());
+    }
+
+    @Test
+    public void addVerySmallPercent() {
+	Money val1 = new Money("10");
+	double percent = 0.0005;
+	Money result = val1.addPercent(percent);
+	assertEquals("10.00", result.toString());
+    }
     /*
      * Put all class modifications above.
      ***********************************************************************
