@@ -29,3 +29,4 @@ Today:
   - Timeouts
   - Disable tests by platform
   - https://www.michael-thomas.com/tech/java/junit/junit4_survival_guide.htm
+- Add tests to MoneyTest
