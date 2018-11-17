@@ -1,0 +1,31 @@
+* [2018-11-17 Sat]
+Today:
+- Reading over spec with partner
+  - What do we need to do?
+  - How are we going to split the work?
+- Code conventions
+  - Keep README? -> better to do this in project report?
+  - Note to add beginning comments to file
+  - public -> protected -> private
+  - Group methods by functionality
+  - Consistency in indentation
+  - Note difference in comments vs doc comments
+- Logging
+  - Different uses of logging
+  - https://stackoverflow.com/questions/5950557/good-examples-using-java-util-logging
+- JavaDoc 
+  - Both familiar with it; seems reasonable
+- JUnit
+  - @Before / @After - start/end of each test
+  - @BeforeClass / ... - start/end of all tests in given class/suite
+  - Expected exceptions
+  - Assertions as expected
+    - assertTrue / assertFalse
+    - assertEquals (with tolerance)
+    - assertNull / notNull
+    - assertSame / notSame
+  - Naming conventions for tests
+  - Tests should not be order-dependent (http://www.vogella.com/tutorials/JUnit/article.html)
+  - Timeouts
+  - Disable tests by platform
+  - https://www.michael-thomas.com/tech/java/junit/junit4_survival_guide.htm
