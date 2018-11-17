@@ -233,6 +233,84 @@ public class MoneyTest {
         assertEquals(-1, result);
     }
 
+    @Test    
+    public void lessEqualGreater() {
+        Money val1 = new Money("12.34");
+        Money val2 = new Money("0.66");
+        Boolean result = val1.lessEqual(val2);
+        assertEquals(false, result);
+    }
+
+    @Test    
+    public void lessEqualLess() {
+        Money val1 = new Money("12.34");
+        Money val2 = new Money("0.66");
+        Boolean result = val2.lessEqual(val1);
+        assertEquals(true, result);
+    }
+
+    @Test    
+    public void lessEqualSame() {
+        Money val1 = new Money("12.34");
+        Boolean result = val1.lessEqual(val1);
+        assertEquals(true, result);
+    }
+
+    @Test    
+    public void lessWithSameRounding() {
+        Money val1 = new Money("12.005");
+	Money val2 = new Money("12.01");
+        Boolean result = val1.lessEqual(val2);
+        assertEquals(true, result);
+    }
+
+    @Test    
+    public void lessWithDifferentRounding() {
+        Money val1 = new Money("12.004");
+	Money val2 = new Money("12.01");
+        Boolean result = val1.lessEqual(val2);
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void equals() {
+        Money val1 = new Money("12.01");
+	Money val2 = new Money("12.01");
+        Boolean result = val1.equals(val2);
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void equalsNot() {
+        Money val1 = new Money("13");
+	Money val2 = new Money("12");
+        Boolean result = val1.equals(val2);
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void equalsWithRounding() {
+        Money val1 = new Money("12.005");
+	Money val2 = new Money("12.01");
+        Boolean result = val1.equals(val2);
+        assertEquals(true, result);
+    }
+    
+    @Test
+    public void equalsWithoutRounding() {
+        Money val1 = new Money("12.004");
+	Money val2 = new Money("12.01");
+        Boolean result = val1.equals(val2);
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void equalsNonMoneyObject() {
+	Money val1 = new Money("12");
+	int val2 = 12;
+	Boolean result = val1.equals(val2);
+	assertEquals(false, result); 
+    }
     /*
      * Put all class modifications above.
      ***********************************************************************
