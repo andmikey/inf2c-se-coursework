@@ -18,6 +18,10 @@ public class Seller {
 
     private ArrayList<Lot> lotsOwned;
 
+    public Seller (String name, String bankAccount, AuctionHouse auctionhouse) {
+
+    }
+    
     public Status addLot (Lot lot) {
         return null;
     }
