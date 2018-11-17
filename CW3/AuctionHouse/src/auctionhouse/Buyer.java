@@ -16,8 +16,7 @@ public class Buyer {
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
 
-    // Mocked until Lot is implemented
-    //private ArrayList<Lot> interestedLots;
+    private ArrayList<Lot> interestedLots;
 
     public ArrayList<CatalogueEntry> viewCatalogue () {
         return null;

@@ -16,12 +16,9 @@ public class Seller {
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
 
-    // Mocked until Lot is implemented
-    //private ArrayList<Lot> lotsOwned;
+    private ArrayList<Lot> lotsOwned;
 
-    // Mocked until Lot is implemented
-    //public Status addLot (Lot lot) {
-    public Status addLot () {
+    public Status addLot (Lot lot) {
         return null;
     }
     
