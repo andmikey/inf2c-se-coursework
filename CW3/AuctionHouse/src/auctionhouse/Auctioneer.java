@@ -11,22 +11,18 @@ import java.util.logging.Logger;
  * @author djt
  *
  */
-public class Buyer {
+public class Auctioneer {
 
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
 
-    private ArrayList<Lot> interestedLots;
+    private ArrayList<Lot> assignedLots;
 
-    public ArrayList<CatalogueEntry> viewCatalogue () {
+    public Status openAuction (Lot lot) {
         return null;
     }
     
-    public Status bidOnLot (Bid bid) {
-        return null;
-    }
-    
-    public Status markInterestInLot () {
+    public Status closeAuction (Lot lot) {
         return null;
     }
     
@@ -35,3 +31,4 @@ public class Buyer {
     }
     
 }
+

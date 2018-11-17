@@ -21,13 +21,11 @@ public class Lot {
     private Money reservePrice;
     private LotStatus status;
     private ArrayList<Buyer> interestedBuyers;
-    // Mocked until Bid is implemented
-    //private Bid currentBid;
+    private Bid currentBid;
+    // Commented out until CatalogueEntry is defined
     //private CatalogueEntry entry;
 
-    // Mocked until Bid is implemented
-    //public Status receiveBid (Bid bid) {
-    public Status receiveBid () {
+    public Status receiveBid (Bid bid) {
         return null;
     }
     
