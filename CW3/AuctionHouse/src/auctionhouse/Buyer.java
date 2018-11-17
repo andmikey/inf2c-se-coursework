@@ -18,6 +18,10 @@ public class Buyer {
 
     private ArrayList<Lot> interestedLots;
 
+    public Buyer (String name, String bankAccount, String bankAuthCode, AuctionHouse auctionhouse) {
+
+    }
+    
     public ArrayList<CatalogueEntry> viewCatalogue () {
         return null;
     }
