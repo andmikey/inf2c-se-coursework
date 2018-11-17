@@ -1,0 +1,25 @@
+- [ ] Construct code
+  - Add methods to Auctionhouse
+  - Create relevant classes with support for message handling as needed
+    - Interface for Actor as per CW2 
+      - Buyer, seller, auctioneer
+      - Does member of public need to be implemented as a class?
+      - Address property for use with messagingservice
+    - Lot
+    - Bid
+- [ ] Write Javadoc comments for Money class
+  - Trivial
+  - Do we need to write comments for other classes too?
+  - Might be good to do so - just for practice
+- [ ] Create unit tests for MoneyTest
+  - Trivial
+- [ ] Create system-level tests for our AuctionHouse implementation
+  - A test for each use-case
+  - Unit tests for each class, too? 
+    - To a certain extent handled by Auctionhouse impl testing
+- [ ] Add logging code to all of implementation
+- [ ] Keep project log
+- [ ] Write report
+  - [ ] UML Class diagram
+  - [ ] High-level design description
+  - [ ] Implementation decisions
