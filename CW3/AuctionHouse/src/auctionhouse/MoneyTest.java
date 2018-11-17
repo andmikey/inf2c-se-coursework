@@ -26,7 +26,21 @@ public class MoneyTest {
      ***********************************************************************
      * Add all your JUnit tests for the Money class below.
      */
+    @Test    
+    public void testAddNegative() {
+        Money val1 = new Money("12");
+        Money val2 = new Money("-1");
+        Money result = val1.add(val2);
+        assertEquals("11.00", result.toString());
+    }
 
+    @Test    
+    public void testAddZero() {
+        Money val1 = new Money("12");
+        Money val2 = new Money("0");
+        Money result = val1.add(val2);
+        assertEquals("12.00", result.toString());
+    }
 
     /*
      * Put all class modifications above.
