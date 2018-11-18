@@ -4,6 +4,7 @@
 package auctionhouse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,6 +23,14 @@ public class AuctionHouseImp implements AuctionHouse {
           + "MESSAGE IN: " + messageName + LS
           + "-------------------------------------------------------------";
     }
+
+    private ArrayList<Buyer> buyers;
+    private ArrayList<Seller> sellers;
+    private ArrayList<Auctioneer> Auctioneers;
+
+    //Commented out until we have a Actor superclass
+    //private HashMap<String, Actor> addressBook;
+    private ArrayList<CatalogueEntry> catalogue;
    
     public AuctionHouseImp(Parameters parameters) {
 
