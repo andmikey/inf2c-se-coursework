@@ -238,7 +238,7 @@ public class AuctionHouseTest {
     
     @Test
     public void testAddSellerSimple() {
-        logger.info(makeBanner("testAddSellerSimple"));
+        logger.info(makeBanner("Adding a seller where no sellers exist should pass"));
 
         Status res = house.registerSeller("Seller", "@SellerAddr", "SellerAcc");
         assertOK(res);
@@ -246,7 +246,8 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddSellerWithDuplicateAddress() {
-        logger.info(makeBanner("testAddSellerWithDuplicateAddress"));
+        logger.info(makeBanner("Adding a seller where another seller with the same " +
+                               "address exists should fail"));
 
         assertOK(house.registerSeller("Seller", "@SellerAddr", "SellerAcc"));
         assertError(house.registerSeller("Seller2", "@SellerAddr", "SellerAcc"));
@@ -254,21 +255,21 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddSellerWithNullName() {
-        logger.info(makeBanner("testAddSellerWithNullName"));
+        logger.info(makeBanner("Adding a seller with a null name should fail"));
 
         assertError(house.registerSeller(null, "@SellerAddr", "SellerAcc"));
     }
     
     @Test
     public void testAddSellerWithNullAddress() {
-        logger.info(makeBanner("testAddSellerWithNull"));
+        logger.info(makeBanner("Adding a seller with a null address should fail"));
 
         assertError(house.registerSeller("Seller", null, "SellerAcc"));
     }
 
     @Test
     public void testAddSellerWithNullBankAcc() {
-        logger.info(makeBanner("testAddSellerWithNullBankAcc"));
+        logger.info(makeBanner("Adding a seller with a null bank account should fail"));
 
         assertError(house.registerSeller("Seller", "@SellerAddr", null));
     }
@@ -278,7 +279,7 @@ public class AuctionHouseTest {
      */
     @Test
     public void testAddBuyerSimple() {
-        logger.info(makeBanner("testAddBuyerSimple"));
+        logger.info(makeBanner("Adding a buyer where no buyers exist should pass"));
 
         Status res = house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", "BuyerAuth");
         assertOK(res);
@@ -286,36 +287,46 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddBuyerWithDuplicateAddress() {
-        logger.info(makeBanner("testAddBuyerWithDuplicateAddress"));
+        logger.info(makeBanner("Adding a buyer where a buyer with the same " +
+                               "address exists should fail"));
 
         assertOK(house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", "BuyerAuth"));
         assertError(house.registerBuyer("Buyer2", "@BuyerAddr", "BuyerAcc", "BuyerAuth"));
     }
 
     @Test
+    public void testAddBuyerWithDuplicateName() {
+        logger.info(makeBanner("Adding a buyer where a buyer with the same " +
+                               "name exists should fail"));
+
+        assertOK(house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", "BuyerAuth"));
+        assertError(house.registerBuyer("Buyer", "@Buyer2Addr", "BuyerAcc", "BuyerAuth"));
+    }
+
+    @Test
     public void testAddBuyerWithNullName() {
-        logger.info(makeBanner("testAddBuyerWithNullName"));
+        logger.info(makeBanner("Adding a buyer with a null name should fail"));
 
         assertError(house.registerBuyer(null, "@BuyerAddr", "BuyerAcc", "BuyerAuth"));
     }
     
     @Test
     public void testAddBuyerWithNullAddress() {
-        logger.info(makeBanner("testAddBuyerWithNull"));
+        logger.info(makeBanner("Adding a buyer with a null address should fail"));
 
         assertError(house.registerBuyer("Buyer", null, "BuyerAcc", "BuyerAuth"));
     }
 
     @Test
     public void testAddBuyerWithNullBankAcc() {
-        logger.info(makeBanner("testAddBuyerWithNullBankAcc"));
+        logger.info(makeBanner("Adding a buyer with a null bank account should fail"));
 
         assertError(house.registerBuyer("Buyer", "@BuyerAddr", null, "BuyerAuth"));
     }
     
     @Test
     public void testAddBuyerWithNullBankAuth() {
-        logger.info(makeBanner("testAddBuyerWithNullBankAcc"));
+        logger.info(makeBanner("Adding a buyer with a null bank authorisation should fail"));
 
         assertError(house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", null));
     }
@@ -323,12 +334,9 @@ public class AuctionHouseTest {
     /*
      * addLot tests
      */
-    //     assertOK(house.registerSeller("SellerY", "@SellerY", "SY A/C"));       
-    //     assertOK(house.registerSeller("SellerZ", "@SellerZ", "SZ A/C")); 
-
     @Test
     public void testSimpleAddLot() {
-        logger.info(makeBanner("testSimpleAddLot"));
+        logger.info(makeBanner("Adding a lot where no lots exist should pass"));
         runStory(1);
 
         assertOK(house.addLot("SellerY", 1, "Foo", new Money("0.0")));
@@ -336,7 +344,7 @@ public class AuctionHouseTest {
     
     @Test
     public void testAddLotDuplicate() {
-        logger.info(makeBanner("testAddLotDuplicate"));
+        logger.info(makeBanner("Adding a lot with a duplicate number should fail"));
         runStory(1);
 
         assertOK(house.addLot("SellerY", 1, "Foo", new Money("0.0")));
@@ -345,7 +353,7 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddLotSellerNotExists() {
-        logger.info(makeBanner("testSimpleAddLot"));
+        logger.info(makeBanner("Adding a lot with a non-existent seller should fail"));
         runStory(1);
 
         assertError(house.addLot("SellerX", 1, "Foo", new Money("0.0")));
@@ -353,7 +361,7 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddLotNegativeReservePrice() {
-        logger.info(makeBanner("testSimpleAddLot"));
+        logger.info(makeBanner("Adding a lot with a negative reserve price should fail"));
         runStory(1);
 
         assertError(house.addLot("SellerY", 1, "Foo", new Money("-1.0")));
@@ -361,7 +369,7 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddLotNullSeller() {
-        logger.info(makeBanner("testSimpleAddLot"));
+        logger.info(makeBanner("Adding a lot with a null seller should fail"));
         runStory(1);
 
         assertError(house.addLot(null, 1, "Foo", new Money("1.0")));
@@ -369,7 +377,7 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddLotNullDescription() {
-        logger.info(makeBanner("testSimpleAddLot"));
+        logger.info(makeBanner("Adding a lot with a null description should fail"));
         runStory(1);
 
         assertError(house.addLot("SellerY", 1, null, new Money("1.0")));
@@ -377,9 +385,10 @@ public class AuctionHouseTest {
 
     @Test
     public void testAddLotNullPrice() {
-        logger.info(makeBanner("testSimpleAddLot"));
+        logger.info(makeBanner("Adding a lot with a null price should fail"));
         runStory(1);
 
         assertError(house.addLot("SellerY", 1, "Foo", null));
     }
+
 }
