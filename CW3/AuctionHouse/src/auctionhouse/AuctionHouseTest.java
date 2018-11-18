@@ -52,7 +52,7 @@ public class AuctionHouseTest {
     private static Logger logger;
 
     // Update this field to limit logging.
-    public static Level loggingLevel = Level.ALL;
+    public static Level loggingLevel = Level.FINE;
 
     private static final String LS = System.lineSeparator();
 
@@ -230,6 +230,15 @@ public class AuctionHouseTest {
         logger.info(makeBanner("testCloseAuctionWithSale"));
         runStory(8);
     }
-     
+
+    @Test
+    public void testAddSellerSimple() {
+        logger.info(makeBanner("testAddSellerSimple"));
+
+        Status res = house.registerSeller("Seller", "@SellerAddr", "SellerAcc");
+        System.out.println("hello!");
+        System.out.println(res);
+        // assertOK(res);
+    }
     
 }
