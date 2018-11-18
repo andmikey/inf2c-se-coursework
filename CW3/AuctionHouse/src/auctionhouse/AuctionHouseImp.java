@@ -142,7 +142,8 @@ public class AuctionHouseImp implements AuctionHouse {
             String description,
             Money reservePrice) {
         logger.fine(startBanner("addLot " + sellerName + " " + number));
-        
+
+        // Check no attributes are null
 	    if (sellerName == null) {
 	        return Status.error("Cannot add a lot without a seller");
 	    }
@@ -152,6 +153,12 @@ public class AuctionHouseImp implements AuctionHouse {
 	    else if (reservePrice == null) {
 	        return Status.error("Cannot add a lot without a reserve price");
 	    }
+
+        // Check reserve price isn't less than zero
+        Money zero = new Money("0.0");
+        if (reservePrice.compareTo(zero) < 0) {
+            return Status.error("Reserve price of lot cannot be less than zero");
+        }
         
 	    // Check there's no catalogue entries with the same number
 	    // Note that we can't use .equals as it compares number, desc, *and* status

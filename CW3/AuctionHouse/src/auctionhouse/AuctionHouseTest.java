@@ -351,5 +351,35 @@ public class AuctionHouseTest {
         assertError(house.addLot("SellerX", 1, "Foo", new Money("0.0")));
     }
 
+    @Test
+    public void testAddLotNegativeReservePrice() {
+        logger.info(makeBanner("testSimpleAddLot"));
+        runStory(1);
 
+        assertError(house.addLot("SellerY", 1, "Foo", new Money("-1.0")));
+    }
+
+    @Test
+    public void testAddLotNullSeller() {
+        logger.info(makeBanner("testSimpleAddLot"));
+        runStory(1);
+
+        assertError(house.addLot(null, 1, "Foo", new Money("1.0")));
+    }
+
+    @Test
+    public void testAddLotNullDescription() {
+        logger.info(makeBanner("testSimpleAddLot"));
+        runStory(1);
+
+        assertError(house.addLot("SellerY", 1, null, new Money("1.0")));
+    }
+
+    @Test
+    public void testAddLotNullPrice() {
+        logger.info(makeBanner("testSimpleAddLot"));
+        runStory(1);
+
+        assertError(house.addLot("SellerY", 1, "Foo", null));
+    }
 }
