@@ -16,7 +16,8 @@ public class Lot {
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
 
-    private Integer uniqueId;
+    private int uniqueId;
+    private Seller seller;
     private String description;
     private Money reservePrice;
     private LotStatus status;
@@ -25,6 +26,16 @@ public class Lot {
     // Commented out until CatalogueEntry is defined
     //private CatalogueEntry entry;
 
+    public Lot(Seller seller, int id, String description, Money reservePrice) {
+	this.seller = seller;
+	this.uniqueId = id;
+	this.description = description;
+	this.reservePrice = reservePrice;
+	this.status = LotStatus.UNSOLD;
+	this.interestedBuyers = null;
+	this.currentBid = null;
+    }
+    
     public Status receiveBid (Bid bid) {
         return null;
     }

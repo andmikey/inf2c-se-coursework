@@ -73,6 +73,7 @@ public class AuctionHouseImp implements AuctionHouse {
 	}
 
 	// Find the seller
+	// TODO add this as separate method to also apply to buyers / auctioneers
 	boolean foundSeller = false;
 	Seller assocSeller = null;
 
@@ -89,7 +90,8 @@ public class AuctionHouseImp implements AuctionHouse {
 				", so lot cannot be added");
 	}
 	
-	
+	Lot newLot = new Lot(assocSeller, number, description, reservePrice);
+
         return Status.OK();    
     }
 
