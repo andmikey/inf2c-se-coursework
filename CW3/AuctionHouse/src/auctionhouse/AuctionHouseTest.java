@@ -236,9 +236,7 @@ public class AuctionHouseTest {
         logger.info(makeBanner("testAddSellerSimple"));
 
         Status res = house.registerSeller("Seller", "@SellerAddr", "SellerAcc");
-        System.out.println("hello!");
-        System.out.println(res);
-        // assertOK(res);
+        assertOK(res);
     }
     
 }
