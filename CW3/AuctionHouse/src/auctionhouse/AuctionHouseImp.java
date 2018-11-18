@@ -226,7 +226,31 @@ public class AuctionHouseImp implements AuctionHouse {
             String auctioneerAddress,
             int lotNumber) {
         logger.fine(startBanner("openAuction " + auctioneerName + " " + lotNumber));
-        
+
+        // Make sure lot exists
+        Lot lot = this.lots.get(lotNumber);
+        if (lot == null) {
+            return Status.error("Lot with number " + lotNumber + " found.");
+        }
+
+        // Make sure lot can be opened
+        Status openingAttempt = lot.open();
+        if (openingAttempt.kind != Status.Kind.ERROR) {
+            return openingAttempt;
+        }
+
+        // Message seller of lot that it has gone on auction
+        Seller seller = lot.getSeller();
+        String addr = seller.getAddress();
+        this.parameters.messagingService.auctionOpened(addr, lotNumber);
+
+        // Notify all interested buyers of a lot that it has gone on auction
+        ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
+        for (Buyer interestedBuyer : interestedBuyers) {
+            addr = interestedBuyer.getAddress();
+            this.parameters.messagingService.auctionOpened(addr, lotNumber);
+        }
+
         return Status.OK();
     }
 
