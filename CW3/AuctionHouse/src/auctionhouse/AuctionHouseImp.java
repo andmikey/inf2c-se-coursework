@@ -32,9 +32,11 @@ public class AuctionHouseImp implements AuctionHouse {
     //Commented out until we have a Actor superclass
     private HashMap<String, Actor> addressBook;
     private ArrayList<CatalogueEntry> catalogue;
+
+    private Parameters parameters;
    
     public AuctionHouseImp(Parameters parameters) {
-
+        this.parameters = parameters;
     }
 
     public Status registerBuyer(
