@@ -18,18 +18,8 @@ public class Buyer extends Client {
 
     private ArrayList<Lot> interestedLots;
 
-    private String name;
-    private String bankAccount;
-    private String bankAuthCode;
-
-    private AuctionHouse auctionhouse;
-
     public Buyer (String username, String address, AuctionHouse auctionhouse, String bankAuthCode, String bankAccount) {
         super(username, address, auctionhouse, bankAuthCode, bankAccount);
-    }
-    
-    public ArrayList<CatalogueEntry> viewCatalogue () {
-        return null;
     }
     
     public Status bidOnLot (Bid bid) {
@@ -38,18 +28,6 @@ public class Buyer extends Client {
     
     public Status markInterestInLot () {
         return null;
-    }
-    
-    public Status receiveMessage () {
-        return null;
-    }
-
-    public String getBankAccount () {
-	return this.bankAccount;
-    }
-
-    public String getBankAuthCode () {
-	return this.bankAuthCode;
     }
     
 }
