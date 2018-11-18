@@ -235,7 +235,8 @@ public class AuctionHouseImp implements AuctionHouse {
 
         // Make sure lot can be opened
         Status openingAttempt = lot.open();
-        if (openingAttempt.kind != Status.Kind.ERROR) {
+        if (openingAttempt.kind == Status.Kind.ERROR) {
+            // If lot opening fails, return the error that it failed with
             return openingAttempt;
         }
 
