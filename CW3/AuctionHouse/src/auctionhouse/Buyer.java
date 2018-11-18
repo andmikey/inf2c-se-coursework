@@ -18,6 +18,12 @@ public class Buyer {
 
     private ArrayList<Lot> interestedLots;
 
+    private String name;
+    private String bankAccount;
+    private String bankAuthCode;
+
+    private AuctionHouse auctionhouse;
+
     public Buyer (String name, String bankAccount, String bankAuthCode, AuctionHouse auctionhouse) {
 
     }
@@ -36,6 +42,14 @@ public class Buyer {
     
     public Status receiveMessage () {
         return null;
+    }
+
+    public String getBankAccount () {
+	return this.bankAccount;
+    }
+
+    public String getBankAuthCode () {
+	return this.bankAuthCode;
     }
     
 }
