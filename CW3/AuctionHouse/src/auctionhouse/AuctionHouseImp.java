@@ -43,6 +43,8 @@ public class AuctionHouseImp implements AuctionHouse {
             String bankAccount,
             String bankAuthCode) {
         logger.fine(startBanner("registerBuyer " + username));
+        String baseMessage = "registerBuyer " + username + ": ";
+        
         if (username == null) {
             return Status.error("Cannot register a buyer with a null username");
         }
@@ -55,23 +57,25 @@ public class AuctionHouseImp implements AuctionHouse {
         else if (bankAuthCode == null) {
             return Status.error("Cannot register a buyer with no bank auth code");
         }
-
-        Buyer existingBuyer = findBuyer(username);
-
+        
+        logger.fine(baseMessage + "checking address is not duplicate");
         Actor a = addressBook.get(address);
-
         if (a != null) {
             return Status.error("Address " + address + " already belongs to an " +
                                 "existing user, cannot register buyer");
         }
         
+        logger.fine(baseMessage + "checking username is not duplicate");        
+        Buyer existingBuyer = findBuyer(username);        
         if (existingBuyer != null) {
             return Status.error("Username " + username + " already belongs to an " +
                                 "existing buyer, cannot register buyer");
         }
-        
+
+        logger.fine(baseMessage + "creating Buyer object");        
         Buyer buyer = new Buyer(username, address, this, bankAuthCode, bankAccount);
 
+        logger.fine(baseMessage + "adding to relevant lists");        
         buyers.add(buyer);
         addressBook.put(address, buyer);
         
