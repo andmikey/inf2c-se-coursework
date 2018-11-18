@@ -54,6 +54,8 @@ public class Lot {
                 return Status.error("Bid must be greater than current price " +
                                     this.currentPrice.toString());
             }
+            this.currentPrice = bid.value;
+            this.currentBid = bid;
         }
 
         return Status.OK();
