@@ -104,10 +104,11 @@ public class AuctionHouseImp implements AuctionHouse {
         logger.fine(baseMessage + "checking address is not duplicate");
         Actor a = addressBook.get(address);
         if (a != null) {
+            logger.fine(baseMessage + "address is duplicate, returning error");
             return Status.error("Address " + address + " already belongs to an " +
                                 "existing user, cannot register seller");
         }
-        
+
         logger.fine(baseMessage + "checking username is not duplicate");        
         Seller existingSeller = findSeller(username);        
         if (existingSeller != null) {
