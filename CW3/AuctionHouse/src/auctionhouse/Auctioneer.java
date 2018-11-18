@@ -17,7 +17,12 @@ public class Auctioneer {
     private static final String LS = System.lineSeparator();
 
     private ArrayList<Lot> assignedLots;
+    private AuctionHouse auctionhouse;
 
+    public Auctioneer (AuctionHouse auctionhouse) {
+	this.auctionhouse = auctionhouse;
+    }
+    
     public Status openAuction (Lot lot) {
         return null;
     }
