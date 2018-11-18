@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * @author djt
  *
  */
-public class Auctioneer {
+public class Auctioneer extends RegisteredUser {
 
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
@@ -19,8 +19,8 @@ public class Auctioneer {
     private ArrayList<Lot> assignedLots;
     private AuctionHouse auctionhouse;
 
-    public Auctioneer (AuctionHouse auctionhouse) {
-	this.auctionhouse = auctionhouse;
+    public Auctioneer (String username, String address, AuctionHouse auctionhouse) {
+        super(username, address, auctionhouse);
     }
     
     public Status openAuction (Lot lot) {
