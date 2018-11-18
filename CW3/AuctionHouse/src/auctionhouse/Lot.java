@@ -47,5 +47,13 @@ public class Lot {
     public Status close () {
         return null;
     }
+
+    public ArrayList<Buyer> getInterestedBuyers () {
+        return this.interestedBuyers;
+    }
+
+    public ArrayList<Buyer> getSeller () {
+        return this.seller;
+    }
     
 }
