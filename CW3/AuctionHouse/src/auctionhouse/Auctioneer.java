@@ -17,7 +17,6 @@ public class Auctioneer extends RegisteredUser {
     private static final String LS = System.lineSeparator();
 
     private ArrayList<Lot> assignedLots;
-    private AuctionHouse auctionhouse;
 
     public Auctioneer (String username, String address, AuctionHouse auctionhouse) {
         super(username, address, auctionhouse);
@@ -28,10 +27,6 @@ public class Auctioneer extends RegisteredUser {
     }
     
     public Status closeAuction (Lot lot) {
-        return null;
-    }
-    
-    public Status receiveMessage () {
         return null;
     }
     
