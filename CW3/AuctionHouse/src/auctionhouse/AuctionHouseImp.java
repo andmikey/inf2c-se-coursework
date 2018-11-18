@@ -107,7 +107,7 @@ public class AuctionHouseImp implements AuctionHouse {
         }
         
         logger.fine(baseMessage + "checking username is not duplicate");        
-        Buyer existingSeller = findSeller(username);        
+        Seller existingSeller = findSeller(username);        
         if (existingSeller != null) {
             return Status.error("Username " + username + " already belongs to an " +
                                 "existing seller, cannot register seller");
