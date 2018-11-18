@@ -265,7 +265,8 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
-        if (bid.lessEqual(this.parameters.increment) && !(bid.equals(this.parameters.increment))) {
+        // Bid is less than minimum increment
+        if (bid.compareTo(this.parameters.increment) == -1) {
             return Status.error("Bid must be greater than minimum increment " +
                                 this.parameters.increment.toString());
         }
