@@ -20,6 +20,7 @@ public class Auctioneer extends RegisteredUser {
 
     public Auctioneer (String username, String address, AuctionHouse auctionhouse) {
         super(username, address, auctionhouse);
+        this.assignedLots = new ArrayList<Lot>();
     }
     
     public Status openAuction (Lot lot) {
