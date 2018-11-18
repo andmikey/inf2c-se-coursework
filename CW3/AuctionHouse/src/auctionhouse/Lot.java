@@ -118,6 +118,10 @@ public class Lot {
         return this.seller;
     }
 
+    public LotStatus getStatus () {
+        return this.status;
+    }
+
     public void setStatus (LotStatus newStatus) {
         this.status = newStatus;
         if (this.entry != null) this.entry.status = newStatus;
@@ -131,6 +135,14 @@ public class Lot {
         this.interestedBuyers.add(buyer);
 
         return Status.OK();
+    }
+
+    public Buyer getWinner () {
+        return this.currentBid.buyer;
+    }
+
+    public Money getPrice () {
+        return this.currentPrice;
     }
 
 }

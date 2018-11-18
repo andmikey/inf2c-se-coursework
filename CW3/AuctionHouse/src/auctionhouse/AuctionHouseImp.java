@@ -339,11 +339,46 @@ public class AuctionHouseImp implements AuctionHouse {
             return closingAttempt;
         }
 
-        // Inform buyers, seller
+        // Check if lot has been sold or unsold
+        LotStatus status = lot.getStatus();
+        // If it has not been sold, notify all parties then abort
+        if (status == LotStatus.UNSOLD) {
+            // Notify seller that lot is unsold
+            Seller seller = lot.getSeller();
+            String addr = seller.getAddress();
+            this.parameters.messagingService.lotUnsold(addr, lotNumber, lot);
 
-        // Try to take payments
+            // Notify all interested buyers that lot is unsold
+            ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
+            for (Buyer interestedBuyer : interestedBuyers) {
+                addr = interestedBuyer.getAddress();
+                this.parameters.messagingService.lotUnsold(addr, lotNumber);
+            }
 
-        // If payment failed, set lot status to sold pending payment
+            // Return as OK
+            return Status.OK();
+        } else {
+            // Get winning buyer's credential from lot
+            Buyer winner = lot.getWinner();
+            String authCode = winner.getBankAuthCode();
+            String account = winner.getBankAccount();
+
+            // Try to take payment from winner
+            Status buyerAttempt = this.parameters.bankingService.transfer(
+                    account,
+                    authCode,
+                    this.parameters.houseBankAccount,
+                    lot.getPrice()
+                    );
+
+            // If payment failed, set lot status to sold pending payment
+            if (buyerAttempt.type == Status.type.ERROR) {
+                // TODO Set lot status
+                return buyerAttempt;
+            }
+
+            // TODO Finish transaction to seller
+        }
         
         return Status.OK();  
     }
