@@ -27,6 +27,7 @@ public class AuctionHouseImp implements AuctionHouse {
     private ArrayList<Buyer> buyers;
     private ArrayList<Seller> sellers;
     private ArrayList<Auctioneer> auctioneers;
+    private HashMap<Integer, Lot> lots;
 
     //Commented out until we have a Actor superclass
     private HashMap<String, Actor> addressBook;
@@ -92,37 +93,41 @@ public class AuctionHouseImp implements AuctionHouse {
             String description,
             Money reservePrice) {
         logger.fine(startBanner("addLot " + sellerName + " " + number));
-
-	if (sellerName == null) {
-	    return Status.error("Cannot add a lot without a seller");
-	}
-	else if (description == null) {
-	    return Status.error("Cannot add a lot without a description");
-	}
-	else if (reservePrice == null) {
-	    return Status.error("Cannot add a lot without a reserve price");
-	}
-
-	// Check there's no catalogue entries with the same number
-	// Note that we can't use .equals as it compares number, desc, *and* status
-	// which would allow for two entries with the same number but different statuses
-	for (CatalogueEntry entry : catalogue) {
-	    if (entry.lotNumber == number) {
-		return Status.error("Cannot add a lot with the same number as " +
-			     " an existing lot. Conflicting lot: \n " + entry.toString());
+        
+	    if (sellerName == null) {
+	        return Status.error("Cannot add a lot without a seller");
 	    }
-	}
+	    else if (description == null) {
+	        return Status.error("Cannot add a lot without a description");
+	    }
+	    else if (reservePrice == null) {
+	        return Status.error("Cannot add a lot without a reserve price");
+	    }
+
+	    // Check there's no catalogue entries with the same number
+	    // Note that we can't use .equals as it compares number, desc, *and* status
+	    // which would allow for two entries with the same number but different statuses
+	    for (CatalogueEntry entry : catalogue) {
+	        if (entry.lotNumber == number) {
+	    	return Status.error("Cannot add a lot with the same number as " +
+	    		     " an existing lot. Conflicting lot: \n " + entry.toString());
+	        }
+	    }
 
         Seller seller = findSeller(sellerName);
 
-	if (seller == null) {
-	    return Status.error("Cannot find seller of username " + sellerName +
-				", so lot cannot be added");
-	}
+	    if (seller == null) {
+	        return Status.error("Cannot find seller of username " + sellerName +
+	    			", so lot cannot be added");
+	    }
         
         Lot newLot = new Lot(seller, number, description, reservePrice);
-	// Note that by not associating an entry with a lot explicilty, we need to make sure we update
-	// the catentry status when the lot status is updated
+        // Insert lot into our hashmap for future referencing
+        this.lots.put(number, newLot);
+
+        // Note that by not associating an entry with a lot explicilty, we need
+        // to make sure we update the catentry status when the lot status is
+        // updated
         CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
 	catalogue.add(catEntry);
         
