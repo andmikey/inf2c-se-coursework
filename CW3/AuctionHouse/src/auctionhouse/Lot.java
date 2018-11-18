@@ -42,8 +42,6 @@ public class Lot {
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot place bid on a lot which is not currently in auction");
         }
-
-        
     }
     
     public Status open () {
@@ -58,7 +56,12 @@ public class Lot {
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot open a lot that is not currently in auction");
         }
-        // Should this be SOLD or SOLD_PENDING_PAYMENT?
+
+        // Did not meet reserve price
+        if (this.currentPrice < this.reservePrice) {
+            this.status = LotStatus.UNSOLD;
+        }
+        
         if (payment_succeeded) {
             this.status = LotStatus.SOLD;
         }
@@ -76,5 +79,5 @@ public class Lot {
     public Seller getSeller () {
         return this.seller;
     }
-    
+
 }
