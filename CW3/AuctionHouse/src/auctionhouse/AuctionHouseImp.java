@@ -272,7 +272,14 @@ public class AuctionHouseImp implements AuctionHouse {
             String auctioneerName,
             int lotNumber) {
         logger.fine(startBanner("closeAuction " + auctioneerName + " " + lotNumber));
- 
+        // Call close on lot
+
+        // Inform buyers, seller
+
+        // Try to take payments
+
+        // If payment failed, set lot status to sold pending payment
+        
         return Status.OK();  
     }
 }

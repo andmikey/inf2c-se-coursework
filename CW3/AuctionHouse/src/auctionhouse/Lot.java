@@ -52,7 +52,7 @@ public class Lot {
         return Status.OK();
     }
     
-    public Status close (boolean payment_succeeded) {
+    public Status close () {
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot open a lot that is not currently in auction");
         }
@@ -62,16 +62,20 @@ public class Lot {
             this.status = LotStatus.UNSOLD;
         }
         
-        if (payment_succeeded) {
-            this.status = LotStatus.SOLD;
-        }
-        else {
-            this.status = LotStatus.SOLD_PENDING_PAYMENT;
-        }
+        this.status = LotStatus.SOLD;
 
         return Status.OK(); 
     }
 
+    public Status payment_failed() {
+        if (this.status != LotStatus.SOLD) {
+            return Status.error("Lot not in SOLD state");
+        }
+        
+        this.status = LotStatus.SOLD_PENDING_PAYMENT;
+        return Status.OK();
+    }
+    
     public ArrayList<Buyer> getInterestedBuyers () {
         return this.interestedBuyers;
     }
