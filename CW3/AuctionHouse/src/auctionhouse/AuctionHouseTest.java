@@ -231,6 +231,11 @@ public class AuctionHouseTest {
         runStory(8);
     }
 
+
+    /*
+     * registerSeller tests
+     */
+    
     @Test
     public void testAddSellerSimple() {
         logger.info(makeBanner("testAddSellerSimple"));
@@ -268,6 +273,9 @@ public class AuctionHouseTest {
         assertError(house.registerSeller("Seller", "@SellerAddr", null));
     }
 
+    /*
+     * registerBuyer tests
+     */
     @Test
     public void testAddBuyerSimple() {
         logger.info(makeBanner("testAddBuyerSimple"));
@@ -311,5 +319,37 @@ public class AuctionHouseTest {
 
         assertError(house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", null));
     }
+
+    /*
+     * addLot tests
+     */
+    //     assertOK(house.registerSeller("SellerY", "@SellerY", "SY A/C"));       
+    //     assertOK(house.registerSeller("SellerZ", "@SellerZ", "SZ A/C")); 
+
+    @Test
+    public void testSimpleAddLot() {
+        logger.info(makeBanner("testSimpleAddLot"));
+        runStory(1);
+
+        assertOK(house.addLot("SellerY", 1, "Foo", new Money("0.0")));
+    }
+    
+    @Test
+    public void testAddLotDuplicate() {
+        logger.info(makeBanner("testAddLotDuplicate"));
+        runStory(1);
+
+        assertOK(house.addLot("SellerY", 1, "Foo", new Money("0.0")));
+        assertError(house.addLot("SellerZ", 1, "Bar", new Money("0.0")));
+    }
+
+    @Test
+    public void testAddLotSellerNotExists() {
+        logger.info(makeBanner("testSimpleAddLot"));
+        runStory(1);
+
+        assertError(house.addLot("SellerX", 1, "Foo", new Money("0.0")));
+    }
+
 
 }

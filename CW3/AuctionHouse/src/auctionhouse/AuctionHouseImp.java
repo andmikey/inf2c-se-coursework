@@ -152,7 +152,7 @@ public class AuctionHouseImp implements AuctionHouse {
 	    else if (reservePrice == null) {
 	        return Status.error("Cannot add a lot without a reserve price");
 	    }
-
+        
 	    // Check there's no catalogue entries with the same number
 	    // Note that we can't use .equals as it compares number, desc, *and* status
 	    // which would allow for two entries with the same number but different statuses
