@@ -94,8 +94,9 @@ public class AuctionHouseImp implements AuctionHouse {
         // Insert lot into our hashmap for future referencing
         this.lots.put(number, newLot);
 
-	// Note that by not associating an entry with a lot explicilty, we need to make sure we update
-	// the catentry status when the lot status is updated
+        // Note that by not associating an entry with a lot explicilty, we need
+        // to make sure we update the catentry status when the lot status is
+        // updated
         CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
 	catalogue.add(catEntry);
         
