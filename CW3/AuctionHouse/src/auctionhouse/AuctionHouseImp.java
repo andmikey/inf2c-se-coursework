@@ -173,7 +173,7 @@ public class AuctionHouseImp implements AuctionHouse {
     public Seller findSeller(String name) {
         Seller fUser = null;
         for (Seller user : this.sellers) {
-            if (user.username == name) {
+            if (user.getUsername() == name) {
                 fUser = user;
                 break;
 	    }
@@ -183,7 +183,7 @@ public class AuctionHouseImp implements AuctionHouse {
     public Buyer findBuyer(String name) {
         Buyer fUser = null;
         for (Buyer user : this.buyers) {
-            if (user.username == name) {
+            if (user.getUsername() == name) {
                 fUser = user;
                 break;
 	    }
@@ -194,7 +194,7 @@ public class AuctionHouseImp implements AuctionHouse {
     public Auctioneer findAuctioneer(String name) {
         Auctioneer fUser = null;
         for (Auctioneer user : this.auctioneers) {
-            if (user.username == name) {
+            if (user.getUsername() == name) {
                 fUser = user;
                 break;
 	    }

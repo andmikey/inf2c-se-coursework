@@ -23,5 +23,9 @@ public class RegisteredUser extends Actor {
         this.username = username;
     }
 
+    public String getUsername() {
+        return this.username;
+    }
+
 }
 
