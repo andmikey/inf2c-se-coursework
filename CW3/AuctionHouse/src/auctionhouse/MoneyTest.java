@@ -116,82 +116,82 @@ public class MoneyTest {
 
     @Test
     public void addPercent() {
-	Money val1 = new Money("10");
-	double percent = 10.0;
-	Money result = val1.addPercent(percent);
-	assertEquals("11.00", result.toString());
+        Money val1 = new Money("10");
+        double percent = 10.0;
+        Money result = val1.addPercent(percent);
+        assertEquals("11.00", result.toString());
     }
 
     @Test
     public void addZeroPercent() {
-	Money val1 = new Money("10");
-	double percent = 0.0;
-	Money result = val1.addPercent(percent);
-	assertEquals("10.00", result.toString());
+        Money val1 = new Money("10");
+        double percent = 0.0;
+        Money result = val1.addPercent(percent);
+        assertEquals("10.00", result.toString());
     }
     
     @Test
     public void addNegativePercent() {
-	Money val1 = new Money("10");
-	double percent = -10.0;
-	Money result = val1.addPercent(percent);
-	assertEquals("9.00", result.toString());
+        Money val1 = new Money("10");
+        double percent = -10.0;
+        Money result = val1.addPercent(percent);
+        assertEquals("9.00", result.toString());
     }
     
     @Test
     public void addHundredPercent() {
-	Money val1 = new Money("10");
-	double percent = 100.0;
-	Money result = val1.addPercent(percent);
-	assertEquals("20.00", result.toString());
+        Money val1 = new Money("10");
+        double percent = 100.0;
+        Money result = val1.addPercent(percent);
+        assertEquals("20.00", result.toString());
     }
 
     @Test
     public void addVerySmallPercent() {
-	Money val1 = new Money("10");
-	double percent = 0.0005;
-	Money result = val1.addPercent(percent);
-	assertEquals("10.00", result.toString());
+        Money val1 = new Money("10");
+        double percent = 0.0005;
+        Money result = val1.addPercent(percent);
+        assertEquals("10.00", result.toString());
     }
 
     @Test
     public void toStringSimple() {
-	String string = "10.00";
-	Money val1 = new Money(string);
-	String result = val1.toString();
-	assertEquals(string, result);
+        String string = "10.00";
+        Money val1 = new Money(string);
+        String result = val1.toString();
+        assertEquals(string, result);
     }
     
     @Test
     public void toStringWithNoDec() {
-	String string = "10";
-	Money val1 = new Money(string);
-	String result = val1.toString();
-	assertEquals("10.00", result);
+        String string = "10";
+        Money val1 = new Money(string);
+        String result = val1.toString();
+        assertEquals("10.00", result);
     }
     
     @Test
     public void toStringWithSmallDec() {
-	String string = "10.0005";
-	Money val1 = new Money(string);
-	String result = val1.toString();
-	assertEquals("10.00", result);
+        String string = "10.0005";
+        Money val1 = new Money(string);
+        String result = val1.toString();
+        assertEquals("10.00", result);
     }
 
     @Test
     public void toStringWithRound() {
-	String string = "10.005";
-	Money val1 = new Money(string);
-	String result = val1.toString();
-	assertEquals("10.01", result);
+        String string = "10.005";
+        Money val1 = new Money(string);
+        String result = val1.toString();
+        assertEquals("10.01", result);
     }
 
     @Test
     public void toStringWithoutRound() {
-	String string = "10.004";
-	Money val1 = new Money(string);
-	String result = val1.toString();
-	assertEquals("10.00", result);
+        String string = "10.004";
+        Money val1 = new Money(string);
+        String result = val1.toString();
+        assertEquals("10.00", result);
     }
 
     @Test    
@@ -220,7 +220,7 @@ public class MoneyTest {
     @Test    
     public void compareWithSameRounding() {
         Money val1 = new Money("12.005");
-	Money val2 = new Money("12.01");
+        Money val2 = new Money("12.01");
         int result = val1.compareTo(val2);
         assertEquals(0, result);
     }
@@ -228,7 +228,7 @@ public class MoneyTest {
     @Test    
     public void compareWithDifferentRounding() {
         Money val1 = new Money("12.004");
-	Money val2 = new Money("12.01");
+        Money val2 = new Money("12.01");
         int result = val1.compareTo(val2);
         assertEquals(-1, result);
     }
@@ -259,7 +259,7 @@ public class MoneyTest {
     @Test    
     public void lessWithSameRounding() {
         Money val1 = new Money("12.005");
-	Money val2 = new Money("12.01");
+        Money val2 = new Money("12.01");
         Boolean result = val1.lessEqual(val2);
         assertEquals(true, result);
     }
@@ -267,7 +267,7 @@ public class MoneyTest {
     @Test    
     public void lessWithDifferentRounding() {
         Money val1 = new Money("12.004");
-	Money val2 = new Money("12.01");
+        Money val2 = new Money("12.01");
         Boolean result = val1.lessEqual(val2);
         assertEquals(true, result);
     }
@@ -275,7 +275,7 @@ public class MoneyTest {
     @Test
     public void equals() {
         Money val1 = new Money("12.01");
-	Money val2 = new Money("12.01");
+        Money val2 = new Money("12.01");
         Boolean result = val1.equals(val2);
         assertEquals(true, result);
     }
@@ -283,7 +283,7 @@ public class MoneyTest {
     @Test
     public void equalsNot() {
         Money val1 = new Money("13");
-	Money val2 = new Money("12");
+        Money val2 = new Money("12");
         Boolean result = val1.equals(val2);
         assertEquals(false, result);
     }
@@ -291,7 +291,7 @@ public class MoneyTest {
     @Test
     public void equalsWithRounding() {
         Money val1 = new Money("12.005");
-	Money val2 = new Money("12.01");
+        Money val2 = new Money("12.01");
         Boolean result = val1.equals(val2);
         assertEquals(true, result);
     }
@@ -299,17 +299,17 @@ public class MoneyTest {
     @Test
     public void equalsWithoutRounding() {
         Money val1 = new Money("12.004");
-	Money val2 = new Money("12.01");
+        Money val2 = new Money("12.01");
         Boolean result = val1.equals(val2);
         assertEquals(false, result);
     }
 
     @Test
     public void equalsNonMoneyObject() {
-	Money val1 = new Money("12");
-	int val2 = 12;
-	Boolean result = val1.equals(val2);
-	assertEquals(false, result); 
+        Money val1 = new Money("12");
+        int val2 = 12;
+        Boolean result = val1.equals(val2);
+        assertEquals(false, result); 
     }
     /*
      * Put all class modifications above.
