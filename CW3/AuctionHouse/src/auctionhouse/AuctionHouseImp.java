@@ -37,6 +37,14 @@ public class AuctionHouseImp implements AuctionHouse {
    
     public AuctionHouseImp(Parameters parameters) {
         this.parameters = parameters;
+
+        this.buyers = new ArrayList<Buyer>();
+        this.sellers = new ArrayList<Seller>();
+        this.auctioneers = new ArrayList<Auctioneer>();
+        this.lots = new HashMap<Integer, Lot>();
+
+        this.addressBook = new HashMap<String, Actor>();
+        this.catalogue = new ArrayList<CatalogueEntry>();
     }
 
     public Status registerBuyer(
