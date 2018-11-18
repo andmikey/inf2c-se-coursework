@@ -247,7 +247,10 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
+        // TODO identify auctioneer
+        
         // Make sure lot can be opened
+        // TODO pass in auctioneer here
         Status openingAttempt = lot.open();
         if (openingAttempt.kind == Status.Kind.ERROR) {
             // If lot opening fails, return the error that it failed with
@@ -295,6 +298,14 @@ public class AuctionHouseImp implements AuctionHouse {
             String auctioneerName,
             int lotNumber) {
         logger.fine(startBanner("closeAuction " + auctioneerName + " " + lotNumber));
+        // Find lot
+        Lot lot = this.lots.get(lotNumber);
+        if (lot == null) {
+            return Status.error("Lot with number " + lotNumber + " not found.");
+        }
+
+        // Identify auctioneer
+        
         // Call close on lot
 
         // Inform buyers, seller

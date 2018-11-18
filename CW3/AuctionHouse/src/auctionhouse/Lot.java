@@ -24,6 +24,8 @@ public class Lot {
     private ArrayList<Buyer> interestedBuyers;
     private Bid currentBid;
     private Money currentPrice;
+    private Auctioneer auctioneer;
+    
     // Commented out until CatalogueEntry is defined
     public CatalogueEntry entry;
 
@@ -64,6 +66,7 @@ public class Lot {
     }
     
     public Status open () {
+        // TODO take argument of Auctioneer and set this to be the Auctioneer
         if (this.status != LotStatus.UNSOLD) {
             return Status.error("Cannot open a lot which is in a status other than unsold");
         }
@@ -72,6 +75,8 @@ public class Lot {
     }
     
     public Status close () {
+        // TODO take argument of Auctioneer and check this is the same auctioneer as opened
+        // sale
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot open a lot that is not currently in auction");
         }
