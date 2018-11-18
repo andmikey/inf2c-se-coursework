@@ -51,7 +51,10 @@ public class Lot {
             
         }
         else if (bidType == Bid.BidType.JUMP) {
-            
+            if (bid.value.compareTo(this.currentPrice) < 1) {
+                return Status.error("Bid must be greater than current price " +
+                                    this.currentPrice.toString());
+            }
         }
 
         return Status.OK();
@@ -71,7 +74,7 @@ public class Lot {
         }
 
         // Did not meet reserve price
-        if ((this.currentPrice.lessEqual(this.reservePrice)) && !(this.currentPrice.equals(this.reservePrice))) {
+        if (this.currentPrice.compareTo(this.reservePrice) < 0) {
             this.status = LotStatus.UNSOLD;
         }
         
