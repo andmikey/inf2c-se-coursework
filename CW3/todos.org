@@ -7,11 +7,11 @@
       - Address property for use with messagingservice
     - Lot
     - Bid
-- [ ] Write Javadoc comments for Money class
+- [X] Write Javadoc comments for Money class
   - Trivial
   - Do we need to write comments for other classes too?
   - Might be good to do so - just for practice
-- [ ] Create unit tests for MoneyTest
+- [X] Create unit tests for MoneyTest
   - Trivial
 - [ ] Create system-level tests for our AuctionHouse implementation
   - A test for each use-case
