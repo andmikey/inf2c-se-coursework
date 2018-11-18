@@ -163,11 +163,8 @@ public class AuctionHouseImp implements AuctionHouse {
         // Insert lot into our hashmap for future referencing
         this.lots.put(number, newLot);
 
-        // Note that by not associating an entry with a lot explicilty, we need
-        // to make sure we update the catentry status when the lot status is
-        // updated
-        CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
-	catalogue.add(catEntry);
+        // Note that by associating an entry with a lot by passing it in, the Lot can keep the catalogue entry up to date by mutating it.
+	    catalogue.add(newLot.entry);
         
         return Status.OK();    
     }
@@ -178,8 +175,8 @@ public class AuctionHouseImp implements AuctionHouse {
             if (user.getUsername() == name) {
                 fUser = user;
                 break;
-	    }
-	}
+            }
+        }
         return fUser;
     }
     public Buyer findBuyer(String name) {
@@ -188,8 +185,8 @@ public class AuctionHouseImp implements AuctionHouse {
             if (user.getUsername() == name) {
                 fUser = user;
                 break;
-	    }
-	}
+            }
+        }
         return fUser;
     }
     
@@ -199,8 +196,8 @@ public class AuctionHouseImp implements AuctionHouse {
             if (user.getUsername() == name) {
                 fUser = user;
                 break;
-	    }
-	}
+            }
+        }
         return fUser;
     }
     
@@ -235,7 +232,8 @@ public class AuctionHouseImp implements AuctionHouse {
 
         // Make sure lot can be opened
         Status openingAttempt = lot.open();
-        if (openingAttempt.kind != Status.Kind.ERROR) {
+        if (openingAttempt.kind == Status.Kind.ERROR) {
+            // If lot opening fails, return the error that it failed with
             return openingAttempt;
         }
 

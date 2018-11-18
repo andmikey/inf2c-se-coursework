@@ -25,7 +25,7 @@ public class Lot {
     private Bid currentBid;
     private Money currentPrice;
     // Commented out until CatalogueEntry is defined
-    //private CatalogueEntry entry;
+    public CatalogueEntry entry;
 
     public Lot(Seller seller, int id, String description, Money reservePrice) {
 	this.seller = seller;
@@ -36,6 +36,7 @@ public class Lot {
 	this.interestedBuyers = null;
 	this.currentBid = null;
         this.currentPrice = new Money("0.0");
+        this.entry = new CatalogueEntry(this.uniqueId, this.description, this.status);
     }
     
     public Status receiveBid (Bid bid) {
