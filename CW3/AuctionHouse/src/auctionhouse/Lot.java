@@ -23,6 +23,7 @@ public class Lot {
     private LotStatus status;
     private ArrayList<Buyer> interestedBuyers;
     private Bid currentBid;
+    private Money currentPrice;
     // Commented out until CatalogueEntry is defined
     //private CatalogueEntry entry;
 
@@ -34,10 +35,15 @@ public class Lot {
 	this.status = LotStatus.UNSOLD;
 	this.interestedBuyers = null;
 	this.currentBid = null;
+        this.currentPrice = new Money("0.0");
     }
     
     public Status receiveBid (Bid bid) {
-        return null;
+        if (this.status != LotStatus.IN_AUCTION) {
+            return Status.error("Cannot place bid on a lot which is not currently in auction");
+        }
+
+        
     }
     
     public Status open () {
