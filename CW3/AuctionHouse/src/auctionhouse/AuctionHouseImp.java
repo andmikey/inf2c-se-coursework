@@ -100,6 +100,8 @@ public class AuctionHouseImp implements AuctionHouse {
 	}
         
         Lot newLot = new Lot(assocSeller, number, description, reservePrice);
+	// Note that by not associating an entry with a lot explicilty, we need to make sure we update
+	// the catentry status when the lot status is updated
         CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
 	catalogue.add(catEntry);
 	
