@@ -16,7 +16,7 @@ public class RegisteredUser extends Actor {
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
 
-    private String username;
+    public String username;
 
     public RegisteredUser (String username, String address, AuctionHouse auctionhouse) {
         super(address, auctionhouse);

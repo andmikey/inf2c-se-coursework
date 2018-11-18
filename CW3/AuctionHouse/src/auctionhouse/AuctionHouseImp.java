@@ -37,20 +37,20 @@ public class AuctionHouseImp implements AuctionHouse {
     }
 
     public Status registerBuyer(
-            String name,
+            String username,
             String address,
             String bankAccount,
             String bankAuthCode) {
-        logger.fine(startBanner("registerBuyer " + name));
+        logger.fine(startBanner("registerBuyer " + username));
         
         return Status.OK();
     }
 
     public Status registerSeller(
-            String name,
+            String username,
             String address,
             String bankAccount) {
-        logger.fine(startBanner("registerSeller " + name));
+        logger.fine(startBanner("registerSeller " + username));
         
         return Status.OK();      
     }
@@ -78,7 +78,7 @@ public class AuctionHouseImp implements AuctionHouse {
 	Seller assocSeller = null;
 
 	for (Seller seller : this.sellers) {
-	    if (seller.name == sellerName) {
+	    if (seller.username == sellerName) {
 		foundSeller = true;
 		assocSeller = seller;
 		break;
@@ -86,7 +86,7 @@ public class AuctionHouseImp implements AuctionHouse {
 	}
 
 	if (!foundSeller) {
-	    return Status.error("Cannot find seller of name " + sellerName +
+	    return Status.error("Cannot find seller of username " + sellerName +
 				", so lot cannot be added");
 	}
 	
