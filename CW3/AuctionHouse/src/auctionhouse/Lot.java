@@ -41,7 +41,11 @@ public class Lot {
     }
     
     public Status open () {
-        return null;
+        if (this.status != LotStatus.UNSOLD) {
+            return Status.error("Cannot open a lot which is in a status other than unsold");
+        }
+        this.status = LotStatus.IN_AUCTION;
+        return Status.OK();
     }
     
     public Status close () {
