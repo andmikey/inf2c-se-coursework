@@ -48,7 +48,8 @@ public class Lot {
         Bid.BidType bidType = bid.type;
 
         if (bidType == Bid.BidType.INCREMENT) {
-            
+            this.currentPrice = this.currentPrice.add(bid.value);
+            this.currentBid = bid;
         }
         else if (bidType == Bid.BidType.JUMP) {
             if (bid.value.compareTo(this.currentPrice) < 1) {
