@@ -78,7 +78,11 @@ public class Lot {
 
         // Did not meet reserve price
         if (this.currentPrice.compareTo(this.reservePrice) < 0) {
+            // Did not meet reserve price
             this.setStatus(LotStatus.UNSOLD);
+        } else {
+            // Did meet reserve price
+            this.setStatus(LotStatus.SOLD);
         }
         
         this.setStatus(LotStatus.SOLD);
