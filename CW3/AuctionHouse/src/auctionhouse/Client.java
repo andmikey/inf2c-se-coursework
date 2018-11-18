@@ -19,18 +19,19 @@ public class Client extends RegisteredUser {
     private String bankAuthCode;
     private String bankAccount;
 
-    public Client (String username, String address, AuctionHouse auctionhouse, String bankAuthCode, String bankAccount) {
+    public Client (String username, String address, AuctionHouse auctionhouse,
+                   String bankAuthCode, String bankAccount) {
         super(username, address, auctionhouse);
         this.bankAuthCode = bankAuthCode;
         this.bankAccount = bankAccount;
     }
 
     public String getBankAccount() {
-	return this.bankAccount;
+        return this.bankAccount;
     }
 
     public String getBankAuthCode () {
-	return this.bankAuthCode;
+        return this.bankAuthCode;
     }
     
 }
