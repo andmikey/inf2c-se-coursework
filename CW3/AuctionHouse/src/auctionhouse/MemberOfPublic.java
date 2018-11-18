@@ -11,13 +11,13 @@ import java.util.logging.Logger;
  * @author djt
  *
  */
-public class MemberOfPublic {
+public class MemberOfPublic extends Actor {
 
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
 
-    public ArrayList<CatalogueEntry> viewCatalogue () {
-        return null;
+    public MemberOfPublic (String address, AuctionHouse auctionhouse) {
+        super(address, auctionhouse);
     }
     
 }
