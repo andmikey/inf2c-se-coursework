@@ -65,16 +65,29 @@ public class AuctionHouseImp implements AuctionHouse {
 	if (sellerName == null) {
 	    return Status.error("Cannot add a lot without a seller");
 	}
-	else if (number == null) {
-	    return Status.error("Cannot add a lot without a number");
-	}
 	else if (description == null) {
 	    return Status.error("Cannot add a lot without a description");
 	}
 	else if (reservePrice == null) {
 	    return Status.error("Cannot add a lot without a reserve price");
 	}
-	
+
+	// Find the seller
+	boolean foundSeller = false;
+	Seller assocSeller = null;
+
+	for (Seller seller : this.sellers) {
+	    if (seller.name == sellerName) {
+		foundSeller = true;
+		assocSeller = seller;
+		break;
+	    }
+	}
+
+	if (!foundSeller) {
+	    return Status.error("Cannot find seller of name " + sellerName +
+				", so lot cannot be added");
+	}
 	
 	
         return Status.OK();    
