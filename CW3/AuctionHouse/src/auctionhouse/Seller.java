@@ -17,11 +17,6 @@ public class Seller extends Client {
     private static final String LS = System.lineSeparator();
 
     private ArrayList<Lot> lotsOwned;
-
-    private String name;
-    private String bankAccount;
-
-    private AuctionHouse auctionhouse;
     
     public Seller (String username, String address, AuctionHouse auctionhouse, String bankAuthCode, String bankAccount) {
         super(username, address, auctionhouse, bankAuthCode, bankAccount);
@@ -29,17 +24,6 @@ public class Seller extends Client {
     
     public Status addLot (Lot lot) {
         return null;
-    }
-    
-    public Status receiveMessage (
-            String description, 
-            Integer uniqueId, 
-            Money reservePrice) {
-        return null;
-    }
-
-    public String getBankAccount() {
-	return this.bankAccount;
     }
     
 }

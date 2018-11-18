@@ -24,6 +24,14 @@ public class Client extends RegisteredUser {
         this.bankAuthCode = bankAuthCode;
         this.bankAccount = bankAccount;
     }
+
+    public String getBankAccount() {
+	return this.bankAccount;
+    }
+
+    public String getBankAuthCode () {
+	return this.bankAuthCode;
+    }
     
 }
 
