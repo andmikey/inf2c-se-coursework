@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * @author djt
  *
  */
-public class Buyer {
+public class Buyer extends Client {
 
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
@@ -24,11 +24,8 @@ public class Buyer {
 
     private AuctionHouse auctionhouse;
 
-    public Buyer (String name, String bankAccount, String bankAuthCode, AuctionHouse auctionhouse) {
-	this.name = name;
-	this.bankAccount = bankAccount;
-	this.bankAuthCode = bankAuthCode;
-	this.auctionhouse = auctionhouse;
+    public Buyer (String username, String address, AuctionHouse auctionhouse, String bankAuthCode, String bankAccount) {
+        super(username, address, auctionhouse, bankAuthCode, bankAccount);
     }
     
     public ArrayList<CatalogueEntry> viewCatalogue () {
