@@ -87,6 +87,38 @@ public class AuctionHouseImp implements AuctionHouse {
             String address,
             String bankAccount) {
         logger.fine(startBanner("registerSeller " + username));
+        String baseMessage = "registerSeller " + username + ": ";
+        
+        if (username == null) {
+            return Status.error("Cannot register a seller with a null username");
+        }
+        else if (address == null) {
+            return Status.error("Cannot register a seller with a null address");
+        }
+        else if (bankAccount == null) {
+            return Status.error("Cannot register a seller with empty bank account");
+        }
+        
+        logger.fine(baseMessage + "checking address is not duplicate");
+        Actor a = addressBook.get(address);
+        if (a != null) {
+            return Status.error("Address " + address + " already belongs to an " +
+                                "existing user, cannot register seller");
+        }
+        
+        logger.fine(baseMessage + "checking username is not duplicate");        
+        Buyer existingSeller = findSeller(username);        
+        if (existingSeller != null) {
+            return Status.error("Username " + username + " already belongs to an " +
+                                "existing seller, cannot register seller");
+        }
+
+        logger.fine(baseMessage + "creating Seller object");        
+        Seller seller = new Seller(username, address, this, null, bankAccount);
+
+        logger.fine(baseMessage + "adding to relevant lists");        
+        sellers.add(seller);
+        addressBook.put(address, seller);
         
         return Status.OK();      
     }
