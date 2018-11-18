@@ -27,6 +27,7 @@ public class AuctionHouseImp implements AuctionHouse {
     private ArrayList<Buyer> buyers;
     private ArrayList<Seller> sellers;
     private ArrayList<Auctioneer> auctioneers;
+    private HashMap<Integer, Lot> lots;
 
     //Commented out until we have a Actor superclass
     //private HashMap<String, Actor> addressBook;
