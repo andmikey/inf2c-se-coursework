@@ -238,5 +238,78 @@ public class AuctionHouseTest {
         Status res = house.registerSeller("Seller", "@SellerAddr", "SellerAcc");
         assertOK(res);
     }
+
+    @Test
+    public void testAddSellerWithDuplicateAddress() {
+        logger.info(makeBanner("testAddSellerWithDuplicateAddress"));
+
+        assertOK(house.registerSeller("Seller", "@SellerAddr", "SellerAcc"));
+        assertError(house.registerSeller("Seller2", "@SellerAddr", "SellerAcc"));
+    }
+
+    @Test
+    public void testAddSellerWithNullName() {
+        logger.info(makeBanner("testAddSellerWithNullName"));
+
+        assertError(house.registerSeller(null, "@SellerAddr", "SellerAcc"));
+    }
     
+    @Test
+    public void testAddSellerWithNullAddress() {
+        logger.info(makeBanner("testAddSellerWithNull"));
+
+        assertError(house.registerSeller("Seller", null, "SellerAcc"));
+    }
+
+    @Test
+    public void testAddSellerWithNullBankAcc() {
+        logger.info(makeBanner("testAddSellerWithNullBankAcc"));
+
+        assertError(house.registerSeller("Seller", "@SellerAddr", null));
+    }
+
+    @Test
+    public void testAddBuyerSimple() {
+        logger.info(makeBanner("testAddBuyerSimple"));
+
+        Status res = house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", "BuyerAuth");
+        assertOK(res);
+    }
+
+    @Test
+    public void testAddBuyerWithDuplicateAddress() {
+        logger.info(makeBanner("testAddBuyerWithDuplicateAddress"));
+
+        assertOK(house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", "BuyerAuth"));
+        assertError(house.registerBuyer("Buyer2", "@BuyerAddr", "BuyerAcc", "BuyerAuth"));
+    }
+
+    @Test
+    public void testAddBuyerWithNullName() {
+        logger.info(makeBanner("testAddBuyerWithNullName"));
+
+        assertError(house.registerBuyer(null, "@BuyerAddr", "BuyerAcc", "BuyerAuth"));
+    }
+    
+    @Test
+    public void testAddBuyerWithNullAddress() {
+        logger.info(makeBanner("testAddBuyerWithNull"));
+
+        assertError(house.registerBuyer("Buyer", null, "BuyerAcc", "BuyerAuth"));
+    }
+
+    @Test
+    public void testAddBuyerWithNullBankAcc() {
+        logger.info(makeBanner("testAddBuyerWithNullBankAcc"));
+
+        assertError(house.registerBuyer("Buyer", "@BuyerAddr", null, "BuyerAuth"));
+    }
+    
+    @Test
+    public void testAddBuyerWithNullBankAuth() {
+        logger.info(makeBanner("testAddBuyerWithNullBankAcc"));
+
+        assertError(house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", null));
+    }
+
 }
