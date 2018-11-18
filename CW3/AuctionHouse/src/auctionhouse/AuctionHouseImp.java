@@ -314,7 +314,8 @@ public class AuctionHouseImp implements AuctionHouse {
                                 this.parameters.increment.toString());
         }
         
-
+        // TODO add messaging to auctioneer, interested buyers, seller
+        
         return Status.OK();    
     }
 
