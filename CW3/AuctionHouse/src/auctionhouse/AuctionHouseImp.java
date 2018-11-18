@@ -26,7 +26,7 @@ public class AuctionHouseImp implements AuctionHouse {
 
     private ArrayList<Buyer> buyers;
     private ArrayList<Seller> sellers;
-    private ArrayList<Auctioneer> Auctioneers;
+    private ArrayList<Auctioneer> auctioneers;
 
     //Commented out until we have a Actor superclass
     //private HashMap<String, Actor> addressBook;
@@ -81,32 +81,55 @@ public class AuctionHouseImp implements AuctionHouse {
 			     " an existing lot. Conflicting lot: \n " + entry.toString());
 	    }
 	}
-	// Find the seller
-	// TODO add this as separate method to also apply to buyers / auctioneers
-	boolean foundSeller = false;
-	Seller assocSeller = null;
 
-	for (Seller seller : this.sellers) {
-	    if (seller.username == sellerName) {
-		foundSeller = true;
-		assocSeller = seller;
-		break;
-	    }
-	}
+        Seller seller = findSeller(sellerName);
 
-	if (!foundSeller) {
+	if (seller == null) {
 	    return Status.error("Cannot find seller of username " + sellerName +
 				", so lot cannot be added");
 	}
         
-        Lot newLot = new Lot(assocSeller, number, description, reservePrice);
+        Lot newLot = new Lot(seller, number, description, reservePrice);
 	// Note that by not associating an entry with a lot explicilty, we need to make sure we update
 	// the catentry status when the lot status is updated
         CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
 	catalogue.add(catEntry);
-	
+        
         return Status.OK();    
     }
+
+    public Seller findSeller(String name) {
+        Seller fUser = null;
+        for (Seller user : this.sellers) {
+            if (user.username == name) {
+                fUser = user;
+                break;
+	    }
+	}
+        return fUser;
+    }
+    public Buyer findBuyer(String name) {
+        Buyer fUser = null;
+        for (Buyer user : this.buyers) {
+            if (user.username == name) {
+                fUser = user;
+                break;
+	    }
+	}
+        return fUser;
+    }
+    
+    public Auctioneer findAuctioneer(String name) {
+        Auctioneer fUser = null;
+        for (Auctioneer user : this.auctioneers) {
+            if (user.username == name) {
+                fUser = user;
+                break;
+	    }
+	}
+        return fUser;
+    }
+    
 
     public List<CatalogueEntry> viewCatalogue() {
         logger.fine(startBanner("viewCatalog"));
