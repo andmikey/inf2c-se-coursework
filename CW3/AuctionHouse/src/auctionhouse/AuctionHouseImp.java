@@ -264,8 +264,6 @@ public class AuctionHouseImp implements AuctionHouse {
         if (lot == null) {
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
-        
-        // Make sure current lot status is open
 
         return Status.OK();    
     }
