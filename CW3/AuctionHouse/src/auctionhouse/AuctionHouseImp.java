@@ -230,7 +230,7 @@ public class AuctionHouseImp implements AuctionHouse {
         // Make sure lot exists
         Lot lot = this.lots.get(lotNumber);
         if (lot == null) {
-            return Status.error("Lot with number " + lotNumber + " found.");
+            return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
         // Make sure lot can be opened
@@ -259,6 +259,13 @@ public class AuctionHouseImp implements AuctionHouse {
             int lotNumber,
             Money bid) {
         logger.fine(startBanner("makeBid " + buyerName + " " + lotNumber + " " + bid));
+
+        Lot lot = this.lots.get(lotNumber);
+        if (lot == null) {
+            return Status.error("Lot with number " + lotNumber + " not found.");
+        }
+        
+        // Make sure current lot status is open
 
         return Status.OK();    
     }
