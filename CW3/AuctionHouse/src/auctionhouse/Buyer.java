@@ -25,7 +25,10 @@ public class Buyer {
     private AuctionHouse auctionhouse;
 
     public Buyer (String name, String bankAccount, String bankAuthCode, AuctionHouse auctionhouse) {
-
+	this.name = name;
+	this.bankAccount = bankAccount;
+	this.bankAuthCode = bankAuthCode;
+	this.auctionhouse = auctionhouse;
     }
     
     public ArrayList<CatalogueEntry> viewCatalogue () {
