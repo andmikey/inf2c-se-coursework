@@ -76,7 +76,6 @@ public class Lot {
             return Status.error("Cannot open a lot that is not currently in auction");
         }
 
-        // Did not meet reserve price
         if (this.currentPrice.compareTo(this.reservePrice) < 0) {
             // Did not meet reserve price
             this.setStatus(LotStatus.UNSOLD);
