@@ -20,6 +20,7 @@ public class Seller extends Client {
     
     public Seller (String username, String address, AuctionHouse auctionhouse, String bankAuthCode, String bankAccount) {
         super(username, address, auctionhouse, bankAuthCode, bankAccount);
+        this.lotsOwned = new ArrayList<Lot>();
     }
     
     public Status addLot (Lot lot) {

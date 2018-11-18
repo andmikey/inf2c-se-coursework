@@ -33,7 +33,7 @@ public class Lot {
 	this.description = description;
 	this.reservePrice = reservePrice;
 	this.status = LotStatus.UNSOLD;
-	this.interestedBuyers = null;
+	this.interestedBuyers = new ArrayList<Buyer>();
 	this.currentBid = null;
         this.currentPrice = new Money("0.0");
         this.entry = new CatalogueEntry(this.uniqueId, this.description, this.status);

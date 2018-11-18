@@ -20,6 +20,7 @@ public class Buyer extends Client {
 
     public Buyer (String username, String address, AuctionHouse auctionhouse, String bankAuthCode, String bankAccount) {
         super(username, address, auctionhouse, bankAuthCode, bankAccount);
+        this.interestedLots = new ArrayList<Lot>();
     }
     
     public Status bidOnLot (Bid bid) {
