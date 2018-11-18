@@ -29,7 +29,7 @@ public class AuctionHouseImp implements AuctionHouse {
     private ArrayList<Auctioneer> auctioneers;
 
     //Commented out until we have a Actor superclass
-    //private HashMap<String, Actor> addressBook;
+    private HashMap<String, Actor> addressBook;
     private ArrayList<CatalogueEntry> catalogue;
    
     public AuctionHouseImp(Parameters parameters) {
@@ -42,6 +42,37 @@ public class AuctionHouseImp implements AuctionHouse {
             String bankAccount,
             String bankAuthCode) {
         logger.fine(startBanner("registerBuyer " + username));
+        if (username == null) {
+            return Status.error("Cannot register a buyer with a null username");
+        }
+        else if (address == null) {
+            return Status.error("Cannot register a buyer with a null address");
+        }
+        else if (bankAccount == null) {
+            return Status.error("Cannot register a buyer with empty bank account");
+        }
+        else if (bankAuthCode == null) {
+            return Status.error("Cannot register a buyer with no bank auth code");
+        }
+
+        Buyer existingBuyer = findBuyer(username);
+
+        Actor a = addressBook.get(address);
+
+        if (a != null) {
+            return Status.error("Address " + address + " already belongs to an " +
+                                "existing user, cannot register buyer");
+        }
+        
+        if (existingBuyer != null) {
+            return Status.error("Username " + username + " already belongs to an " +
+                                "existing buyer, cannot register buyer");
+        }
+        
+        Buyer buyer = new Buyer(username, address, this, bankAuthCode, bankAccount);
+
+        buyers.add(buyer);
+        addressBook.put(address, buyer);
         
         return Status.OK();
     }
@@ -77,7 +108,7 @@ public class AuctionHouseImp implements AuctionHouse {
 	// which would allow for two entries with the same number but different statuses
 	for (CatalogueEntry entry : catalogue) {
 	    if (entry.lotNumber == number) {
-		Status.error("Cannot add a lot with the same number as " +
+		return Status.error("Cannot add a lot with the same number as " +
 			     " an existing lot. Conflicting lot: \n " + entry.toString());
 	    }
 	}
