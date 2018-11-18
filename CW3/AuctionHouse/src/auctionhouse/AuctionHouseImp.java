@@ -230,6 +230,7 @@ public class AuctionHouseImp implements AuctionHouse {
     public Status noteInterest(
             String buyerName,
             int lotNumber) {
+        // TODO
         logger.fine(startBanner("noteInterest " + buyerName + " " + lotNumber));
         
         return Status.OK();   
@@ -278,6 +279,7 @@ public class AuctionHouseImp implements AuctionHouse {
             Money bid) {
         logger.fine(startBanner("makeBid " + buyerName + " " + lotNumber + " " + bid));
 
+        // Make sure lot exists
         Lot lot = this.lots.get(lotNumber);
         if (lot == null) {
             return Status.error("Lot with number " + lotNumber + " not found.");

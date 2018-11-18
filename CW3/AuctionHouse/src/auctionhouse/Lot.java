@@ -30,13 +30,13 @@ public class Lot {
     public CatalogueEntry entry;
 
     public Lot(Seller seller, int id, String description, Money reservePrice) {
-	this.seller = seller;
-	this.uniqueId = id;
-	this.description = description;
-	this.reservePrice = reservePrice;
-	this.status = LotStatus.UNSOLD;
-	this.interestedBuyers = new ArrayList<Buyer>();
-	this.currentBid = null;
+        this.seller = seller;
+        this.uniqueId = id;
+        this.description = description;
+        this.reservePrice = reservePrice;
+        this.status = LotStatus.UNSOLD;
+        this.interestedBuyers = new ArrayList<Buyer>();
+        this.currentBid = null;
         this.currentPrice = new Money("0.0");
         this.entry = new CatalogueEntry(this.uniqueId, this.description, this.status);
     }
@@ -114,6 +114,16 @@ public class Lot {
     public void setStatus (LotStatus newStatus) {
         this.status = newStatus;
         if (this.entry != null) this.entry.status = newStatus;
+    }
+
+    public Status addInterestedBuyer(Buyer buyer) {
+        if (this.interestedBuyers.contains(buyer)) {
+            return Status.error("Buyer already marked as interested in lot");
+        }
+
+        this.interestedBuyers.add(buyer);
+
+        return Status.OK();
     }
 
 }
