@@ -271,11 +271,10 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
-        // TODO identify auctioneer
+        Auctioneer auctioneer = this.findAuctioneer(auctioneerName);
         
         // Make sure lot can be opened
-        // TODO pass in auctioneer here
-        Status openingAttempt = lot.open();
+        Status openingAttempt = lot.open(auctioneer);
         if (openingAttempt.kind == Status.Kind.ERROR) {
             // If lot opening fails, return the error that it failed with
             return openingAttempt;

@@ -65,20 +65,25 @@ public class Lot {
         return Status.OK();
     }
     
-    public Status open () {
-        // TODO take argument of Auctioneer and set this to be the Auctioneer
+    public Status open (Auctioneer auctioneer) {
         if (this.status != LotStatus.UNSOLD) {
             return Status.error("Cannot open a lot which is in a status other than unsold");
         }
+        if (this.auctioneer == null) {
+            return Status.error("Cannot close an auction without providing an auctioneer instance.");
+        }
         this.setStatus(LotStatus.IN_AUCTION);
+        this.auctioneer = auctioneer;
         return Status.OK();
     }
     
-    public Status close () {
-        // TODO take argument of Auctioneer and check this is the same auctioneer as opened
-        // sale
+    public Status close (Auctioneer auctioneer) {
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot open a lot that is not currently in auction");
+        }
+        
+        if (this.auctioneer != auctioneer) {
+            return Status.error("Cannot close a lot if you are not the auctioneer that opened it.");
         }
 
         if (this.currentPrice.compareTo(this.reservePrice) < 0) {
@@ -90,6 +95,8 @@ public class Lot {
         }
         
         this.setStatus(LotStatus.SOLD);
+        // Reset auctioneer to null, as that would be expected when not on sale
+        this.auctioneer = null;
 
         return Status.OK(); 
     }
