@@ -265,6 +265,10 @@ public class AuctionHouseImp implements AuctionHouse {
         }
 
         Auctioneer auctioneer = this.findAuctioneer(auctioneerName);
+        // Make sure auctioneer exists
+        if (auctioneer == null) {
+            return Status.error("Auctioneer not found; cannot open lot without valid auctioneer.");
+        }
         
         // Make sure lot can be opened
         Status openingAttempt = lot.open(auctioneer);
