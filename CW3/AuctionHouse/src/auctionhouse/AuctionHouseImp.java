@@ -263,6 +263,12 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
+        if (bid.lessEqual(this.parameters.increment) && !(bid.equals(this.parameters.increment))) {
+            return Status.error("Bid must be greater than minimum increment " +
+                                this.parameters.increment.toString());
+        }
+        
+
         return Status.OK();    
     }
 
@@ -270,7 +276,14 @@ public class AuctionHouseImp implements AuctionHouse {
             String auctioneerName,
             int lotNumber) {
         logger.fine(startBanner("closeAuction " + auctioneerName + " " + lotNumber));
- 
+        // Call close on lot
+
+        // Inform buyers, seller
+
+        // Try to take payments
+
+        // If payment failed, set lot status to sold pending payment
+        
         return Status.OK();  
     }
 }

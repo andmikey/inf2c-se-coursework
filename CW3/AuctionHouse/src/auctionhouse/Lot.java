@@ -43,6 +43,18 @@ public class Lot {
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot place bid on a lot which is not currently in auction");
         }
+
+        Money bidValue = bid.value;
+        Bid.BidType bidType = bid.type;
+
+        if (bidType == Bid.BidType.INCREMENT) {
+            
+        }
+        else if (bidType == Bid.BidType.JUMP) {
+            
+        }
+
+        return Status.OK();
     }
     
     public Status open () {
@@ -53,26 +65,30 @@ public class Lot {
         return Status.OK();
     }
     
-    public Status close (boolean payment_succeeded) {
+    public Status close () {
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot open a lot that is not currently in auction");
         }
 
         // Did not meet reserve price
-        if (this.currentPrice < this.reservePrice) {
+        if ((this.currentPrice.lessEqual(this.reservePrice)) && !(this.currentPrice.equals(this.reservePrice))) {
             this.status = LotStatus.UNSOLD;
         }
         
-        if (payment_succeeded) {
-            this.status = LotStatus.SOLD;
-        }
-        else {
-            this.status = LotStatus.SOLD_PENDING_PAYMENT;
-        }
+        this.status = LotStatus.SOLD;
 
         return Status.OK(); 
     }
 
+    public Status payment_failed() {
+        if (this.status != LotStatus.SOLD) {
+            return Status.error("Lot not in SOLD state");
+        }
+        
+        this.status = LotStatus.SOLD_PENDING_PAYMENT;
+        return Status.OK();
+    }
+    
     public ArrayList<Buyer> getInterestedBuyers () {
         return this.interestedBuyers;
     }
