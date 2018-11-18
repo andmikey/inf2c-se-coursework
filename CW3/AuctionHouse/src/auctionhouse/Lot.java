@@ -52,7 +52,7 @@ public class Lot {
         return this.interestedBuyers;
     }
 
-    public ArrayList<Buyer> getSeller () {
+    public Seller getSeller () {
         return this.seller;
     }
     
