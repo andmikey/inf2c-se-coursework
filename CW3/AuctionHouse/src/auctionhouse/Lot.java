@@ -69,6 +69,9 @@ public class Lot {
         if (this.status != LotStatus.UNSOLD) {
             return Status.error("Cannot open a lot which is in a status other than unsold");
         }
+        if (this.auctioneer == null) {
+            return Status.error("Cannot close an auction without providing an auctioneer instance.");
+        }
         this.setStatus(LotStatus.IN_AUCTION);
         this.auctioneer = auctioneer;
         return Status.OK();
