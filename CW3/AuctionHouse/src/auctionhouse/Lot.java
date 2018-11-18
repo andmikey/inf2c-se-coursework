@@ -42,6 +42,18 @@ public class Lot {
         if (this.status != LotStatus.IN_AUCTION) {
             return Status.error("Cannot place bid on a lot which is not currently in auction");
         }
+
+        Money bidValue = bid.value;
+        Bid.BidType bidType = bid.type;
+
+        if (bidType == Bid.BidType.INCREMENT) {
+            
+        }
+        else if (bidType == Bid.BidType.JUMP) {
+            
+        }
+
+        return Status.OK();
     }
     
     public Status open () {
@@ -58,7 +70,7 @@ public class Lot {
         }
 
         // Did not meet reserve price
-        if (this.currentPrice < this.reservePrice) {
+        if ((this.currentPrice.lessEqual(this.reservePrice)) && !(this.currentPrice.equals(this.reservePrice))) {
             this.status = LotStatus.UNSOLD;
         }
         
