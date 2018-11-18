@@ -72,26 +72,36 @@ public class AuctionHouseImp implements AuctionHouse {
 	    return Status.error("Cannot add a lot without a reserve price");
 	}
 
+	// Check there's no catalogue entries with the same number
+	// Note that we can't use .equals as it compares number, desc, *and* status
+	// which would allow for two entries with the same number but different statuses
+	for (CatalogueEntry entry : catalogue) {
+	    if (entry.lotNumber == number) {
+		Status.error("Cannot add a lot with the same number as " +
+			     " an existing lot. Conflicting lot: \n " + entry.toString());
+	    }
+	}
 	// Find the seller
 	// TODO add this as separate method to also apply to buyers / auctioneers
 	boolean foundSeller = false;
 	Seller assocSeller = null;
 
 	for (Seller seller : this.sellers) {
-	    if (seller.name == sellerName) {
-		foundSeller = true;
-		assocSeller = seller;
-		break;
-	    }
+	    // if (seller.userName == sellerName) {
+	    // 	foundSeller = true;
+	    // 	assocSeller = seller;
+	    // 	break;
+	    // }
 	}
 
 	if (!foundSeller) {
 	    return Status.error("Cannot find seller of name " + sellerName +
 				", so lot cannot be added");
 	}
-	
-	Lot newLot = new Lot(assocSeller, number, description, reservePrice);
-	CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
+        
+        Lot newLot = new Lot(assocSeller, number, description, reservePrice);
+        CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
+	catalogue.add(catEntry);
 	
         return Status.OK();    
     }
