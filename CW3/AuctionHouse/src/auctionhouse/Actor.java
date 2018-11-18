@@ -28,4 +28,8 @@ public class Actor {
         this.auctionhouse = auctionhouse;
     }
 
+    public String getAddress () {
+        return this.address;
+    }
+
 }
