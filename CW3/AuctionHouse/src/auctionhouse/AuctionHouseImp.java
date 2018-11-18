@@ -175,8 +175,8 @@ public class AuctionHouseImp implements AuctionHouse {
             if (user.getUsername() == name) {
                 fUser = user;
                 break;
-	    }
-	}
+            }
+        }
         return fUser;
     }
     public Buyer findBuyer(String name) {
@@ -185,8 +185,8 @@ public class AuctionHouseImp implements AuctionHouse {
             if (user.getUsername() == name) {
                 fUser = user;
                 break;
-	    }
-	}
+            }
+        }
         return fUser;
     }
     
@@ -196,8 +196,8 @@ public class AuctionHouseImp implements AuctionHouse {
             if (user.getUsername() == name) {
                 fUser = user;
                 break;
-	    }
-	}
+            }
+        }
         return fUser;
     }
     
