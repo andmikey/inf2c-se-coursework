@@ -95,7 +95,7 @@ public class Lot {
         }
         
         this.setStatus(LotStatus.SOLD);
-        // Reset auctioneer to null, as that would be expected when not on sale
+        // Reset auctioneer to null, as we may go on sale multiple times
         this.auctioneer = null;
 
         return Status.OK(); 
