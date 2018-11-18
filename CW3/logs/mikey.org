@@ -30,3 +30,5 @@ Today:
   - Disable tests by platform
   - https://www.michael-thomas.com/tech/java/junit/junit4_survival_guide.htm
 - Add tests to MoneyTest
+* [2018-11-18 Sun]
+- Deciding on implementation details: how closely do we follow our cw2 spec?

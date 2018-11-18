@@ -61,7 +61,37 @@ public class AuctionHouseImp implements AuctionHouse {
             String description,
             Money reservePrice) {
         logger.fine(startBanner("addLot " + sellerName + " " + number));
-        
+
+	if (sellerName == null) {
+	    return Status.error("Cannot add a lot without a seller");
+	}
+	else if (description == null) {
+	    return Status.error("Cannot add a lot without a description");
+	}
+	else if (reservePrice == null) {
+	    return Status.error("Cannot add a lot without a reserve price");
+	}
+
+	// Find the seller
+	// TODO add this as separate method to also apply to buyers / auctioneers
+	boolean foundSeller = false;
+	Seller assocSeller = null;
+
+	for (Seller seller : this.sellers) {
+	    if (seller.name == sellerName) {
+		foundSeller = true;
+		assocSeller = seller;
+		break;
+	    }
+	}
+
+	if (!foundSeller) {
+	    return Status.error("Cannot find seller of name " + sellerName +
+				", so lot cannot be added");
+	}
+	
+	Lot newLot = new Lot(assocSeller, number, description, reservePrice);
+
         return Status.OK();    
     }
 
