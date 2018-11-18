@@ -61,7 +61,22 @@ public class AuctionHouseImp implements AuctionHouse {
             String description,
             Money reservePrice) {
         logger.fine(startBanner("addLot " + sellerName + " " + number));
-        
+
+	if (sellerName == null) {
+	    return Status.error("Cannot add a lot without a seller");
+	}
+	else if (number == null) {
+	    return Status.error("Cannot add a lot without a number");
+	}
+	else if (description == null) {
+	    return Status.error("Cannot add a lot without a description");
+	}
+	else if (reservePrice == null) {
+	    return Status.error("Cannot add a lot without a reserve price");
+	}
+	
+	
+	
         return Status.OK();    
     }
 
