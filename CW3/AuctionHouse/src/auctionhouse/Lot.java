@@ -64,7 +64,7 @@ public class Lot {
         if (this.status != LotStatus.UNSOLD) {
             return Status.error("Cannot open a lot which is in a status other than unsold");
         }
-        this.status = LotStatus.IN_AUCTION;
+        this.setStatus(LotStatus.IN_AUCTION);
         return Status.OK();
     }
     
@@ -75,10 +75,10 @@ public class Lot {
 
         // Did not meet reserve price
         if (this.currentPrice.compareTo(this.reservePrice) < 0) {
-            this.status = LotStatus.UNSOLD;
+            this.setStatus(LotStatus.UNSOLD);
         }
         
-        this.status = LotStatus.SOLD;
+        this.setStatus(LotStatus.SOLD);
 
         return Status.OK(); 
     }
@@ -88,7 +88,7 @@ public class Lot {
             return Status.error("Lot not in SOLD state");
         }
         
-        this.status = LotStatus.SOLD_PENDING_PAYMENT;
+        this.setStatus(LotStatus.SOLD_PENDING_PAYMENT);
         return Status.OK();
     }
     
@@ -98,6 +98,11 @@ public class Lot {
 
     public Seller getSeller () {
         return this.seller;
+    }
+
+    public void setStatus (LotStatus newStatus) {
+        this.status = newStatus;
+        if (this.entry != null) this.entry.status = newStatus;
     }
 
 }
