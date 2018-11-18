@@ -16,13 +16,21 @@ public class Bid {
     private static Logger logger = Logger.getLogger("auctionhouse");
     private static final String LS = System.lineSeparator();
 
-    private Lot lot;
-    private Buyer buyer;
-    private Money value;
-    private BidType type;
+    public Lot lot;
+    public Buyer buyer;
+    public Money value;
+    public BidType type;
 
+    public Bid(Lot lot, Buyer buyer, Money value, BidType type) {
+	this.lot = lot;
+	this.buyer = buyer;
+	this.value = value;
+	this.type = type;
+    }
+    
     public static enum BidType {
         INCREMENT, 
         JUMP, 
         }
+
 }
