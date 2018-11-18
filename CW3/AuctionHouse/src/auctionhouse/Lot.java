@@ -48,8 +48,19 @@ public class Lot {
         return Status.OK();
     }
     
-    public Status close () {
-        return null;
+    public Status close (boolean payment_succeeded) {
+        if (this.status != LotStatus.IN_AUCTION) {
+            return Status.error("Cannot open a lot that is not currently in auction");
+        }
+        // Should this be SOLD or SOLD_PENDING_PAYMENT?
+        if (payment_succeeded) {
+            this.status = LotStatus.SOLD;
+        }
+        else {
+            this.status = LotStatus.SOLD_PENDING_PAYMENT;
+        }
+
+        return Status.OK(); 
     }
 
     public ArrayList<Buyer> getInterestedBuyers () {
