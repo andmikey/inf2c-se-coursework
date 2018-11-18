@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @author pbj
@@ -214,8 +216,14 @@ public class AuctionHouseImp implements AuctionHouse {
     public List<CatalogueEntry> viewCatalogue() {
         logger.fine(startBanner("viewCatalog"));
         
-        List<CatalogueEntry> catalogue = new ArrayList<CatalogueEntry>();
         logger.fine("Catalogue: " + catalogue.toString());
+        Collections.sort(catalogue, new Comparator<CatalogueEntry>() {
+                @Override
+                public int compare(CatalogueEntry e1, CatalogueEntry e2) {
+                    int comp = Integer.compare(e1.lotNumber, e2.lotNumber);
+                    return comp;
+                }
+            });
         return catalogue;
     }
 
