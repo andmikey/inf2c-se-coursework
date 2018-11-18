@@ -91,7 +91,8 @@ public class AuctionHouseImp implements AuctionHouse {
 	}
 	
 	Lot newLot = new Lot(assocSeller, number, description, reservePrice);
-
+	CatalogueEntry catEntry = new CatalogueEntry(number, description, LotStatus.UNSOLD);
+	
         return Status.OK();    
     }
 
