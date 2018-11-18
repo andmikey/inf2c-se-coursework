@@ -326,8 +326,18 @@ public class AuctionHouseImp implements AuctionHouse {
         }
 
         // Identify auctioneer
+        Auctioneer auctioneer = this.findAuctioneer(auctioneerName);
+        // Make sure auctioneer exists
+        if (auctioneer == null) {
+            return Status.error("Auctioneer not found; cannot close lot without valid auctioneer.");
+        }
         
-        // Call close on lot
+        // Make sure lot can be closed
+        Status closingAttempt = lot.close(auctioneer);
+        if (closingAttempt.kind == Status.Kind.ERROR) {
+            // If lot closing fails, return the error that it failed with
+            return closingAttempt;
+        }
 
         // Inform buyers, seller
 
