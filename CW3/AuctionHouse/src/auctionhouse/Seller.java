@@ -18,8 +18,15 @@ public class Seller {
 
     private ArrayList<Lot> lotsOwned;
 
-    public Seller (String name, String bankAccount, AuctionHouse auctionhouse) {
+    private String name;
+    private String bankAccount;
 
+    private AuctionHouse auctionhouse;
+    
+    public Seller (String name, String bankAccount, AuctionHouse auctionhouse) {
+	this.name = name;
+	this.bankAccount = bankAccount;
+	this.auctionhouse = auctionhouse;
     }
     
     public Status addLot (Lot lot) {
@@ -31,6 +38,10 @@ public class Seller {
             Integer uniqueId, 
             Money reservePrice) {
         return null;
+    }
+
+    public String getBankAccount() {
+	return this.bankAccount;
     }
     
 }
