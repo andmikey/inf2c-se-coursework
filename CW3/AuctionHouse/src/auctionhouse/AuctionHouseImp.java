@@ -197,6 +197,7 @@ public class AuctionHouseImp implements AuctionHouse {
         }
         return fUser;
     }
+    
     public Buyer findBuyer(String name) {
         Buyer fUser = null;
         for (Buyer user : this.buyers) {
