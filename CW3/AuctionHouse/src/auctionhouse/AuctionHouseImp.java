@@ -330,14 +330,32 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
-        // Identify auctioneer
+        // Identify relevant parties
+        Auctioneer auctioneer = findAuctioneer(auctioneerName);
+        Seller seller = lot.getSeller();
+        ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
+        Buyer winningBuyer = lot.getBuyerOfCurrentBid();
         
         // Call close on lot
+        Status closeAttempt = lot.close(auctioneer);
+        if (closeAttempt.kind == Status.Kind.ERROR) {
+            return closeAttempt;
+        }
 
-        // Inform buyers, seller
+        // TODO check if sold or unsold
+        boolean sold = true;
+        
+        // Inform buyers, seller that it has sold
+        String addr = seller.getAddress();
+        this.parameters.messagingService.lotSold(addr, lotNumber);
 
+        for (Buyer interestedBuyer : interestedBuyers) {
+            addr = interestedBuyer.getAddress();
+            this.parameters.messagingService.lotSold(addr, lotNumber);
+        }
+        
         // Try to take payments
-
+        
         // If payment failed, set lot status to sold pending payment
         
         return Status.OK();  
