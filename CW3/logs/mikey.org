@@ -32,3 +32,13 @@ Today:
 - Add tests to MoneyTest
 * [2018-11-18 Sun]
 - Deciding on implementation details: how closely do we follow our cw2 spec?
+- Writing up code + tests
+- Some thoughts:
+  - How do we make sure an auctioneer cannot open a new auction before they close their current auction?
+  - Should we allow a buyer who has not noted interest in a lot to make a bid on a lot?
+* [2018-11-22 Thu]
+- Fixed some edge cases
+* [2018-11-23 Fri]
+- More work! 
+- TODO add logging
+- TODO finish implementation

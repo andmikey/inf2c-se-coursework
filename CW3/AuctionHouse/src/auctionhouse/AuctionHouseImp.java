@@ -142,7 +142,8 @@ public class AuctionHouseImp implements AuctionHouse {
             String description,
             Money reservePrice) {
         logger.fine(startBanner("addLot " + sellerName + " " + number));
-        
+
+        // Check no attributes are null
 	    if (sellerName == null) {
 	        return Status.error("Cannot add a lot without a seller");
 	    }
@@ -153,6 +154,12 @@ public class AuctionHouseImp implements AuctionHouse {
 	        return Status.error("Cannot add a lot without a reserve price");
 	    }
 
+        // Check reserve price isn't less than zero
+        Money zero = new Money("0.0");
+        if (reservePrice.compareTo(zero) < 0) {
+            return Status.error("Reserve price of lot cannot be less than zero");
+        }
+        
 	    // Check there's no catalogue entries with the same number
 	    // Note that we can't use .equals as it compares number, desc, *and* status
 	    // which would allow for two entries with the same number but different statuses
@@ -190,6 +197,7 @@ public class AuctionHouseImp implements AuctionHouse {
         }
         return fUser;
     }
+    
     public Buyer findBuyer(String name) {
         Buyer fUser = null;
         for (Buyer user : this.buyers) {
@@ -311,7 +319,8 @@ public class AuctionHouseImp implements AuctionHouse {
                                 this.parameters.increment.toString());
         }
         
-
+        // TODO add messaging to auctioneer, interested buyers, seller
+        
         return Status.OK();    
     }
 
@@ -325,8 +334,12 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
-        // Identify auctioneer
-        Auctioneer auctioneer = this.findAuctioneer(auctioneerName);
+        // Identify relevant parties
+        Auctioneer auctioneer = findAuctioneer(auctioneerName);
+        Seller seller = lot.getSeller();
+        ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
+        Buyer winningBuyer = lot.getBuyerOfCurrentBid();
+
         // Make sure auctioneer exists
         if (auctioneer == null) {
             return Status.error("Auctioneer not found; cannot close lot without valid auctioneer.");
@@ -343,13 +356,10 @@ public class AuctionHouseImp implements AuctionHouse {
         LotStatus status = lot.getStatus();
         // If it has not been sold, notify all parties then abort
         if (status == LotStatus.UNSOLD) {
-            // Notify seller that lot is unsold
-            Seller seller = lot.getSeller();
+            // Inform buyers, seller that lot is unsold
             String addr = seller.getAddress();
             this.parameters.messagingService.lotUnsold(addr, lotNumber, lot);
 
-            // Notify all interested buyers that lot is unsold
-            ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
             for (Buyer interestedBuyer : interestedBuyers) {
                 addr = interestedBuyer.getAddress();
                 this.parameters.messagingService.lotUnsold(addr, lotNumber);
@@ -358,11 +368,19 @@ public class AuctionHouseImp implements AuctionHouse {
             // Return as OK
             return Status.OK();
         } else {
-            // Get winning buyer's credential from lot
-            Buyer winner = lot.getWinner();
-            String authCode = winner.getBankAuthCode();
-            String account = winner.getBankAccount();
+            // Inform buyers, seller that it has sold
+            String addr = seller.getAddress();
+            this.parameters.messagingService.lotSold(addr, lotNumber);
 
+            for (Buyer interestedBuyer : interestedBuyers) {
+                addr = interestedBuyer.getAddress();
+                this.parameters.messagingService.lotSold(addr, lotNumber);
+            }
+
+            // Get winning buyer's credentials
+            String account = winningBuyer.getBankAccount();
+            String authCode = winningBuyer.getBankAuthCode();
+            
             // Try to take payment from winner
             Status buyerAttempt = this.parameters.bankingService.transfer(
                     account,
@@ -371,7 +389,7 @@ public class AuctionHouseImp implements AuctionHouse {
                     lot.getPrice()
                     );
 
-            // If payment failed, set lot status to sold pending payment
+            // If withdrawing payment failed, set lot status to sold pending payment
             if (buyerAttempt.type == Status.type.ERROR) {
                 // TODO Set lot status
                 return buyerAttempt;

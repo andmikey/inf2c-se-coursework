@@ -67,10 +67,13 @@ public class Lot {
     
     public Status open (Auctioneer auctioneer) {
         if (this.status != LotStatus.UNSOLD) {
-            return Status.error("Cannot open a lot which is in a status other than unsold");
+            return Status.error("Cannot open a lot which is in a status other than unsold.");
         }
         if (this.auctioneer == null) {
-            return Status.error("Cannot close an auction without providing an auctioneer instance.");
+            return Status.error("Cannot open an auction without providing an auctioneer instance.");
+        }
+        if (this.interestedBuyers.isEmpty()) {
+            return Status.error("Cannot open an auction with no interested buyers.");
         }
         this.setStatus(LotStatus.IN_AUCTION);
         this.auctioneer = auctioneer;
@@ -97,7 +100,10 @@ public class Lot {
         this.setStatus(LotStatus.SOLD);
         // Reset auctioneer to null, as we may go on sale multiple times
         this.auctioneer = null;
-
+        // Reset current bid to null
+        // TODO do we need to zero out the other variables too?
+        this.currentBid = null;
+        
         return Status.OK(); 
     }
 
@@ -120,6 +126,10 @@ public class Lot {
 
     public LotStatus getStatus () {
         return this.status;
+    }
+
+    public Auctioneer getAuctioneer () {
+        return this.auctioneer;
     }
 
     public void setStatus (LotStatus newStatus) {
@@ -145,4 +155,7 @@ public class Lot {
         return this.currentPrice;
     }
 
+    public Buyer getBuyerOfCurrentBid() {
+        return this.currentBid.buyer; 
+    }
 }
