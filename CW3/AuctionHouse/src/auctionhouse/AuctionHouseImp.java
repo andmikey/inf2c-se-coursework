@@ -30,8 +30,6 @@ public class AuctionHouseImp implements AuctionHouse {
     private ArrayList<Seller> sellers;
     private ArrayList<Auctioneer> auctioneers;
     private HashMap<Integer, Lot> lots;
-
-    //Commented out until we have a Actor superclass
     private HashMap<String, Actor> addressBook;
     private ArrayList<CatalogueEntry> catalogue;
 
@@ -100,7 +98,8 @@ public class AuctionHouseImp implements AuctionHouse {
             String bankAccount) {
         logger.fine(startBanner("registerSeller " + username));
         String baseMessage = "registerSeller " + username + ": ";
-        
+
+        logger.fine(baseMessage + "checking no arguments are null");
         if (username == null) {
             return Status.error("Cannot register a seller with a null username");
         }
