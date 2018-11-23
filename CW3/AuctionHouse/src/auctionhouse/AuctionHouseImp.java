@@ -318,7 +318,41 @@ public class AuctionHouseImp implements AuctionHouse {
                                 this.parameters.increment.toString());
         }
         
-        // TODO add messaging to auctioneer, interested buyers, seller
+        // Identify buyer
+        Buyer buyer = findBuyer(buyerName);        
+        if (buyer == null) {
+            return Status.error("Buyer with username " + buyerName + " not found.");
+        }
+
+        // Create the bid object
+        // TODO how to determine if jump or increment bid?
+        Bid bid_obj = new Bid(lot, buyer, bid, null);
+        
+        // Try to make bid on lot
+        // Return early if bid failed
+        Status bidAttempt = lot.receiveBid(bid_obj);
+        if (bidAttempt.kind == Status.Kind.ERROR) {
+            // If lot closing fails, return the error that it failed with
+            return bidAttempt;
+        }
+        
+        // Message relevant parties
+        Auctioneer auctioneer = lot.getAuctioneer();
+        String auctioneerAddress = auctioneer.getAddress();
+        this.parameters.messagingService.bidAccepted(auctioneerAddress,
+                                                     lotNumber, bid);
+                                                     
+        Seller seller = lot.getSeller();
+        String sellerAddress = seller.getAddress();
+        this.parameters.messagingService.bidAccepted(sellerAddress,
+                                                     lotNumber, bid);
+        
+        ArrayList<Buyer> buyers = lot.getInterestedBuyers();
+        for (Buyer intBuyer : buyers) {
+            String addr = intBuyer.getAddress();
+            this.parameters.messagingService.bidAccepted(addr,
+                                                         lotNumber, bid);
+        }
         
         return Status.OK();    
     }

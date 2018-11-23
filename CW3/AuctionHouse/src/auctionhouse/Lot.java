@@ -48,6 +48,7 @@ public class Lot {
 
         Money bidValue = bid.value;
         Bid.BidType bidType = bid.type;
+        // TODO check if buyer is an interested buyer
 
         if (bidType == Bid.BidType.INCREMENT) {
             this.currentPrice = this.currentPrice.add(bid.value);
