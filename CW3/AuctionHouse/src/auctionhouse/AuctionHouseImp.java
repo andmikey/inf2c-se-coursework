@@ -391,7 +391,7 @@ public class AuctionHouseImp implements AuctionHouse {
 
             // If withdrawing payment failed, set lot status to sold pending payment
             if (buyerAttempt.type == Status.type.ERROR) {
-                // TODO Set lot status
+                lot.payment_failed();
                 return buyerAttempt;
             }
 
