@@ -395,7 +395,16 @@ public class AuctionHouseImp implements AuctionHouse {
                 return buyerAttempt;
             }
 
-            // TODO Finish transaction to seller
+            // Get seller's credentials
+            String sellerAccount = winningBuyer.getBankAccount();
+            
+            // Try to take payment from winner
+            Status buyerAttempt = this.parameters.bankingService.transfer(
+                    this.houseBankAccount,
+                    this.houseBankAuthCode,
+                    sellerAccount,
+                    lot.getPrice()
+                    );
         }
         
         return Status.OK();  
