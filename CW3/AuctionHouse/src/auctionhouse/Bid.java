@@ -27,10 +27,11 @@ public class Bid {
 	this.value = value;
 	this.type = type;
     }
-    
+
     public static enum BidType {
         INCREMENT, 
         JUMP, 
-        }
+    }
+
 
 }

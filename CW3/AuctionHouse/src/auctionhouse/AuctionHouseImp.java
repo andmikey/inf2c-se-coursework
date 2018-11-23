@@ -324,9 +324,16 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Buyer with username " + buyerName + " not found.");
         }
 
+        // Decide if bid is jump or increment
+        Bid.BidType bidType = null;
+        if (bid.lessEqual(lot.getPrice())) {
+            bidType = Bid.BidType.INCREMENT;
+        }
+        else {
+            bidType = Bid.BidType.JUMP;
+        }
         // Create the bid object
-        // TODO how to determine if jump or increment bid?
-        Bid bid_obj = new Bid(lot, buyer, bid, null);
+        Bid bid_obj = new Bid(lot, buyer, bid, bidType);
         
         // Try to make bid on lot
         // Return early if bid failed
