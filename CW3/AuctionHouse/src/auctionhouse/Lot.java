@@ -98,7 +98,7 @@ public class Lot {
         }
         
         this.setStatus(LotStatus.SOLD);
-        // Reset auctioneer to null, as that would be expected when not on sale
+        // Reset auctioneer to null, as we may go on sale multiple times
         this.auctioneer = null;
         // Reset current bid to null
         // TODO do we need to zero out the other variables too?
@@ -124,6 +124,10 @@ public class Lot {
         return this.seller;
     }
 
+    public LotStatus getStatus () {
+        return this.status;
+    }
+
     public Auctioneer getAuctioneer () {
         return this.auctioneer;
     }
@@ -141,6 +145,14 @@ public class Lot {
         this.interestedBuyers.add(buyer);
 
         return Status.OK();
+    }
+
+    public Buyer getWinner () {
+        return this.currentBid.buyer;
+    }
+
+    public Money getPrice () {
+        return this.currentPrice;
     }
 
     public Buyer getBuyerOfCurrentBid() {

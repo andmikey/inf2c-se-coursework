@@ -272,6 +272,10 @@ public class AuctionHouseImp implements AuctionHouse {
         }
 
         Auctioneer auctioneer = this.findAuctioneer(auctioneerName);
+        // Make sure auctioneer exists
+        if (auctioneer == null) {
+            return Status.error("Auctioneer not found; cannot open lot without valid auctioneer.");
+        }
         
         // Make sure lot can be opened
         Status openingAttempt = lot.open(auctioneer);
@@ -334,29 +338,80 @@ public class AuctionHouseImp implements AuctionHouse {
         Seller seller = lot.getSeller();
         ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
         Buyer winningBuyer = lot.getBuyerOfCurrentBid();
+
+        // Make sure auctioneer exists
+        if (auctioneer == null) {
+            return Status.error("Auctioneer not found; cannot close lot without valid auctioneer.");
+        }
         
-        // Call close on lot
-        Status closeAttempt = lot.close(auctioneer);
-        if (closeAttempt.kind == Status.Kind.ERROR) {
-            return closeAttempt;
+        // Make sure lot can be closed
+        Status closingAttempt = lot.close(auctioneer);
+        if (closingAttempt.kind == Status.Kind.ERROR) {
+            // If lot closing fails, return the error that it failed with
+            return closingAttempt;
         }
 
-        // TODO check if sold or unsold
-        boolean sold = true;
-        
-        // Inform buyers, seller that it has sold
-        String addr = seller.getAddress();
-        this.parameters.messagingService.lotSold(addr, lotNumber);
+        // Check if lot has been sold or unsold
+        LotStatus status = lot.getStatus();
+        // If it has not been sold, notify all parties then abort
+        if (status == LotStatus.UNSOLD) {
+            // Inform buyers, seller that lot is unsold
+            String addr = seller.getAddress();
+            this.parameters.messagingService.lotUnsold(addr, lotNumber, lot);
 
-        for (Buyer interestedBuyer : interestedBuyers) {
-            addr = interestedBuyer.getAddress();
+            for (Buyer interestedBuyer : interestedBuyers) {
+                addr = interestedBuyer.getAddress();
+                this.parameters.messagingService.lotUnsold(addr, lotNumber);
+            }
+
+            // Return as OK
+            return Status.OK();
+        } else {
+            // Get winning buyer's credentials
+            String account = winningBuyer.getBankAccount();
+            String authCode = winningBuyer.getBankAuthCode();
+            
+            // Try to take payment from winner
+            Status buyerAttempt = this.parameters.bankingService.transfer(
+                    account,
+                    authCode,
+                    this.parameters.houseBankAccount,
+                    lot.getPrice()
+                    );
+
+            // If withdrawing payment failed, set lot status to sold pending payment
+            if (buyerAttempt.type == Status.type.ERROR) {
+                lot.payment_failed();
+                return buyerAttempt;
+            }
+
+            // Get seller's credentials
+            String sellerAccount = winningBuyer.getBankAccount();
+            
+            // Try to take payment from winner
+            Status sellerAttempt = this.parameters.bankingService.transfer(
+                    this.houseBankAccount,
+                    this.houseBankAuthCode,
+                    sellerAccount,
+                    lot.getPrice()
+                    );
+
+            // If sending seller payment failed, set lot status to sold pending payment
+            if (sellerAttempt.type == Status.type.ERROR) {
+                lot.payment_failed();
+                return sellerAttempt;
+            }
+
+            // If both payments succeeded, inform buyers, seller that lot has sold
+            String addr = seller.getAddress();
             this.parameters.messagingService.lotSold(addr, lotNumber);
+
+            for (Buyer interestedBuyer : interestedBuyers) {
+                addr = interestedBuyer.getAddress();
+                this.parameters.messagingService.lotSold(addr, lotNumber);
+            }
+            
+            return Status.OK();  
         }
-        
-        // Try to take payments
-        
-        // If payment failed, set lot status to sold pending payment
-        
-        return Status.OK();  
     }
 }
