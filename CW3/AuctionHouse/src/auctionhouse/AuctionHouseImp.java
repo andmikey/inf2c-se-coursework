@@ -358,7 +358,7 @@ public class AuctionHouseImp implements AuctionHouse {
         if (status == LotStatus.UNSOLD) {
             // Inform buyers, seller that lot is unsold
             String addr = seller.getAddress();
-            this.parameters.messagingService.lotUnsold(addr, lotNumber, lot);
+            this.parameters.messagingService.lotUnsold(addr, lotNumber);
 
             for (Buyer interestedBuyer : interestedBuyers) {
                 addr = interestedBuyer.getAddress();
@@ -381,7 +381,7 @@ public class AuctionHouseImp implements AuctionHouse {
                     );
 
             // If withdrawing payment failed, set lot status to sold pending payment
-            if (buyerAttempt.type == Status.type.ERROR) {
+            if (buyerAttempt.kind == Status.Kind.ERROR) {
                 lot.payment_failed();
                 return buyerAttempt;
             }
@@ -391,14 +391,14 @@ public class AuctionHouseImp implements AuctionHouse {
             
             // Try to take payment from winner
             Status sellerAttempt = this.parameters.bankingService.transfer(
-                    this.houseBankAccount,
-                    this.houseBankAuthCode,
+                    this.parameters.houseBankAccount,
+                    this.parameters.houseBankAuthCode,
                     sellerAccount,
                     lot.getPrice()
                     );
 
             // If sending seller payment failed, set lot status to sold pending payment
-            if (sellerAttempt.type == Status.type.ERROR) {
+            if (sellerAttempt.kind == Status.Kind.ERROR) {
                 lot.payment_failed();
                 return sellerAttempt;
             }
