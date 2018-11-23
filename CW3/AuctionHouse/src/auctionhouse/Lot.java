@@ -97,8 +97,11 @@ public class Lot {
             // Did meet reserve price
             this.setStatus(LotStatus.SOLD);
         }
-        
-        this.setStatus(LotStatus.SOLD);
+
+        if (this.currentBid == null) {
+            this.setStatus(LotStatus.UNSOLD);
+        }
+
         // Reset auctioneer to null, as we may go on sale multiple times
         this.auctioneer = null;
         // Reset current bid to null
