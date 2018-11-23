@@ -368,15 +368,6 @@ public class AuctionHouseImp implements AuctionHouse {
             // Return as OK
             return Status.OK();
         } else {
-            // Inform buyers, seller that it has sold
-            String addr = seller.getAddress();
-            this.parameters.messagingService.lotSold(addr, lotNumber);
-
-            for (Buyer interestedBuyer : interestedBuyers) {
-                addr = interestedBuyer.getAddress();
-                this.parameters.messagingService.lotSold(addr, lotNumber);
-            }
-
             // Get winning buyer's credentials
             String account = winningBuyer.getBankAccount();
             String authCode = winningBuyer.getBankAuthCode();
@@ -411,8 +402,17 @@ public class AuctionHouseImp implements AuctionHouse {
                 lot.payment_failed();
                 return sellerAttempt;
             }
+
+            // If both payments succeeded, inform buyers, seller that lot has sold
+            String addr = seller.getAddress();
+            this.parameters.messagingService.lotSold(addr, lotNumber);
+
+            for (Buyer interestedBuyer : interestedBuyers) {
+                addr = interestedBuyer.getAddress();
+                this.parameters.messagingService.lotSold(addr, lotNumber);
+            }
+            
+            return Status.OK();  
         }
-        
-        return Status.OK();  
     }
 }
