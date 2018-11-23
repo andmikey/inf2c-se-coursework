@@ -399,12 +399,18 @@ public class AuctionHouseImp implements AuctionHouse {
             String sellerAccount = winningBuyer.getBankAccount();
             
             // Try to take payment from winner
-            Status buyerAttempt = this.parameters.bankingService.transfer(
+            Status sellerAttempt = this.parameters.bankingService.transfer(
                     this.houseBankAccount,
                     this.houseBankAuthCode,
                     sellerAccount,
                     lot.getPrice()
                     );
+
+            // If sending seller payment failed, set lot status to sold pending payment
+            if (sellerAttempt.type == Status.type.ERROR) {
+                lot.payment_failed();
+                return sellerAttempt;
+            }
         }
         
         return Status.OK();  
