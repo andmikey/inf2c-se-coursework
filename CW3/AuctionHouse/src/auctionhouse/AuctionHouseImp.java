@@ -354,7 +354,7 @@ public class AuctionHouseImp implements AuctionHouse {
         // Decide if bid is jump or increment
         Bid.BidType bidType = null;
         if (bid.lessEqual(lot.getPrice())) {
-            bidType = Bid.BidType.INCREMENT;
+            return Status.error("Bid must be greater than the current price of the lot");
         }
         else {
             bidType = Bid.BidType.JUMP;
