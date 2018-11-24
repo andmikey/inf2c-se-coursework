@@ -84,7 +84,7 @@ public class Lot {
             logger.fine("Lot status is not unsold, cannot open");
             return Status.error("Cannot open a lot which is in a status other than unsold.");
         }
-        if (this.auctioneer == null) {
+        if (auctioneer == null) {
             logger.fine("Auctioneer instance is null");
             return Status.error("Cannot open an auction without providing an auctioneer instance.");
         }

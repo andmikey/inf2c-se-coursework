@@ -291,8 +291,10 @@ public class AuctionHouseImp implements AuctionHouse {
         Auctioneer auctioneer = this.findAuctioneer(auctioneerName);
         // Make sure auctioneer exists
         if (auctioneer == null) {
-            logger.fine(baseMessage + "auctioneer not found");
-            return Status.error("Auctioneer not found; cannot open lot without valid auctioneer.");
+            logger.fine(baseMessage + "auctioneer not found; adding to list");
+            Auctioneer newAuctioneer = new Auctioneer(auctioneerName, auctioneerAddress, this);
+            this.auctioneers.add(newAuctioneer);
+            auctioneer = newAuctioneer;
         }
         
         // Make sure lot can be opened
@@ -383,6 +385,9 @@ public class AuctionHouseImp implements AuctionHouse {
         
         ArrayList<Buyer> buyers = lot.getInterestedBuyers();
         for (Buyer intBuyer : buyers) {
+            if (intBuyer.username == buyerName) {
+                continue;
+            }
             String addr = intBuyer.getAddress();
             this.parameters.messagingService.bidAccepted(addr,
                                                          lotNumber, bid);
