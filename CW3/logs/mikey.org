@@ -53,3 +53,7 @@ Today:
   - Write up project log
   - Finish Javadoc comments for Money class
   - Write report
+- Plan for tomorrow:
+  - Finish report
+  - Type up project log
+  - More unit tests
