@@ -443,8 +443,8 @@ public class AuctionHouseImp implements AuctionHouse {
                 this.parameters.messagingService.lotUnsold(addr, lotNumber);
             }
 
-            // Return as OK
-            return Status.OK();
+            // Return as NO_SALE
+            return new Status(Status.Kind.NO_SALE);
         } else if (status == LotStatus.SOLD) {
             logger.fine(baseMessage + "lot status is sold");
             // Get winning buyer's credentials
@@ -463,7 +463,7 @@ public class AuctionHouseImp implements AuctionHouse {
             if (buyerAttempt.kind == Status.Kind.ERROR) {
                 logger.fine(baseMessage + "payment from buyer failed");
                 lot.payment_failed();
-                return buyerAttempt;
+                return new Status(Status.Kind.SALE_PENDING_PAYMENT);
             }
 
             logger.fine(baseMessage + "sending payment to seller");            
@@ -482,7 +482,7 @@ public class AuctionHouseImp implements AuctionHouse {
             if (sellerAttempt.kind == Status.Kind.ERROR) {
                 logger.fine(baseMessage + "payment to seller failed");
                 lot.payment_failed();
-                return sellerAttempt;
+                return new Status(Status.Kind.SALE_PENDING_PAYMENT);
             }
 
             logger.fine(baseMessage + "both payments succeeded, informing buyers, seller");
@@ -495,7 +495,7 @@ public class AuctionHouseImp implements AuctionHouse {
                 this.parameters.messagingService.lotSold(addr, lotNumber);
             }
             
-            return Status.OK();  
+            return new Status(Status.Kind.SALE);
         }
         else {
             logger.fine(baseMessage + "lot is in unexpected state " + status);
