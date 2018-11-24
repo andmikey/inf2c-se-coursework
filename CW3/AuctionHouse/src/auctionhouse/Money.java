@@ -113,20 +113,43 @@ public class Money implements Comparable<Money> {
     /**
      * Returns the string representation of the Money object: 
      * a float with two decimal places. 
+     * 
+     * @return the string representation of the object.
      */     
     @Override
     public String toString() {
         return String.format("%.2f", value);
         
     }
+
+    /**
+     * Compares this Money instance with another Money object
+     * 
+     * @param m the Money object to compare to 
+     * @return 0 if the objects are the same; 1 if this instance is greater than m;
+     * -1 if it is less than.
+     */
     public int compareTo(Money m) {
         return Long.compare(getNearestPence(value),  getNearestPence(m.value)); 
     }
-    
+
+    /**
+     * Checks if the current instance is less than or equal to a given Money object.
+     * 
+     * @param m the Money object to compare to 
+     * @return true if this object is less than or equal to the argument, false otherwise
+     */
     public Boolean lessEqual(Money m) {
         return compareTo(m) <= 0;
     }
     
+    /**
+     * Checks if the current instance is equal to another Money instance.
+     * 
+     * @param o the object to compare to 
+     * @return true if the objects are equal, false otherwise. Also returns false if 
+     * o is not a Money instance. 
+     */    
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Money)) return false;
@@ -134,6 +157,11 @@ public class Money implements Comparable<Money> {
         return compareTo(oM) == 0;       
     }
     
+    /**
+     * Returns the hash code of the instance.
+     * 
+     * @return the hash code of this instance. 
+     */        
     @Override
     public int hashCode() {
         return Long.hashCode(getNearestPence(value));
