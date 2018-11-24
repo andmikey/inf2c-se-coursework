@@ -1,0 +1,192 @@
+\documentclass[titlepage, 12pt, a3paper, landscape]{extarticle}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{../../CW2/tikz-uml}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{pdfpages}
+\lhead{Inf2C: SE Coursework 3}
+\rhead{s1703773 \& s1737075}
+\cfoot{\thepage~/~11}
+\pagestyle{fancy}
+
+\begin{document}
+\setcounter{page}{11}
+\begin{tikzpicture}
+
+  \umlclass[x=26.5,y=-10]{Auctioneer}{
+    assignedLots : List Lot 
+  }{
+    
+  }
+
+  \umlclass[x=17,y=-10]{Buyer}{
+    interestedLots : List Lot
+  }
+  {
+
+  }
+
+
+  \umlclass[x=7, y=-8.5]{Seller}{
+    lotsOwned : List Lot
+  }
+  {
+  }
+
+  \umlclass[x=2.5, y=-10.5]{Lot}{
+    auctioneer : Auctioneer \\
+    currentBid : Bid \\
+    currentPrice : Money \\
+    description : String \\
+    interestedBuyers : List Buyer \\
+    reservePrice : Money \\
+    seller : Seller \\
+    status : LotStatus \\
+    uniqueId : int \\
+  }
+  {
+    receiveBid()  \\
+    open()  \\
+    close()  \\
+    payment\_failed()  \\
+    addInterestedBuyer() 
+  }
+
+  \umlclass[]{Money}{
+    value : double 
+  }
+  {
+    getNearestPence() \\
+    normalise() \\
+    add() \\
+    subtract()\\
+    addPercent() \\
+    compareTo() \\
+    lessEqual() \\
+    equals()
+  }
+
+  \umlclass[x=31,y=-5]{MemberOfPublic}{
+  }
+  {
+  }
+
+  \umlclass[x=0,y=-21]{Bid}{
+    lot : Lot \\
+    buyer : Buyer \\
+    value : Money \\
+    type : BidType 
+  }
+  {
+  }
+
+  \umlclass[x=3,y=-21,type=enum]{BidType}{Increment \\ Jump}
+
+  \umlclass[x=-2.1, y=-15,type=enum]{LotStatus}{Unsold \\ In auction \\ Sold \\ Sold pending payment}
+  
+  \umlclass[x=25,y=-19]{AuctionHouseImp}{
+    addressBook : Map String Actor \\ %TODO should this be HashMap?
+    auctioneers : List Auctioneer \\
+    buyers : List Buyer \\
+    catalogue : List CatalogueEntry \\
+    lots : Map Integer Lot \\
+    sellers : List Seller \\
+    parameters : Parameters
+  }
+  {
+  }
+  
+  \umlclass[type = interface, x=25,y=-19]{AuctionHouse}{
+  }
+  {
+    registerBuyer() \\
+    registerSeller() \\
+    addLot() \\
+    viewCatalogue() \\
+    noteInterest()\\
+    openAuction() \\
+    makeBid() \\
+    closeAuction() \\
+
+  }
+
+  \umlclass[x=27, y=-1]{Actor}{
+    address : String \\
+    auctionhouse : AuctionHouse 
+  }
+  {
+    viewCatalogue() % TODO check
+  }
+
+  \umlclass[x=19,y=-2]{RegisteredUser}{
+    username : String
+  }{}
+  
+  \umlclass[x=11,y=-5]{Client}{
+    bankAuthCode : String \\
+    bankAccount : String 
+  }
+  {
+  }
+
+  \umlclass[type = interface, x=11,y=-5]{MessagingService}{
+  }
+  {
+    auctionOpened() \\
+    bidAccepted() \\
+    lotSold() \\
+    lotUnsold() 
+  }
+
+  \umlclass[type = interface, x=11,y=-5]{BankingService}{
+  }
+  {
+    transfer()
+  }
+  
+  \umlclass[x=11,y=-5]{CatalogueEntry}{
+    lotNumber : int \\
+    description : String \\
+    status : LotSTatus 
+  }
+  {
+  }
+
+  \umlclass[x=11,y=-5]{Parameters}{
+    buyerPremium : double \\
+    commission : double \\
+    increment : Money \\
+    houseBankAccount : String \\
+    houseBankAuthCode : String \\
+    messagingService : MessagingService \\
+    bankingService : BankingService 
+  }
+  {
+  }
+
+  \umlemptyclass[x=11,y=-21]{CatalogueEntry}
+
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Seller}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Buyer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Lot}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{CatalogueEntry}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Auctioneer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{MemberOfPublic}
+
+  \umlassoc[mult1=*, mult2=1]{Bid}{Lot}
+  \umlassoc[mult1=*, mult2=1]{Lot}{Seller}
+  \umlassoc[mult1=1, mult2=1]{CatalogueEntry}{Lot}
+
+  \umlinherit{Seller}{Client}
+  \umlinherit{Buyer}{Client}
+  
+  \umlinherit{Auctioneer}{RegisteredUser}
+  \umlinherit{Client}{RegisteredUser}
+  \umlinherit{RegisteredUser}{Actor}
+  \umlinherit{MemberOfPublic}{Actor}
+
+  \umlimpl{AuctionHouseImp}{AuctionHouse}
+\end{tikzpicture}
+\end{document}
