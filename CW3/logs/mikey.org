@@ -41,5 +41,8 @@ Today:
 * [2018-11-23 Fri]
 - More work! 
 - TODO add logging
-- TODO finish implementation
+- Finished most of implementation
 - TODO add more tests
+  - Not working currently: openAuction, closeAuction, makeBid
+* [2018-11-24 Sat]
+- 3 tests failing: auctioneer not found!
