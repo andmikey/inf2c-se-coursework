@@ -22,6 +22,11 @@ public class Client extends RegisteredUser {
     public Client (String username, String address, AuctionHouse auctionhouse,
                    String bankAuthCode, String bankAccount) {
         super(username, address, auctionhouse);
+        logger.fine("Creating new client: " +
+                    "\nusername: " + username +
+                    "\naddress: " + address +
+                    "\nauth code: " + bankAuthCode +
+                    "\nbank acc: " + bankAccount);
         this.bankAuthCode = bankAuthCode;
         this.bankAccount = bankAccount;
     }

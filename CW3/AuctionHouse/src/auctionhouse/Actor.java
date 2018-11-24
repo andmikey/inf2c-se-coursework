@@ -24,6 +24,7 @@ public class Actor {
     }
 
     public Actor (String address, AuctionHouse auctionhouse) {
+        logger.fine("Creating actor: \naddress: " + address);
         this.address = address;
         this.auctionhouse = auctionhouse;
     }

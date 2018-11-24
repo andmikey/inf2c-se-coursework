@@ -2,6 +2,7 @@
  * 
  */
 package auctionhouse;
+// TODO add more documentation comments
 
 /**
  * Money is the class used to represent currencies within the AuctionHouse 

@@ -36,6 +36,7 @@ public class AuctionHouseImp implements AuctionHouse {
     private Parameters parameters;
    
     public AuctionHouseImp(Parameters parameters) {
+        logger.fine("Creating new auctionhouse object");
         this.parameters = parameters;
 
         this.buyers = new ArrayList<Buyer>();
@@ -71,6 +72,7 @@ public class AuctionHouseImp implements AuctionHouse {
         logger.fine(baseMessage + "checking address is not duplicate");
         Actor a = addressBook.get(address);
         if (a != null) {
+            logger.fine(baseMessage + "address is duplicate");
             return Status.error("Address " + address + " already belongs to an " +
                                 "existing user, cannot register buyer");
         }
@@ -78,6 +80,7 @@ public class AuctionHouseImp implements AuctionHouse {
         logger.fine(baseMessage + "checking username is not duplicate");        
         Buyer existingBuyer = findBuyer(username);        
         if (existingBuyer != null) {
+            logger.fine(baseMessage + "username already taken");
             return Status.error("Username " + username + " already belongs to an " +
                                 "existing buyer, cannot register buyer");
         }
@@ -85,7 +88,7 @@ public class AuctionHouseImp implements AuctionHouse {
         logger.fine(baseMessage + "creating Buyer object");        
         Buyer buyer = new Buyer(username, address, this, bankAuthCode, bankAccount);
 
-        logger.fine(baseMessage + "adding to relevant lists");        
+        logger.fine(baseMessage + "adding to buyer list and address book");        
         buyers.add(buyer);
         addressBook.put(address, buyer);
         
@@ -113,7 +116,7 @@ public class AuctionHouseImp implements AuctionHouse {
         logger.fine(baseMessage + "checking address is not duplicate");
         Actor a = addressBook.get(address);
         if (a != null) {
-            logger.fine(baseMessage + "address is duplicate, returning error");
+            logger.fine(baseMessage + "address is duplicate");
             return Status.error("Address " + address + " already belongs to an " +
                                 "existing user, cannot register seller");
         }
@@ -121,6 +124,7 @@ public class AuctionHouseImp implements AuctionHouse {
         logger.fine(baseMessage + "checking username is not duplicate");        
         Seller existingSeller = findSeller(username);        
         if (existingSeller != null) {
+            logger.fine(baseMessage + "username is duplicate");
             return Status.error("Username " + username + " already belongs to an " +
                                 "existing seller, cannot register seller");
         }
@@ -128,7 +132,7 @@ public class AuctionHouseImp implements AuctionHouse {
         logger.fine(baseMessage + "creating Seller object");        
         Seller seller = new Seller(username, address, this, null, bankAccount);
 
-        logger.fine(baseMessage + "adding to relevant lists");        
+        logger.fine(baseMessage + "adding to seller list, address book");        
         sellers.add(seller);
         addressBook.put(address, seller);
         
@@ -141,6 +145,7 @@ public class AuctionHouseImp implements AuctionHouse {
             String description,
             Money reservePrice) {
         logger.fine(startBanner("addLot " + sellerName + " " + number));
+        String baseMessage = "addLot " + number + " " + description + ": ";
 
         // Check no attributes are null
 	    if (sellerName == null) {
@@ -156,6 +161,7 @@ public class AuctionHouseImp implements AuctionHouse {
         // Check reserve price isn't less than zero
         Money zero = new Money("0.0");
         if (reservePrice.compareTo(zero) < 0) {
+            logger.fine(baseMessage + "reserve price of lot is less than zero");
             return Status.error("Reserve price of lot cannot be less than zero");
         }
         
@@ -164,6 +170,7 @@ public class AuctionHouseImp implements AuctionHouse {
 	    // which would allow for two entries with the same number but different statuses
 	    for (CatalogueEntry entry : catalogue) {
 	        if (entry.lotNumber == number) {
+                logger.fine(baseMessage + "lot has duplicate number");
 	    	return Status.error("Cannot add a lot with the same number as " +
 	    		     " an existing lot. Conflicting lot: \n " + entry.toString());
 	        }
@@ -172,15 +179,19 @@ public class AuctionHouseImp implements AuctionHouse {
         Seller seller = findSeller(sellerName);
 
 	    if (seller == null) {
+            logger.fine(baseMessage + "can't find associated seller " + sellerName);
 	        return Status.error("Cannot find seller of username " + sellerName +
 	    			", so lot cannot be added");
 	    }
-        
+
+        logger.fine(baseMessage + "create lot and add to lot list, catalogue");
         Lot newLot = new Lot(seller, number, description, reservePrice);
+        
         // Insert lot into our hashmap for future referencing
         this.lots.put(number, newLot);
 
-        // Note that by associating an entry with a lot by passing it in, the Lot can keep the catalogue entry up to date by mutating it.
+        // Note that by associating an entry with a lot by passing it in
+        // the Lot can keep the catalogue entry up to date by mutating it.
 	    catalogue.add(newLot.entry);
         
         return Status.OK();    
@@ -238,21 +249,25 @@ public class AuctionHouseImp implements AuctionHouse {
             String buyerName,
             int lotNumber) {
         logger.fine(startBanner("noteInterest " + buyerName + " " + lotNumber));
+        String baseMessage = "noteInterest " + buyerName + " " + lotNumber + ": ";
         
         // Make sure lot exists
         Lot lot = this.lots.get(lotNumber);
         if (lot == null) {
+            logger.fine(baseMessage + "lot with number not found");
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
         // Make sure buyer exists
         Buyer buyer = findBuyer(buyerName);        
         if (buyer == null) {
+            logger.fine(baseMessage + "buyer not found");
             return Status.error("Buyer with username " + buyerName + " not found.");
         }
 
         Status lotAdd = lot.addInterestedBuyer(buyer);
         if (lotAdd.kind == Status.Kind.ERROR) {
+            logger.fine(baseMessage + "lot returned an error");
             return lotAdd;
         }
         
@@ -264,26 +279,32 @@ public class AuctionHouseImp implements AuctionHouse {
             String auctioneerAddress,
             int lotNumber) {
         logger.fine(startBanner("openAuction " + auctioneerName + " " + lotNumber));
-
+        String baseMessage = "openAuction: " + auctioneerName + " " + lotNumber + ": ";
+        
         // Make sure lot exists
         Lot lot = this.lots.get(lotNumber);
         if (lot == null) {
+            logger.fine(baseMessage + "lot number not found");
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
         Auctioneer auctioneer = this.findAuctioneer(auctioneerName);
         // Make sure auctioneer exists
         if (auctioneer == null) {
+            logger.fine(baseMessage + "auctioneer not found");
             return Status.error("Auctioneer not found; cannot open lot without valid auctioneer.");
         }
         
         // Make sure lot can be opened
         Status openingAttempt = lot.open(auctioneer);
         if (openingAttempt.kind == Status.Kind.ERROR) {
+            logger.fine(baseMessage + "opening attempt failed");
             // If lot opening fails, return the error that it failed with
             return openingAttempt;
         }
 
+        logger.fine(baseMessage + "sending out auctionOpened messages");
+        
         // Message seller of lot that it has gone on auction
         Seller seller = lot.getSeller();
         String addr = seller.getAddress();
@@ -304,16 +325,19 @@ public class AuctionHouseImp implements AuctionHouse {
             int lotNumber,
             Money bid) {
         logger.fine(startBanner("makeBid " + buyerName + " " + lotNumber + " " + bid));
-
+        String baseMessage = "makeBid: " + buyerName + " " + lotNumber + ": ";
+ 
         // Make sure lot exists
         Lot lot = this.lots.get(lotNumber);
         if (lot == null) {
+            logger.fine(baseMessage + "lot not found");
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
         
         // Bid is less than minimum increment
         // Note that this also handles negative numbers, so we don't need to check this
         if (bid.compareTo(this.parameters.increment) == -1) {
+            logger.fine(baseMessage + "bid is less than minimum increment");
             return Status.error("Bid must be greater than minimum increment " +
                                 this.parameters.increment.toString());
         }
@@ -321,6 +345,7 @@ public class AuctionHouseImp implements AuctionHouse {
         // Identify buyer
         Buyer buyer = findBuyer(buyerName);        
         if (buyer == null) {
+            logger.fine(baseMessage + "buyer not found");
             return Status.error("Buyer with username " + buyerName + " not found.");
         }
 
@@ -339,10 +364,12 @@ public class AuctionHouseImp implements AuctionHouse {
         // Return early if bid failed
         Status bidAttempt = lot.receiveBid(bid_obj);
         if (bidAttempt.kind == Status.Kind.ERROR) {
+            logger.fine(baseMessage + "lot receiveBid returned error");
             // If lot closing fails, return the error that it failed with
             return bidAttempt;
         }
-        
+
+        logger.fine(baseMessage + "sending out bid notifications");
         // Message relevant parties
         Auctioneer auctioneer = lot.getAuctioneer();
         String auctioneerAddress = auctioneer.getAddress();
@@ -368,9 +395,12 @@ public class AuctionHouseImp implements AuctionHouse {
             String auctioneerName,
             int lotNumber) {
         logger.fine(startBanner("closeAuction " + auctioneerName + " " + lotNumber));
+        String baseMessage = "closeAuction: " + auctioneerName + " " + lotNumber + ": ";
+        
         // Find lot
         Lot lot = this.lots.get(lotNumber);
         if (lot == null) {
+            logger.fine(baseMessage + "could not find lot");
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
 
@@ -382,12 +412,14 @@ public class AuctionHouseImp implements AuctionHouse {
 
         // Make sure auctioneer exists
         if (auctioneer == null) {
+            logger.fine(baseMessage + "auctioneer does not exist");
             return Status.error("Auctioneer not found; cannot close lot without valid auctioneer.");
         }
         
         // Make sure lot can be closed
         Status closingAttempt = lot.close(auctioneer);
         if (closingAttempt.kind == Status.Kind.ERROR) {
+            logger.fine(baseMessage + "lot closing failed");
             // If lot closing fails, return the error that it failed with
             return closingAttempt;
         }
@@ -396,6 +428,7 @@ public class AuctionHouseImp implements AuctionHouse {
         LotStatus status = lot.getStatus();
         // If it has not been sold, notify all parties then abort
         if (status == LotStatus.UNSOLD) {
+            logger.fine(baseMessage + "lot status is unsold, informing buyers and sellers");
             // Inform buyers, seller that lot is unsold
             String addr = seller.getAddress();
             this.parameters.messagingService.lotUnsold(addr, lotNumber);
@@ -407,25 +440,28 @@ public class AuctionHouseImp implements AuctionHouse {
 
             // Return as OK
             return Status.OK();
-        } else {
+        } else if (status == LotStatus.SOLD) {
+            logger.fine(baseMessage + "lot status is sold");
             // Get winning buyer's credentials
             String account = winningBuyer.getBankAccount();
             String authCode = winningBuyer.getBankAuthCode();
             
+            logger.fine(baseMessage + "taking payment from buyer");            
             // Try to take payment from winner
             Status buyerAttempt = this.parameters.bankingService.transfer(
                     account,
                     authCode,
                     this.parameters.houseBankAccount,
-                    lot.getPrice()
-                    );
+                    lot.getPrice());
 
             // If withdrawing payment failed, set lot status to sold pending payment
             if (buyerAttempt.kind == Status.Kind.ERROR) {
+                logger.fine(baseMessage + "payment from buyer failed");
                 lot.payment_failed();
                 return buyerAttempt;
             }
 
+            logger.fine(baseMessage + "sending payment to seller");            
             // Get seller's credentials
             String sellerAccount = winningBuyer.getBankAccount();
             
@@ -439,10 +475,12 @@ public class AuctionHouseImp implements AuctionHouse {
 
             // If sending seller payment failed, set lot status to sold pending payment
             if (sellerAttempt.kind == Status.Kind.ERROR) {
+                logger.fine(baseMessage + "payment to seller failed");
                 lot.payment_failed();
                 return sellerAttempt;
             }
 
+            logger.fine(baseMessage + "both payments succeeded, informing buyers, seller");
             // If both payments succeeded, inform buyers, seller that lot has sold
             String addr = seller.getAddress();
             this.parameters.messagingService.lotSold(addr, lotNumber);
@@ -453,6 +491,10 @@ public class AuctionHouseImp implements AuctionHouse {
             }
             
             return Status.OK();  
+        }
+        else {
+            logger.fine(baseMessage + "lot is in unexpected state " + status);
+            return Status.error("Lot is in unexpected state " + status);
         }
     }
 }

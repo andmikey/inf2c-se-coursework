@@ -22,10 +22,16 @@ public class Bid {
     public BidType type;
 
     public Bid(Lot lot, Buyer buyer, Money value, BidType type) {
-	this.lot = lot;
-	this.buyer = buyer;
-	this.value = value;
-	this.type = type;
+        logger.fine("Creating lot with information: " +
+                    "\nLot: " + lot.getID() +
+                    "\nBuyer: " + buyer.getUsername() +
+                    "\nMoney: " + value.toString() +
+                    "\nType: " + type);
+                    
+        this.lot = lot;
+        this.buyer = buyer;
+        this.value = value;
+        this.type = type;
     }
 
     public static enum BidType {

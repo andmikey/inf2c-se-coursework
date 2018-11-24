@@ -42,20 +42,31 @@ public class Lot {
     }
     
     public Status receiveBid (Bid bid) {
+        logger.fine("Receive bid: " + bid);
         if (this.status != LotStatus.IN_AUCTION) {
+            logger.fine("Lot status is not in auction, cannot place bid");
             return Status.error("Cannot place bid on a lot which is not currently in auction");
         }
 
         Money bidValue = bid.value;
         Bid.BidType bidType = bid.type;
-        // TODO check if buyer is an interested buyer
-
+        
+        // Check if buyer is in the list of interested buyers
+        Buyer buyer = bid.buyer;
+        if (!this.interestedBuyers.contains(buyer)) {
+            logger.fine("Buyer not in list of interested buyers, cannot place bid");
+            return Status.error("Buyer is not interested in lot, cannot place bid");
+        }
+        
         if (bidType == Bid.BidType.INCREMENT) {
+            logger.fine("Processing increment bid");
             this.currentPrice = this.currentPrice.add(bid.value);
             this.currentBid = bid;
         }
         else if (bidType == Bid.BidType.JUMP) {
+            logger.fine("Processing jump bid");
             if (bid.value.compareTo(this.currentPrice) < 1) {
+                logger.fine("Bid is less than or equal to current price, cannot place bid");
                 return Status.error("Bid must be greater than current price " +
                                     this.currentPrice.toString());
             }
@@ -67,55 +78,64 @@ public class Lot {
     }
     
     public Status open (Auctioneer auctioneer) {
+        logger.fine("Open lot");
+        
         if (this.status != LotStatus.UNSOLD) {
+            logger.fine("Lot status is not unsold, cannot open");
             return Status.error("Cannot open a lot which is in a status other than unsold.");
         }
         if (this.auctioneer == null) {
+            logger.fine("Auctioneer instance is null");
             return Status.error("Cannot open an auction without providing an auctioneer instance.");
         }
         if (this.interestedBuyers.isEmpty()) {
+            logger.fine("Auction has no interested buyers");
             return Status.error("Cannot open an auction with no interested buyers.");
         }
+        
         this.setStatus(LotStatus.IN_AUCTION);
-        this.auctioneer = auctioneer;
+        this.auctioneer = auctioneer; 
+        this.currentBid = null;
         return Status.OK();
     }
     
     public Status close (Auctioneer auctioneer) {
         if (this.status != LotStatus.IN_AUCTION) {
-            return Status.error("Cannot open a lot that is not currently in auction");
+            logger.fine("Lot is not currently in auction state");
+            return Status.error("Cannot close a lot that is not currently in auction");
         }
         
         if (this.auctioneer != auctioneer) {
+            logger.fine("Lot open auctioneer is not lot close auctioneer");
             return Status.error("Cannot close a lot if you are not the auctioneer that opened it.");
         }
 
         if (this.currentPrice.compareTo(this.reservePrice) < 0) {
+            logger.fine("Lot did not meet reserve price");
             // Did not meet reserve price
             this.setStatus(LotStatus.UNSOLD);
         } else {
+            logger.fine("Lot met reserve price");
             // Did meet reserve price
             this.setStatus(LotStatus.SOLD);
         }
 
         if (this.currentBid == null) {
+            logger.fine("No bids placed on item");
             this.setStatus(LotStatus.UNSOLD);
         }
-
-        // Reset auctioneer to null, as we may go on sale multiple times
-        this.auctioneer = null;
-        // Reset current bid to null
-        // TODO do we need to zero out the other variables too?
-        this.currentBid = null;
         
+        // TODO do we need to zero out any variables here?
         return Status.OK(); 
     }
 
     public Status payment_failed() {
         if (this.status != LotStatus.SOLD) {
+            logger.fine("Lot not in sold status, cannot set to payment failed");
             return Status.error("Lot not in SOLD state");
         }
         
+        logger.fine("Setting lot status to SOLD_PENDING_PAYMENT");
         this.setStatus(LotStatus.SOLD_PENDING_PAYMENT);
         return Status.OK();
     }
@@ -142,12 +162,13 @@ public class Lot {
     }
 
     public Status addInterestedBuyer(Buyer buyer) {
+        logger.fine("Adding interested buyer " + buyer.username);
         if (this.interestedBuyers.contains(buyer)) {
+            logger.fine("Buyer already marked as interested in lot");
             return Status.error("Buyer already marked as interested in lot");
         }
 
         this.interestedBuyers.add(buyer);
-
         return Status.OK();
     }
 
@@ -161,5 +182,9 @@ public class Lot {
 
     public Buyer getBuyerOfCurrentBid() {
         return this.currentBid.buyer; 
+    }
+
+    public int getID() {
+        return this.uniqueId;
     }
 }
