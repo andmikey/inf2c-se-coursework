@@ -447,40 +447,48 @@ public class AuctionHouseImp implements AuctionHouse {
             return new Status(Status.Kind.NO_SALE);
         } else if (status == LotStatus.SOLD) {
             logger.fine(baseMessage + "lot status is sold");
-            // Get winning buyer's credentials
-            String account = winningBuyer.getBankAccount();
-            String authCode = winningBuyer.getBankAuthCode();
-            
-            logger.fine(baseMessage + "taking payment from buyer");            
-            // Try to take payment from winner
-            Status buyerAttempt = this.parameters.bankingService.transfer(
-                    account,
-                    authCode,
-                    this.parameters.houseBankAccount,
-                    lot.getPrice());
 
-            // If withdrawing payment failed, set lot status to sold pending payment
-            if (buyerAttempt.kind == Status.Kind.ERROR) {
-                logger.fine(baseMessage + "payment from buyer failed");
-                lot.payment_failed();
-                return new Status(Status.Kind.SALE_PENDING_PAYMENT);
-            }
+            Money sold_price = lot.getPrice();
+            Money buyerPremium = new Money(Double.toString(this.parameters.buyerPremium));
+            Money commission = new Money(Double.toString(this.parameters.commission));
+            Money buyer_pays = sold_price.add(buyerPremium);
+            Money seller_pays = sold_price.subtract(commission);
+
 
             logger.fine(baseMessage + "sending payment to seller");            
             // Get seller's credentials
-            String sellerAccount = winningBuyer.getBankAccount();
+            String sellerAccount = seller.getBankAccount();
             
             // Try to take payment from winner
             Status sellerAttempt = this.parameters.bankingService.transfer(
                     this.parameters.houseBankAccount,
                     this.parameters.houseBankAuthCode,
                     sellerAccount,
-                    lot.getPrice()
+                    seller_pays
                     );
 
             // If sending seller payment failed, set lot status to sold pending payment
             if (sellerAttempt.kind == Status.Kind.ERROR) {
                 logger.fine(baseMessage + "payment to seller failed");
+                lot.payment_failed();
+                return new Status(Status.Kind.SALE_PENDING_PAYMENT);
+            }
+
+            // Get winning buyer's credentials
+            String buyerAccount = winningBuyer.getBankAccount();
+            String buyerAuthCode = winningBuyer.getBankAuthCode();
+            
+            logger.fine(baseMessage + "taking payment from buyer");            
+            // Try to take payment from winner
+            Status buyerAttempt = this.parameters.bankingService.transfer(
+                    buyerAccount,
+                    buyerAuthCode,
+                    this.parameters.houseBankAccount,
+                    buyer_pays);
+
+            // If withdrawing payment failed, set lot status to sold pending payment
+            if (buyerAttempt.kind == Status.Kind.ERROR) {
+                logger.fine(baseMessage + "payment from buyer failed");
                 lot.payment_failed();
                 return new Status(Status.Kind.SALE_PENDING_PAYMENT);
             }
