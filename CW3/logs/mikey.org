@@ -46,3 +46,10 @@ Today:
   - Not working currently: openAuction, closeAuction, makeBid
 * [2018-11-24 Sat]
 - 3 tests failing: auctioneer not found!
+- Got all tests passing
+- Still to do:
+  - Add more tests for AuctionHouseImpl 
+    - Do we need to get rid of increment bid logic?
+  - Write up project log
+  - Finish Javadoc comments for Money class
+  - Write report

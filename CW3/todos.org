@@ -1,4 +1,4 @@
-- [ ] Construct code
+- [X] Construct code
   - Add methods to Auctionhouse
   - Create relevant classes with support for message handling as needed
     - Interface for Actor as per CW2 
@@ -17,8 +17,8 @@
   - A test for each use-case
   - Unit tests for each class, too? 
     - To a certain extent handled by Auctionhouse impl testing
-- [ ] Add logging code to all of implementation
-- [ ] Keep project log
+- [X] Add logging code to all of implementation
+- [X] Keep project log
 - [ ] Write report
   - [ ] UML Class diagram
   - [ ] High-level design description
