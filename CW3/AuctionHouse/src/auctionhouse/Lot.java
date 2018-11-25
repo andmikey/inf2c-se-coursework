@@ -25,7 +25,7 @@ public class Lot {
     private Bid currentBid;
     private Money currentPrice;
     private Auctioneer auctioneer;
-    
+
     // Commented out until CatalogueEntry is defined
     public CatalogueEntry entry;
 
@@ -65,11 +65,6 @@ public class Lot {
         }
         else if (bidType == Bid.BidType.JUMP) {
             logger.fine("Processing jump bid");
-            if (bid.value.compareTo(this.currentPrice) < 1) {
-                logger.fine("Bid is less than or equal to current price, cannot place bid");
-                return Status.error("Bid must be greater than current price " +
-                                    this.currentPrice.toString());
-            }
             this.currentPrice = bid.value;
             this.currentBid = bid;
         }
@@ -163,11 +158,18 @@ public class Lot {
 
     public Status addInterestedBuyer(Buyer buyer) {
         logger.fine("Adding interested buyer " + buyer.username);
+        // Cannot mark interest in lot if already interested
         if (this.interestedBuyers.contains(buyer)) {
             logger.fine("Buyer already marked as interested in lot");
             return Status.error("Buyer already marked as interested in lot");
         }
 
+        // Cannot mark interest in lot if lot in not in auction or unsold
+        if (!(this.status == LotStatus.IN_AUCTION || this.status == LotStatus.UNSOLD)) {
+            logger.fine("Cannot mark interest in SOLD lot");
+            return Status.error("Cannot mark interest in SOLD lot");
+        }
+        
         this.interestedBuyers.add(buyer);
         return Status.OK();
     }
