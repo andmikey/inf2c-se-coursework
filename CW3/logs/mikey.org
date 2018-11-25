@@ -61,3 +61,8 @@ Today:
 - Report
 - Auctioneer cannot be active on more than one auction
 - Limitation: Auctioneer is created on being mentioned on openLot
+- TODO today:
+  - System-level tests
+  - More unit tests
+  - Get Dylan to finish report
+  - 
