@@ -1,0 +1,4 @@
+#!/bin/bash
+pdflatex "class_diagram.tex"
+pdflatex "report.tex"
+pdflatex "report.tex"
