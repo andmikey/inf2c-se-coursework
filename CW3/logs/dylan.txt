@@ -1,0 +1,50 @@
+=== 20181117
+Covered specifications
+    How to split work
+        Resolved to work largely at same time and divvy work as we go
+        General development by Dylan
+        Testing mostly covered by Mikey
+    Potential pitfalls
+        Test myopia (assuming that just because your tests pass, the code works)
+        Getting too invested in one solution before considering drawbacks
+        God functions
+            With AuctionHouseImp, it is inevitable we will have a large central
+            class with lots of logic
+            However, we can ameliorate that by keeping functions well divided
+            in terms of size and purpose internally
+
+Went over general utilities and tools
+    Code conventions
+        Indent with 4 spaces, as both of us prefer to
+        Keep comments to file
+        Order variables and methods correctly
+            Public, then protected, then private
+        Note difference in comments vs doc comments
+    JavaDoc 
+    JUnit
+        @Before & @After            are per test
+        @BeforeClass & @AfterClass  are per suite
+        Assertions are pretty identical to NodeJS assert
+
+
+=== 20181117
+Developed skeletons of all major classes in our coursework 2 diagram
+Add compilation script
+Fix test script to pipe to stdout
+
+=== 20181118
+Changed hierarchy of actors to inherit differently and scrap Actor interface
+Begin work on lot closing transaction system
+Merge in Mikey and my commits on this - we code suprisingly similarly!
+Privatize certain public variables
+Add relevant Lot getters
+Sanitize / verify auctioneer for opening / closing lots
+
+=== 20181123
+Fix payment transfer logic
+Fix several type errors in checking transaction statuses
+
+=== 20181124
+Go over design of project report
+Draw out new class diagram inspired by one in CW2
+Incorporate changes (esp Banking/Messaging/AuctionHouseImp) into new class diagram
