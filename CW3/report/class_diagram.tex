@@ -15,13 +15,14 @@
 \setcounter{page}{11}
 \begin{tikzpicture}
 
-  \umlclass[x=26.5,y=-10]{Auctioneer}{
-    assignedLots : List Lot 
+  \umlclass[x=23.5,y=-10]{Auctioneer}{
+    assignedLots : List Lot \\
+    isActive : Boolean
   }{
     
   }
 
-  \umlclass[x=17,y=-10]{Buyer}{
+  \umlclass[x=18,y=-10]{Buyer}{
     interestedLots : List Lot
   }
   {
@@ -29,7 +30,7 @@
   }
 
 
-  \umlclass[x=7, y=-8.5]{Seller}{
+  \umlclass[x=13, y=-10]{Seller}{
     lotsOwned : List Lot
   }
   {
@@ -54,7 +55,7 @@
     addInterestedBuyer() 
   }
 
-  \umlclass[]{Money}{
+  \umlclass[x=6, y=-2]{Money}{
     value : double 
   }
   {
@@ -68,7 +69,7 @@
     equals()
   }
 
-  \umlclass[x=31,y=-5]{MemberOfPublic}{
+  \umlclass[x=27,y=-7.5]{MemberOfPublic}{
   }
   {
   }
@@ -84,7 +85,7 @@
 
   \umlclass[x=3,y=-21,type=enum]{BidType}{Increment \\ Jump}
 
-  \umlclass[x=-2.1, y=-15,type=enum]{LotStatus}{Unsold \\ In auction \\ Sold \\ Sold pending payment}
+  \umlclass[x=0, y=-4.4,type=enum]{LotStatus}{Unsold \\ In auction \\ Sold \\ Sold pending payment}
   
   \umlclass[x=25,y=-19]{AuctionHouseImp}{
     addressBook : Map String Actor \\ %TODO should this be HashMap?
@@ -98,7 +99,7 @@
   {
   }
   
-  \umlclass[type = interface, x=25,y=-19]{AuctionHouse}{
+  \umlclass[type = interface, x=32,y=-19]{AuctionHouse}{
   }
   {
     registerBuyer() \\
@@ -120,11 +121,11 @@
     viewCatalogue() % TODO check
   }
 
-  \umlclass[x=19,y=-2]{RegisteredUser}{
+  \umlclass[x=24,y=-5]{RegisteredUser}{
     username : String
   }{}
   
-  \umlclass[x=11,y=-5]{Client}{
+  \umlclass[x=18,y=-5]{Client}{
     bankAuthCode : String \\
     bankAccount : String 
   }
@@ -140,21 +141,21 @@
     lotUnsold() 
   }
 
-  \umlclass[type = interface, x=11,y=-5]{BankingService}{
+  \umlclass[type = interface, x=11,y=-1]{BankingService}{
   }
   {
     transfer()
   }
   
-  \umlclass[x=11,y=-5]{CatalogueEntry}{
+  \umlclass[x=18,y=-20]{CatalogueEntry}{
     lotNumber : int \\
     description : String \\
-    status : LotSTatus 
+    status : LotStatus 
   }
   {
   }
 
-  \umlclass[x=11,y=-5]{Parameters}{
+  \umlclass[x=30.5,y=-13.5]{Parameters}{
     buyerPremium : double \\
     commission : double \\
     increment : Money \\
@@ -166,15 +167,15 @@
   {
   }
 
-  \umlemptyclass[x=11,y=-21]{CatalogueEntry}
 
-  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Seller}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Buyer}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Lot}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{CatalogueEntry}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{Auctioneer}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouse}{MemberOfPublic}
-
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Seller}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Buyer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Lot}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{CatalogueEntry}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Auctioneer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{MemberOfPublic}
+  \umlassoc{AuctionHouseImp}{Parameters}
+  
   \umlassoc[mult1=*, mult2=1]{Bid}{Lot}
   \umlassoc[mult1=*, mult2=1]{Lot}{Seller}
   \umlassoc[mult1=1, mult2=1]{CatalogueEntry}{Lot}
