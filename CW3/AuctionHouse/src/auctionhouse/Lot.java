@@ -95,6 +95,8 @@ public class Lot {
     }
     
     public Status close (Auctioneer auctioneer) {
+        logger.fine("Closing auction");
+        
         if (this.status != LotStatus.IN_AUCTION) {
             logger.fine("Lot is not currently in auction state");
             return Status.error("Cannot close a lot that is not currently in auction");
@@ -103,6 +105,11 @@ public class Lot {
         if (this.auctioneer != auctioneer) {
             logger.fine("Lot open auctioneer is not lot close auctioneer");
             return Status.error("Cannot close a lot if you are not the auctioneer that opened it.");
+        }
+
+        if (this.currentBid == null) {
+            logger.fine("No bids placed on item");
+            this.setStatus(LotStatus.UNSOLD);
         }
 
         if (this.currentPrice.compareTo(this.reservePrice) < 0) {
@@ -114,11 +121,9 @@ public class Lot {
             // Did meet reserve price
             this.setStatus(LotStatus.SOLD);
         }
-
-        if (this.currentBid == null) {
-            logger.fine("No bids placed on item");
-            this.setStatus(LotStatus.UNSOLD);
-        }
+        
+        logger.fine("Current bid is: " + this.currentBid);
+        
         
         // TODO do we need to zero out any variables here?
         return Status.OK(); 

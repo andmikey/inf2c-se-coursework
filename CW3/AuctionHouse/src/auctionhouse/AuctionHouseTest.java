@@ -43,6 +43,9 @@ public class AuctionHouseTest {
     private static void assertSale(Status status) { 
         assertEquals(Status.Kind.SALE, status.kind);
     }
+    private static void assertNoSale(Status status) { 
+        assertEquals(Status.Kind.NO_SALE, status.kind);
+    }
     
     /*
      * Logging functionality
@@ -429,7 +432,7 @@ public class AuctionHouseTest {
     }
 
     @Test
-    public void testOpenParallelOption() {
+    public void testOpenParallelAuction() {
         logger.info(makeBanner("Active auctioneer trying to open a second auction should fail"));
         runStory(5);
         assertError(house.openAuction("Auctioneer1", "@Auctioneer1", 5));
@@ -447,6 +450,13 @@ public class AuctionHouseTest {
         logger.info(makeBanner("An auctioneer opening an auction after closing one should pass"));
         runStory(9);
         assertOK(house.openAuction("Auctioneer1", "@Auctioneer1", 5));
+    }
+
+    @Test
+    public void testOpenAuctionWithNoInterestedBuyers() {
+        logger.info(makeBanner("Opening an auction with no interested buyers should fail"));
+        runStory(3);
+        assertError(house.openAuction("Auctioneer1", "@Auctioneer1", 1));
     }
 
     @Test
@@ -475,5 +485,33 @@ public class AuctionHouseTest {
         logger.info("Placing a bid below the increment should fail");
         runStory(6);
         assertError(house.makeBid("BuyerB", 1, new Money("71.00")));
+    }
+
+    @Test
+    public void testCloseAuctionWithDifferentAuctioneer() {
+        logger.info("Different auctioneer closing an auction than opening it should fail");
+        runStory(7);
+        assertError(house.closeAuction("Auctioneer2", 1)); 
+    }
+
+    @Test
+    public void testCloseAuctionBelowReserve() {
+        logger.info("Closing auction which is below reserve price should return NO_SALE");
+        runStory(6);
+        assertNoSale(house.closeAuction("Auctioneer1", 1));
+    }
+
+    @Test
+    public void testCloseAuctionWithNoBids() {
+        logger.info("Closing auction with no bids should return NO_SALE");
+        runStory(5);
+        assertNoSale(house.closeAuction("Auctioneer1", 1));
+    }
+
+    @Test
+    public void testCloseClosedAuction() {
+        logger.info("Closing a closed auction should fail");
+        runStory(9);
+        assertError(house.closeAuction("Auctioneer1", 1));
     }
 }

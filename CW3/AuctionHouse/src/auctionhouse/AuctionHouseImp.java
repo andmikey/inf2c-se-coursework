@@ -418,20 +418,19 @@ public class AuctionHouseImp implements AuctionHouse {
             int lotNumber) {
         logger.fine(startBanner("closeAuction " + auctioneerName + " " + lotNumber));
         String baseMessage = "closeAuction: " + auctioneerName + " " + lotNumber + ": ";
-        
+        logger.fine(baseMessage + "looking for lot");
         // Find lot
         Lot lot = this.lots.get(lotNumber);
         if (lot == null) {
             logger.fine(baseMessage + "could not find lot");
             return Status.error("Lot with number " + lotNumber + " not found.");
         }
-
+        logger.fine(baseMessage + "found lot, continuing");
+        
         // Identify relevant parties
         Auctioneer auctioneer = findAuctioneer(auctioneerName);
-        Seller seller = lot.getSeller();
-        ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
-        Buyer winningBuyer = lot.getBuyerOfCurrentBid();
 
+        logger.fine(baseMessage + "looking for auctioneer");
         // Make sure auctioneer exists
         if (auctioneer == null) {
             logger.fine(baseMessage + "auctioneer does not exist");
@@ -440,6 +439,7 @@ public class AuctionHouseImp implements AuctionHouse {
 
         // Make sure lot can be closed
         Status closingAttempt = lot.close(auctioneer);
+        logger.fine(baseMessage + "lot status returned " + closingAttempt);
         if (closingAttempt.kind == Status.Kind.ERROR) {
             logger.fine(baseMessage + "lot closing failed");
             // If lot closing fails, return the error that it failed with
@@ -450,6 +450,12 @@ public class AuctionHouseImp implements AuctionHouse {
         
         // Check if lot has been sold or unsold
         LotStatus status = lot.getStatus();
+        logger.fine(baseMessage + "lot status is " + status);
+
+        Seller seller = lot.getSeller();
+        ArrayList<Buyer> interestedBuyers = lot.getInterestedBuyers();
+
+
         // If it has not been sold, notify all parties then abort
         if (status == LotStatus.UNSOLD) {
             logger.fine(baseMessage + "lot status is unsold, informing buyers and sellers");
@@ -466,7 +472,9 @@ public class AuctionHouseImp implements AuctionHouse {
             return new Status(Status.Kind.NO_SALE);
         } else if (status == LotStatus.SOLD) {
             logger.fine(baseMessage + "lot status is sold");
-
+            
+            Buyer winningBuyer = lot.getBuyerOfCurrentBid();
+            
             Money sold_price = lot.getPrice();
             Money buyerPremium = new Money(Double.toString(this.parameters.buyerPremium));
             Money commission = new Money(Double.toString(this.parameters.commission));
