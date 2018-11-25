@@ -29,6 +29,7 @@ Due to its size, this is provided as the last page of the document.
 \section{High-level design description}
 We give an overview on a per-class basis, giving particular attention to deviations from our Coursework 2 specification.
 
+\subsection{Actors}
 \begin{itemize}
     \item {\bf Actor} In our CW2, this was an interface which supported receiving/sending messages via the MessageService. We now implement it as a superclass, abstracting the concept of an actor associated with the system. In particular, an actor has two attributes associated with them:
   \begin{enumerate}
@@ -41,7 +42,13 @@ We give an overview on a per-class basis, giving particular attention to deviati
 \item {\bf Seller} This remains the same as in CW2, except that all methods are implemented in superclasses.
 \item {\bf Buyer} This remains the same as in CW2, except that all methods are implemented in superclasses. 
 \item {\bf Auctioneer} This remains largely the same as in CW2, except the Auctioneer now tracks if it is currently adminstering a lot. This needs to be tracked in order to ensure an auctioneer cannot run more than one auction at once. By keeping this in the Auctioneer class rather than storing this information in the AuctionHouse we ensure high cohesion and low coupling.
+\end{itemize}
+\subsection{AuctionHouseImp}
+\begin{itemize}
 \item {\bf AuctionHouseImp} 
+\end{itemize}
+\subsection{Lot & Associates}
+\begin{itemize}
 \item {\bf CatalogueEntry} This remains the same as in CW2.
 \item {\bf Lot} This remains the same as in CW2, except that there is no longer a LotInformation nor LotDescription attribute. 
 \item {\bf LotStatus} This follows our implementation in CW2, with the exception that the ``Pre-auction'' status has been replaced with ``Unsold''. This allows us to auction a lot again if it did not sell previously, a detail we had omitted in our CW2. 
