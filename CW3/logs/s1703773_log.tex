@@ -1,0 +1,64 @@
+\documentclass[titlepage, 12pt]{extarticle}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\lhead{Inf2C: SE Coursework 3}
+\rhead{s1703773}
+\cfoot{\thepage~/~\pageref{LastPage}}
+\pagestyle{fancy}
+\begin{document}
+\title{{\bf Inf2C: Software Engineering \\Coursework 3 \vspace{2em}\\ Creating an abstract implementation of a auction house system \vspace{2em}\\ Project log}}
+\author{
+\begin{tabular}{l  c}
+  Michael Andrejczuk & s1703773 \\
+\end{tabular}
+}
+\date{November 27, 2018}
+\maketitle
+% \tableofcontents
+
+\section{Introduction and overview}
+This document acts as a log of my work on this project, completed as a joint project with Dylan Thinnes. 
+
+In total I estimate about (how many?) hours of work on this project. This is estimated from my Git commit logs, and split as follows:
+\begin{itemize}
+  \item 2 hours preparation: planning, preparing skeleton files (for code, report, project logs), reading recommended documentation
+\end{itemize}
+
+\section{Saturday, November 17}
+This was our first chance to look at the coursework specification as a team.
+Our aim was to:
+\begin{itemize}
+\item Solidify our understanding of the task, ensuring we both understood the requirements;
+\item Plan our approach, deciding on key milestones;
+\item Begin implementation.
+\end{itemize}
+
+We achieved:
+\begin{itemize}
+\item  We decided we would try to get the bulk of the coding side done by Saturday 24th, and everything else done by Monday 26th.
+\item We read over the recommended documentation (on coding style, logging, JavaDoc, JUnit) together and discussed how it would fit into our approach.
+\item We decided what development environments we would use, choosing to stick to our usuals: Emacs/Vim with Git and Bash scripts. We considered using Eclipse but decided against it, as we were more familiar and productive with our usual tools. \\ On reflection this was a good idea, as it allowed us to work quickly with familiar tools. For example, rather than needing to learn how to run tests in Eclipse, I simply wrote a small Bash script to compile and run our tests. Having a similar development environment also allowed us to work together (relatively) seamlessly.
+\item I also pushed the coursework contents to our shared (private) Git repository. We had been using this previously to write our report, and decided to continue using it to ensure our development work was also tracked. \\ On reflection it was an excellent choice to set this up, as it allowed us to work in a distributed manner, resolving merge conflicts as needed. The commit logs also acted as a very good project log, for tracking both the work I did and the time I spent on it.
+\item I began adding and completed the required unit tests for MoneyTest.java. \\ We tried pair programming for this and neither of us found the practice beneficial, so we decided not to use it going forward. 
+\end{itemize}
+
+In total we spent around 6 hours working today, and achieved everything we intended. 
+
+\section{Sunday, November 18}
+Work today was mostly focussed around implementation:
+\begin{itemize}
+\item We discussed how closely we would follow our CW2 spec, choosing to only make small changes when necessary. 
+\item An issue popped up with my Emacs settings indenting Java code incorrectly, meaning Dylan had to re-indent it when merging my changes. Thanks to Git we noticed this quickly and I was able to change my settings, allowing us to continue to write code in a consistent and coherent style. \\ On reflection this did cause some conflict, so I'm glad we sorted it quickly. One heated commit message sums up the mood: ``Fix indentation because Mikey's emacs is BROKEN AS USUAL''
+\item I focused on writing tests, leaving most of the implementation to Dylan for the day. We considered swapping off writing code and tests across the day but decided against it. \\ On reflection, this was a good choice. It meant that each of us could focus on what we were working on, without needing to context switch. Instead we planned to swap off who would be doing code and tests on alternate days. 
+\end{itemize}
+
+In total we spent around 7 hours working today, and achieved everything we intended. 
+
+\section{Thursday, November 22}
+\section{Friday, November 23}
+\section{Saturday, November 24}
+\section{Sunday, November 25}
+
+\end{document}
