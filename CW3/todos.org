@@ -25,3 +25,4 @@
   - [ ] UML Class diagram
   - [ ] High-level design description
   - [ ] Implementation decisions
+- Fix @author tags on all classes

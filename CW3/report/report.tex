@@ -27,16 +27,33 @@
 Due to its size, this is provided as the last page of the document.
 
 \section{High-level design description}
+% TODO Dylan flesh this out
 We give an overview on a per-class basis, giving particular attention to differences to our Coursework 2 specification.
 
 \begin{itemize}
-\item {\bf Actor}
+\item {\bf Actor} In our CW2, this was an interface, supporting receiving messages from the MessageService. We now implement it as a superclass, abstracting the concept of an actor associated with the system. In particular, an actor has two attributes associated with them:
+  \begin{enumerate}
+    \item address (String), the messaging address. By including this in the superclass we ensure all actors have consistent behavior in how their address is set and retrieved.
+    \item auctionhouse (AuctionHouse), the AuctionHouse associated with the actor. This is primarily to 
+  \end{enumerate}
+\item {\bf RegisteredUser} This now inherits from Actor rather than implementing its interface. 
+\item {\bf Client} 
+\item {\bf Seller} This remains the same as in CW2. 
+\item {\bf Buyer} This remains the same as in CW2. 
+\item {\bf Auctioneer} This remains largely the same as in CW2, except the Auctioneer now tracks if it is currently adminstering a lot. This needs to be tracked in order to ensure an auctioneer cannot run more than one auction at once. By keeping this in the Auctioneer class rather than storing this information in the AuctionHouse we ensure high cohesion and low coupling.
+\item {\bf AuctionHouseImp} 
+\item {\bf CatalogueEntry} This remains the same as in CW2.
+\item {\bf Lot} This remains the same as in CW2, except that there is no longer a LotInformation nor LotDescription attribute. 
+\item {\bf LotStatus} This follows our implementation in CW2, with the exception that the ``Pre-auction'' status has been replaced with ``Unsold''. This allows us to auction a lot again if it did not sell previously, a detail we had omitted in our CW2. 
+\item {\bf Bid} This remains the same as in CW2.
 \end{itemize}
 
 \section{Implementation decisions}
 We note particular points of interest in our implementation decisions:
 \begin{itemize}
-\item 
+\item {\bf Abstraction of actors}: we chose to represent Buyers, Sellers, Auctioneers etc as classes. This allowed us to follow a strongly object-oriented approach, 
+\item {\bf Removal of Client methods}: in our CW2, each Client had some set of actions they performed, represented by a method: for example, `bidOnLot' for Buyer. 
+\item {\bf Consistent choice of collection classes}: we use ArrayLists and HashMaps where needed. {\bf Why?}
 \end{itemize}
 
 \includepdf[pages=1,fitpaper]{class_diagram.pdf}
