@@ -232,7 +232,7 @@ public class AuctionHouseImp implements AuctionHouse {
     
 
     public List<CatalogueEntry> viewCatalogue() {
-        logger.fine(startBanner("viewCatalog"));
+        logger.fine(startBanner("viewCatalogue"));
         
         logger.fine("Catalogue: " + catalogue.toString());
         Collections.sort(catalogue, new Comparator<CatalogueEntry>() {
