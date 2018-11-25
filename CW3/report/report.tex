@@ -39,7 +39,7 @@ deviations from our Coursework 2 specification.
         them:
         \begin{enumerate}
             \item address (String), the messaging address. By including this in
-                the superclass we ensure all actors have consistent behavior in
+                the superclass we ensure all actors have consistent behaviour in
                 how their address is set and retrieved.
             \item auctionhouse (AuctionHouse), the AuctionHouse associated with
                 the actor. This is primarily to 
@@ -53,16 +53,16 @@ deviations from our Coursework 2 specification.
         registered actors, such as Auctioneer, Client, and Seller, who need
         username, from anonymous actors, such as MemberOfPublic.
     \item {\bf Client} The client retains some functionality in Coursework 2,
-        since it gives banking credentials. However, it is no longer resposible
+        since it gives banking credentials. However, it is no longer responsible
         for handling personal details, as personal details are better put in
-        RegisteredUser. Seller and Buyr inherit from Client, ensuring thatboth
+        RegisteredUser. Seller and Buyer inherit from Client, ensuring that both
         have relevant banking authentication details.
     \item {\bf Seller} This remains the same as in CW2, except that all methods
         are implemented in superclasses.
     \item {\bf Buyer} This remains the same as in CW2, except that all methods
         are implemented in superclasses. 
     \item {\bf Auctioneer} This remains largely the same as in CW2, except the
-        Auctioneer now tracks if it is currently adminstering a lot. This needs
+        Auctioneer now tracks if it is currently administering a lot. This needs
         to be tracked in order to ensure an auctioneer cannot run more than one
         auction at once. By keeping this in the Auctioneer class rather than
         storing this information in the AuctionHouse we ensure high cohesion
@@ -75,9 +75,9 @@ deviations from our Coursework 2 specification.
         \begin{enumerate}
             \item {\bf Lots} These are now indexed by a Map of lotIds, which are
                 Integers, to Lots. Since all lots are indexed using these, it is
-                more effecient and clearer to have the data structure imply how
+                more efficient and clearer to have the data structure imply how
                 we find and use these lots.
-            \item {\bf Parameters} Parameters as provided during initialization
+            \item {\bf Parameters} Parameters as provided during initialisation
                 are stored wholesale in AuctionHouse under this.parameters. We
                 considered copying the attributes directly into AuctionHouse,
                 but decided against it as it would tightly couple AuctionHouse
