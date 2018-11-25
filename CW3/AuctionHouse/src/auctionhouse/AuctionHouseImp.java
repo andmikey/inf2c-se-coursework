@@ -296,6 +296,12 @@ public class AuctionHouseImp implements AuctionHouse {
             this.auctioneers.add(newAuctioneer);
             auctioneer = newAuctioneer;
         }
+
+        // Check auctioneer is not already running an auction
+        if (auctioneer.isActive) {
+            return Status.error("Auctioneer already involved in an auction");
+        }
+
         
         // Make sure lot can be opened
         Status openingAttempt = lot.open(auctioneer);
@@ -304,6 +310,9 @@ public class AuctionHouseImp implements AuctionHouse {
             // If lot opening fails, return the error that it failed with
             return openingAttempt;
         }
+
+        // Auctioneer is now involved in an auction
+        auctioneer.isActive = true;
 
         logger.fine(baseMessage + "sending out auctionOpened messages");
         
@@ -420,7 +429,7 @@ public class AuctionHouseImp implements AuctionHouse {
             logger.fine(baseMessage + "auctioneer does not exist");
             return Status.error("Auctioneer not found; cannot close lot without valid auctioneer.");
         }
-        
+
         // Make sure lot can be closed
         Status closingAttempt = lot.close(auctioneer);
         if (closingAttempt.kind == Status.Kind.ERROR) {
@@ -429,6 +438,8 @@ public class AuctionHouseImp implements AuctionHouse {
             return closingAttempt;
         }
 
+        auctioneer.isActive = false;
+        
         // Check if lot has been sold or unsold
         LotStatus status = lot.getStatus();
         // If it has not been sold, notify all parties then abort
