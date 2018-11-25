@@ -57,3 +57,7 @@ Today:
   - Finish report
   - Type up project log
   - More unit tests
+* [2018-11-25 Sun]
+- Report
+- Auctioneer cannot be active on more than one auction
+- Limitation: Auctioneer is created on being mentioned on openLot

@@ -17,6 +17,8 @@
   - A test for each use-case
   - Unit tests for each class, too? 
     - To a certain extent handled by Auctionhouse impl testing
+- [ ] Plan out tests
+  - Based on use-cases in CW1?
 - [X] Add logging code to all of implementation
 - [X] Keep project log
 - [ ] Write report
