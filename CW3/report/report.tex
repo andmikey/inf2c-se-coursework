@@ -70,12 +70,22 @@ deviations from our Coursework 2 specification.
 \end{itemize}
 \subsection{Auction House}
 \begin{itemize}
-    \item {\bf AuctionHouseImp} AuctionHouse has largely the same shape as our
-        implementation, with three major exceptions.
+    \item {\bf AuctionHouseImp} AuctionHouseImp has largely the same shape as
+        our CW2 implementation of AuctionHouse, with three major exceptions.
         \begin{enumerate}
-            Lots
-            Parameters
-            Auctioneers
+            \item {\bf Lots} These are now indexed by a Map of lotIds, which are
+                Integers, to Lots. Since all lots are indexed using these, it is
+                more effecient and clearer to have the data structure imply how
+                we find and use these lots.
+            \item {\bf Parameters} Parameters as provided during initialization
+                are stored wholesale in AuctionHouse under this.parameters. We
+                considered copying the attributes directly into AuctionHouse,
+                but decided against it as it would tightly couple AuctionHouse
+                to changes in the implementation of Parameters.
+            \item {\bf Auctioneers} Our previous implementation did not store
+                auctioneers, which was a major oversight. Now, we store them as
+                a list, which simplifies interacting with and accessing them for
+                purposes of lot administration.
         \end{enumerate}
 \end{itemize}
 \subsection{Lot & Associates}
