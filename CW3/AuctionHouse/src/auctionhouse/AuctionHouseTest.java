@@ -149,10 +149,12 @@ public class AuctionHouseTest {
         messagingService.expectLotSold("@BuyerB", 1);
         messagingService.expectLotSold("@SellerY", 1);
         messagingService.verify();       
-
+        if (endPoint == 8) return;
+        
         bankingService.expectTransfer("BB A/C",  "BB-auth",  "AH A/C", new Money("110.00"));
         bankingService.expectTransfer("AH A/C",  "AH-auth",  "SY A/C", new Money("85.00"));
         bankingService.verify();
+        if (endPoint == 9) return;
         
     }
     
@@ -391,4 +393,87 @@ public class AuctionHouseTest {
         assertError(house.addLot("SellerY", 1, "Foo", null));
     }
 
+    @Test
+    public void testNoteInterestTwice() {
+        logger.info(makeBanner("Noting interest in a lot twice should fail"));
+        runStory(4);
+        assertError(house.noteInterest("BuyerA", 1));
+    }
+
+    @Test
+    public void testNoteInterestWhileSold() {
+        logger.info(makeBanner("Noting interest in a sold lot should fail"));
+        runStory(8);
+        assertError(house.noteInterest("BuyerC", 1));
+    }
+
+    @Test
+    public void testNoteInterestBuyerNotExists() {
+        logger.info(makeBanner("Non-existent buyer noting interest in a lot should fail"));
+        runStory(4);
+        assertError(house.noteInterest("BuyerD", 1));
+    }
+    
+    @Test
+    public void testNoteInterestLotNotExists() {
+        logger.info(makeBanner("Buyer noting interest in a non-existent lot should fail"));
+        runStory(4);
+        assertError(house.noteInterest("BuyerA", 199));
+    }
+
+    @Test
+    public void testOpenAuctionAlreadyOpen() {
+        logger.info(makeBanner("Auctioneer trying to open an already-open auction should fail"));
+        runStory(5);
+        assertError(house.openAuction("Autioneer2", "@Auctioneer2", 1));
+    }
+
+    @Test
+    public void testOpenParallelOption() {
+        logger.info(makeBanner("Active auctioneer trying to open a second auction should fail"));
+        runStory(5);
+        assertError(house.openAuction("Auctioneer1", "@Auctioneer1", 5));
+    }
+
+    @Test
+    public void testOpenNotFoundAuction() {
+        logger.info(makeBanner("Trying to open an auction for a lot that doesn't exist should fail"));
+        runStory(5);
+        assertError(house.openAuction("Auctioneer1", "@Auctioneer1", 40));
+    }
+
+    @Test
+    public void testAuctioneerOpensMultipleAuctions() {
+        logger.info(makeBanner("An auctioneer opening an auction after closing one should pass"));
+        runStory(9);
+        assertOK(house.openAuction("Auctioneer1", "@Auctioneer1", 5));
+    }
+
+    @Test
+    public void makeNegativeBid() {
+        logger.info("Making a negative bid on a lot should fail");
+        runStory(5);
+        assertError(house.makeBid("BuyerA", 1, new Money("-1")));
+    }
+    
+    @Test
+    public void makeBidWhileNotInterested() {
+        logger.info("Buyer bidding on a lot they are not interested in should fail");
+        runStory(5);
+        assertError(house.makeBid("BuyerC", 1, new Money("70")));
+    }
+
+    @Test
+    public void makeBidBelowCurrentPrice() {
+        logger.info("Placing a bid below the current price should fail");
+        runStory(6);
+        assertError(house.makeBid("BuyerB", 1, new Money("60.00")));
+    }
+
+    @Test
+    public void makeBidBelowIncrement() {
+        logger.info("Placing a bid below the increment should fail");
+        runStory(6);
+        assertError(house.makeBid("BuyerB", 1, new Money("71.00")));
+    }
 }

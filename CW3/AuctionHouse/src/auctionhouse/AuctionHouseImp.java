@@ -352,6 +352,14 @@ public class AuctionHouseImp implements AuctionHouse {
             return Status.error("Bid must be greater than minimum increment " +
                                 this.parameters.increment.toString());
         }
+
+        // Difference between bid and current price is less than minimum increment
+        Money difference = bid.subtract(lot.getPrice());
+        if (difference.compareTo(this.parameters.increment) == -1) {
+            logger.fine(baseMessage + "bid is less than minimum increment");
+            return Status.error("Bid must be greater than minimum increment " +
+                                this.parameters.increment.toString());            
+        }
         
         // Identify buyer
         Buyer buyer = findBuyer(buyerName);        
