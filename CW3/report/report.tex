@@ -69,16 +69,15 @@ deviations from our Coursework 2 specification.
         and low coupling.
 \end{itemize}
 \subsection{Auction House}
-\begin{itemize}
-    \item {\bf AuctionHouseImp} AuctionHouseImp has largely the same shape as
-        our CW2 implementation of AuctionHouse, with three major exceptions.
+AuctionHouseImp has largely the same shape as
+our CW2 implementation of AuctionHouse, with three major exceptions.
         \begin{enumerate}
             \item {\bf Lots} These are now indexed by a Map of lotIds, which are
                 Integers, to Lots. Since all lots are indexed using these, it is
                 more efficient and clearer to have the data structure imply how
                 we find and use these lots.
             \item {\bf Parameters} Parameters as provided during initialisation
-                are stored wholesale in AuctionHouse under this.parameters. We
+                are stored wholesale in AuctionHouse as property parameters. We
                 considered copying the attributes directly into AuctionHouse,
                 but decided against it as it would tightly couple AuctionHouse
                 to changes in the implementation of Parameters.
@@ -87,12 +86,11 @@ deviations from our Coursework 2 specification.
                 a list, which simplifies interacting with and accessing them for
                 purposes of lot administration.
         \end{enumerate}
-\end{itemize}
 \subsection{Lot and Associates}
 \begin{itemize}
     \item {\bf CatalogueEntry} This remains the same as in CW2.
-    \item {\bf Lot} This remains the same as in CW2, except that there is no
-        longer a LotInformation nor LotDescription attribute. 
+    \item {\bf Lot} This remains the same as in CW2, except that there are no
+        longer LotInformation and LotDescription attributes. 
     \item {\bf LotStatus} This follows our implementation in CW2, with the
         exception that the ``Pre-auction'' status has been replaced with
         ``Unsold''. This allows us to auction a lot again if it did not sell
@@ -100,17 +98,15 @@ deviations from our Coursework 2 specification.
     \item {\bf Bid} This remains the same as in CW2.
 \end{itemize}
 
-\section{Implementation decisions}
+\section{Implementation Decisions}
 We note particular points of interest in our implementation decisions:
 \begin{itemize}
-    \item {\bf Abstraction of actors}: we chose to represent Buyers, Sellers,
-        Auctioneers etc as classes. This allowed us to follow a strongly
-        object-oriented approach, 
+    \item {\bf Abstraction of actors}: we chose to represent all classes that may represent an individual (Seller, Buyer, Auctioneer, MemberOfPublic) as subclasses of Actor, RegisteredUser, and Client. This allowed us to follow a strongly object-oriented approach in which we inherit methods and necessary attributes, guaranteeing an easily composed and incrementally growing set of user features as we deal further down the inheritance chain, such as messaging on the first level (Actor), usernames on the second level (RegisteredUser), and banking authentication on the third (Client).
     \item {\bf Removal of Client methods}: in our CW2, each Client had some set
         of actions they performed, represented by a method: for example,
-        `bidOnLot' for Buyer. 
+        `bidOnLot' for Buyer. These have all been moved into AuctionHouseImp, and actors can interact with the AuctionHouse as necessary to mutate the program state. This models the real world more closely - most dealings are by actors with the auction house, not between each other. It also has the far more important benefit of keeping logic properly encapsulated to each specific actor instance, whether that is Seller or Buyer or other actors. This keeps our system less dependent on the interfaces of these actors, and gives us more freedom for improvement in the future.
     \item {\bf Consistent choice of collection classes}: we use ArrayLists and
-        HashMaps where needed. {\bf Why?}
+        HashMaps where needed. Their APIs are well understood by even the most basic Java programmers, making our system easy to understand and, by extension, maintain and extend.
 \end{itemize}
 
 \includepdf[pages=1,fitpaper]{class_diagram.pdf}
