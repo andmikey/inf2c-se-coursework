@@ -65,4 +65,10 @@ Today:
   - [X] System-level tests
   - [X] More unit tests
   - [ ] Get Dylan to finish report
+* [2018-11-26 Mon]
+TODOs:
+- Final check over report
+- Change author tags
+- Add documentation comments in Money.java?
+- Finish log + submit
 
