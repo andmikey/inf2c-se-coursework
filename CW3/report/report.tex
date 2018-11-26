@@ -104,7 +104,7 @@ our CW2 implementation of AuctionHouse, with three major exceptions.
         exception that the ``Pre-auction'' status has been replaced with
         ``Unsold''. This allows us to auction a lot again if it did not sell
         previously, a detail we had omitted in our CW2. 
-    \item {\bf Bid} This remains the same as in CW2.
+      \item {\bf Bid} This remains the same as in CW2.
 \end{itemize}
 
 \section{Implementation Decisions}
@@ -115,7 +115,9 @@ We note particular points of interest in our implementation decisions:
         of actions they performed, represented by a method: for example,
         `bidOnLot' for Buyer. These have all been moved into AuctionHouseImp, and actors can interact with the AuctionHouse as necessary to mutate the program state. This models the real world more closely - most dealings are by actors with the auction house, not between each other. It also has the far more important benefit of keeping logic properly encapsulated to each specific actor instance, whether that is Seller or Buyer or other actors. This keeps our system less dependent on the interfaces of these actors, and gives us more freedom for improvement in the future.
     \item {\bf Consistent choice of collection classes}: we use ArrayLists and
-        HashMaps where needed. Their APIs are well understood by even the most basic Java programmers, making our system easy to understand and, by extension, maintain and extend.
+      HashMaps where needed. Their APIs are well understood by even the most basic Java programmers, making our system easy to understand and, by extension, maintain and extend.
+    \item {\bf Keeping bid type distinctions}: while the CW2 spec considered only JUMP bids, we decided to implement a BidType enum to support either JUMP or INCREMENT bids in the future. This improves maintainability and extensibility if changes should wish to be made in the future. 
+    \item {\bf Lot behavior on UNSOLD}: where a lot fails to move to SOLD after an auction closes (for example, it does not reach its reserve price), the question of which variables to reset is challenging. We decided to reset only currentBid (and by extension currentPrice), meaning that the list of interested buyers is preserved across multiple auctions of a single Lot. This supports good user experience: it is undesirable for a buyer to need to mark their interest in the same lot twice (and, indeed, it is considered an error for a buyer to mark interest in the same lot more than once). It also means we can carry over a large amount of information across lot auctions.
 \end{itemize}
 
 \includepdf[pages=1,fitpaper]{class_diagram.pdf}
