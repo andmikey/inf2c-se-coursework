@@ -1,5 +1,5 @@
 /**
- * 
+ * Actor superclass.
  */
 package auctionhouse;
 
@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 /**
  * @author Dylan Thinnes
  * @author Michael Andrejczuk
- *
  */
 public class Actor {
 

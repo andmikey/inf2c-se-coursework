@@ -1,5 +1,5 @@
 /**
- * 
+ * Implemention of AuctionHouse interface according to coursework specification.
  */
 package auctionhouse;
 
@@ -12,7 +12,8 @@ import java.util.Comparator;
 
 /**
  * @author pbj
- *
+ * @author Dylan Thinnes
+ * @author Michael Andrejczuk
  */
 public class AuctionHouseImp implements AuctionHouse {
 

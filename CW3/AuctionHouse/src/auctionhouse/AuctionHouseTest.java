@@ -55,7 +55,7 @@ public class AuctionHouseTest {
     private static Logger logger;
 
     // Update this field to limit logging.
-    public static Level loggingLevel = Level.FINE;
+    public static Level loggingLevel = Level.ALL;
 
     private static final String LS = System.lineSeparator();
 
@@ -237,10 +237,9 @@ public class AuctionHouseTest {
     }
 
 
-    /*
-     * registerSeller tests
-     */
-    
+    /* 
+     * registerSeller
+     */    
     @Test
     public void testAddSellerSimple() {
         logger.info(makeBanner("Adding a seller where no sellers exist should pass"));
@@ -279,9 +278,9 @@ public class AuctionHouseTest {
         assertError(house.registerSeller("Seller", "@SellerAddr", null));
     }
 
-    /*
-     * registerBuyer tests
-     */
+    /* 
+     * registerBuyer
+     */    
     @Test
     public void testAddBuyerSimple() {
         logger.info(makeBanner("Adding a buyer where no buyers exist should pass"));
@@ -336,9 +335,10 @@ public class AuctionHouseTest {
         assertError(house.registerBuyer("Buyer", "@BuyerAddr", "BuyerAcc", null));
     }
 
-    /*
-     * addLot tests
+    /* 
+     * addLot
      */
+    
     @Test
     public void testSimpleAddLot() {
         logger.info(makeBanner("Adding a lot where no lots exist should pass"));
@@ -396,6 +396,9 @@ public class AuctionHouseTest {
         assertError(house.addLot("SellerY", 1, "Foo", null));
     }
 
+    /* 
+     * noteInterest
+     */    
     @Test
     public void testNoteInterestTwice() {
         logger.info(makeBanner("Noting interest in a lot twice should fail"));
@@ -424,6 +427,10 @@ public class AuctionHouseTest {
         assertError(house.noteInterest("BuyerA", 199));
     }
 
+    /* 
+     * openAuction
+     */
+    
     @Test
     public void testOpenAuctionAlreadyOpen() {
         logger.info(makeBanner("Auctioneer trying to open an already-open auction should fail"));
@@ -459,6 +466,10 @@ public class AuctionHouseTest {
         assertError(house.openAuction("Auctioneer1", "@Auctioneer1", 1));
     }
 
+    /* 
+     * makeBid
+     */
+    
     @Test
     public void makeNegativeBid() {
         logger.info("Making a negative bid on a lot should fail");
@@ -487,6 +498,10 @@ public class AuctionHouseTest {
         assertError(house.makeBid("BuyerB", 1, new Money("71.00")));
     }
 
+    /* 
+     * closeAuction
+     */
+    
     @Test
     public void testCloseAuctionWithDifferentAuctioneer() {
         logger.info("Different auctioneer closing an auction than opening it should fail");

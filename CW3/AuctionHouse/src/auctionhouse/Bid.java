@@ -35,6 +35,7 @@ public class Bid {
         this.type = type;
     }
 
+    // Note that only JUMP is used for now
     public static enum BidType {
         INCREMENT, 
         JUMP, 

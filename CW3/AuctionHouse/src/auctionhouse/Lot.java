@@ -27,7 +27,6 @@ public class Lot {
     private Money currentPrice;
     private Auctioneer auctioneer;
 
-    // Commented out until CatalogueEntry is defined
     public CatalogueEntry entry;
 
     public Lot(Seller seller, int id, String description, Money reservePrice) {
@@ -92,6 +91,8 @@ public class Lot {
         this.setStatus(LotStatus.IN_AUCTION);
         this.auctioneer = auctioneer; 
         this.currentBid = null;
+        this.currentPrice = null;
+        
         return Status.OK();
     }
     
@@ -124,9 +125,7 @@ public class Lot {
         }
         
         logger.fine("Current bid is: " + this.currentBid);
-        
-        
-        // TODO do we need to zero out any variables here?
+
         return Status.OK(); 
     }
 

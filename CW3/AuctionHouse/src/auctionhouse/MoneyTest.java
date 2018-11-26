@@ -8,7 +8,8 @@ import org.junit.Test;
 
 /**
  * @author pbj
- *
+ * @author Michael Andrejczuk
+ * @author Dylan Thinnes
  */
 public class MoneyTest {
 
