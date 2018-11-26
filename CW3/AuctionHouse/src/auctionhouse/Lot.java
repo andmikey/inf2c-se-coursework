@@ -91,7 +91,7 @@ public class Lot {
         this.setStatus(LotStatus.IN_AUCTION);
         this.auctioneer = auctioneer; 
         this.currentBid = null;
-        this.currentPrice = null;
+        this.currentPrice = new Money("0.0");
         
         return Status.OK();
     }
