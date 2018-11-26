@@ -5,7 +5,7 @@ Covered specifications
         General development by Dylan
         Testing mostly covered by Mikey
     Potential pitfalls
-        Test myopia (assuming that just because your tests pass, the code works)
+        Test myopia (assuming that because your tests pass, the code works)
         Getting too invested in one solution before considering drawbacks
         God functions
             With AuctionHouseImp, it is inevitable we will have a large central
@@ -47,4 +47,13 @@ Fix several type errors in checking transaction statuses
 === 20181124
 Go over design of project report
 Draw out new class diagram inspired by one in CW2
-Incorporate changes (esp Banking/Messaging/AuctionHouseImp) into new class diagram
+Incorporate changes (esp Banking/Messaging/AuctionHouseImp) into new class
+diagram
+
+=== 20181125
+Write compilation convenience scripts for reports
+Flesh out skeleton headers in report into comprehensive paragraphs documenting
+entire system
+
+=== 20181126
+Fix authorship attributions
