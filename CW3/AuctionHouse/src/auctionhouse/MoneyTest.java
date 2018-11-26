@@ -311,6 +311,35 @@ public class MoneyTest {
         Boolean result = val1.equals(val2);
         assertEquals(false, result); 
     }
+
+    @Test
+    public void testHashCodeWholePound() {
+        Money val1 = new Money("12");
+        Long match = 1200L;
+        assertEquals(match.hashCode(), val1.hashCode());
+    }
+
+    @Test
+    public void testHashCodeWithPence() {
+        Money val1 = new Money("12.01");
+        Long match = 1201L;
+        assertEquals(match.hashCode(), val1.hashCode());
+    }
+
+    @Test
+    public void testHashCodeWithRound() {
+        Money val1 = new Money("12.001");
+        Long match = 1200L;
+        assertEquals(match.hashCode(), val1.hashCode());
+    }
+
+    @Test
+    public void testHashCodeWithoutRound() {
+        Money val1 = new Money("12.005");
+        Long match = 1201L;
+        assertEquals(match.hashCode(), val1.hashCode());
+    }
+
     /*
      * Put all class modifications above.
      ***********************************************************************
