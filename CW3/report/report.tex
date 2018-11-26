@@ -26,6 +26,13 @@
 \section{UML class diagram}
 Due to its size, this is provided as the last page of the document.
 
+\noindent Note that for brevity we leave off a number of associations:
+\begin{itemize}
+\item Where Buyers / Auctioneers have a list of Lots associated with them, we do not show this
+\item The CatalogueEntry to AuctionHouseImp relation is ordered
+\item The addressBook map in AuctionHouseImp is not shown
+\end{itemize}
+
 \section{High-level design description}
 We give an overview on a per-class basis, giving particular attention to
 deviations from our Coursework 2 specification.
@@ -42,7 +49,9 @@ deviations from our Coursework 2 specification.
                 the superclass we ensure all actors have consistent behaviour in
                 how their address is set and retrieved.
             \item auctionhouse (AuctionHouse), the AuctionHouse associated with
-                the actor. This is primarily to 
+              the actor. This allows us to reference back to the auctionhouse object if needed,
+              keeping our system understandable. It also means we could easily extend the system to
+              support multiple Auction Houses. 
         \end{enumerate}
         The Actor also now has the additional viewCatalogue function, which was
         previously implemented by all actor inheritors separately. It serves
@@ -50,10 +59,10 @@ deviations from our Coursework 2 specification.
         the instance of AuctionHouseImp.
     \item {\bf RegisteredUser} This now inherits from Actor, and extends it by
         requiring a specific username for each instance. This separates
-        registered actors, such as Auctioneer, Client, and Seller, who need
+        registered actors, such as Auctioneer, Client, and Seller, who need a
         username, from anonymous actors, such as MemberOfPublic.
     \item {\bf Client} The client retains some functionality in Coursework 2,
-        since it gives banking credentials. However, it is no longer responsible
+        since it provides banking credentials. However, it is no longer responsible
         for handling personal details, as personal details are better put in
         RegisteredUser. Seller and Buyer inherit from Client, ensuring that both
         have relevant banking authentication details.
@@ -77,7 +86,7 @@ our CW2 implementation of AuctionHouse, with three major exceptions.
                 more efficient and clearer to have the data structure imply how
                 we find and use these lots.
             \item {\bf Parameters} Parameters as provided during initialisation
-                are stored wholesale in AuctionHouse as property parameters. We
+                are stored in AuctionHouse as an attribute of type Parameters. We
                 considered copying the attributes directly into AuctionHouse,
                 but decided against it as it would tightly couple AuctionHouse
                 to changes in the implementation of Parameters.

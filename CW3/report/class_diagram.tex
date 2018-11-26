@@ -8,7 +8,7 @@
 \usepackage{pdfpages}
 \lhead{Inf2C: SE Coursework 3}
 \rhead{s1703773 \& s1737075}
-\cfoot{\thepage~/~11}
+\cfoot{4~/~4}
 \pagestyle{fancy}
 
 \begin{document}
@@ -147,7 +147,7 @@
     transfer()
   }
   
-  \umlclass[x=18,y=-20]{CatalogueEntry}{
+  \umlclass[x=16,y=-20]{CatalogueEntry}{
     lotNumber : int \\
     description : String \\
     status : LotStatus 
@@ -171,7 +171,8 @@
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Seller}
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Buyer}
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Lot}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{CatalogueEntry}
+  \umlassoc[mult1=1, mult2=*,name=ordered]{AuctionHouseImp}{CatalogueEntry}
+  % \node[below] at (ordered-1) {ordered};
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Auctioneer}
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{MemberOfPublic}
   \umlassoc{AuctionHouseImp}{Parameters}
