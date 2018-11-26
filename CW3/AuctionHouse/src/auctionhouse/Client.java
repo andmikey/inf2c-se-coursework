@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * @author djt
+ * @author Dylan Thinnes
+ * @author Michael Andrejczuk
  *
  */
 public class Client extends RegisteredUser {
