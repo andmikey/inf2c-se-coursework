@@ -22,13 +22,13 @@
 \section{Introduction and overview}
 This document acts as a log of my work on this project, completed as a joint project with Dylan Thinnes. 
 
-In total I estimate about (25?) hours of work on this project. This is estimated from my Git commit logs, and split as follows:
+In total I estimate about 26 hours of work on this project. This is estimated from my Git commit logs, and split as follows:
 \begin{itemize}
   \item 2 hours preparation: planning, preparing skeleton files (for code, report, project logs), reading recommended documentation;
   \item 2 hours on unit tests and JavaDoc for the Money class;
   \item 4 hours on unit tests for our own code;
   \item 10 hours for implementation;
-  \item 5 hours for our report and project logs.
+  \item 8 hours for our report and project logs.
 \end{itemize}
 
 \section{Saturday, November 17}
@@ -39,7 +39,6 @@ Our aim was to:
 \item Plan our approach, deciding on key milestones;
 \item Begin implementation.
 \end{itemize}
-
 We achieved:
 \begin{itemize}
 \item  We decided we would try to get the bulk of the coding side done by Saturday 24th, and everything else done by Monday 26th.
@@ -48,7 +47,6 @@ We achieved:
 \item I also pushed the coursework contents to our shared (private) Git repository. We had been using this previously to write our report, and decided to continue using it to ensure our development work was also tracked. \\ On reflection it was an excellent choice to set this up, as it allowed us to work in a distributed manner, resolving merge conflicts as needed. The commit logs also acted as a very good project log, for tracking both the work I did and the time I spent on it.
 \item I began adding and completed the required unit tests for MoneyTest.java. I also wrote the JavaDoc annotation for Money.java. \\ We tried pair programming for this and neither of us found the practice beneficial, so we decided not to use it going forward. 
 \end{itemize}
-
 In total I spent around 6 hours working today, and we achieved everything we intended. 
 
 \section{Sunday, November 18}
@@ -79,16 +77,22 @@ Today was in part implementation, and in part documentation.
 
 \begin{itemize}
 \item We began really working on getting tests passing today --- indeed, we succeeded in getting tests passing by the end of the day. I added a great deal of logging code. \\ On reflection this proved very useful when running tests later as we could more easily track the execution path of failing tests. On more than one occassion it allowed me to identify a bug very quickly. 
-\item I added our report skeleton and began work on our class diagram. As we had already finalised our design at this point, and due to its similarity to our CW2, it was relatively quick work.
+\item I added our report skeleton and began work on our class diagram. As we had already finalised our design at this point, and due to its similarity to our CW2, it was relatively quick work. On reflection, it helped that we were confident in this design at the beginning of the coursework, as it made writing the code and the report relatively painless.
 \end{itemize}
-
 In total I spent around 4 hours working today.
 
 \section{Sunday, November 25}
 \begin{itemize}
   \item I fixed a few more edge cases.
-  \item I finished writing tests for our code: 83 total tests, 5.5k lines of test code with FINE logging. It is quite frustrating that when an exception is thrown, JUnit doesn't print what the exception is! 
-  \item I started writing up my project log. This was useful as it allowed me to 
+  \item I finished writing tests for our code. On reflection this was beneficial as it allowed us to test and find edge cases we hadn't considered before; it also meant that we could be confident in the correctness of parts of our implementation.
+  \item I started writing up my project log. This was useful as it allowed me to reflect on the work done so far. 
 \end{itemize}
 In total I spent around 5 hours working today.
+
+\section{Monday, November 26}
+\begin{itemize}
+\item I checked our code compiled on DICE. \\ On reflection, both of us choosing to develop on Linux was beneficial as it allowed us to work in a Linux environment from the beginning, making the transition to DICE seamless. Additionally, choosing to develop using Git meant that all we needed to do in order to transfer our code to DICE for submission was a simple {\tt git pull}.
+\item I finished the report, taking into account the comments from our marked CW2. \\ On reflection, I wish these had been released earlier so that we could better integrate them into our report writing. However --- slippages happen in all projects, and we were prepared for this, purposefully leaving a day free in case we needed to make last-minute changes. 
+\end{itemize}
+In total I spent around 1 hour working today. With the coursework being finished and submitted, we met our expected target, despite being slightly delayed by the later-than-expected release of marks of CW2.
 \end{document}
