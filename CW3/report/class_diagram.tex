@@ -8,13 +8,13 @@
 \usepackage{pdfpages}
 \lhead{Inf2C: SE Coursework 3}
 \rhead{s1703773 \& s1737075}
-\cfoot{4~/~4}
+\cfoot{\thepage~/~5}
+% \cfoot{4~/~4}
 \pagestyle{fancy}
 
 \begin{document}
-\setcounter{page}{11}
+\setcounter{page}{4}
 \begin{tikzpicture}
-
   \umlclass[x=23.5,y=-10]{Auctioneer}{
     assignedLots : List Lot \\
     isActive : Boolean
@@ -87,7 +87,7 @@
 
   \umlclass[x=0, y=-4.4,type=enum]{LotStatus}{Unsold \\ In auction \\ Sold \\ Sold pending payment}
   
-  \umlclass[x=25,y=-19]{AuctionHouseImp}{
+  \umlclass[x=19,y=-19]{AuctionHouseImp}{
     addressBook : Map String Actor \\ %TODO should this be HashMap?
     auctioneers : List Auctioneer \\
     buyers : List Buyer \\
@@ -132,7 +132,7 @@
   {
   }
 
-  \umlclass[type = interface, x=11,y=-5]{MessagingService}{
+  \umlclass[type = interface, x=18,y=-14]{MessagingService}{
   }
   {
     auctionOpened() \\
@@ -141,13 +141,13 @@
     lotUnsold() 
   }
 
-  \umlclass[type = interface, x=11,y=-1]{BankingService}{
+  \umlclass[type = interface, x=23,y=-15]{BankingService}{
   }
   {
     transfer()
   }
   
-  \umlclass[x=16,y=-20]{CatalogueEntry}{
+  \umlclass[x=8,y=-17]{CatalogueEntry}{
     lotNumber : int \\
     description : String \\
     status : LotStatus 
@@ -168,18 +168,18 @@
   }
 
 
-  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Seller}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Buyer}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Lot}
-  \umlassoc[mult1=1, mult2=*,name=ordered]{AuctionHouseImp}{CatalogueEntry}
-  % \node[below] at (ordered-1) {ordered};
-  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Auctioneer}
-  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{MemberOfPublic}
-  \umlassoc{AuctionHouseImp}{Parameters}
+  % \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Seller}
+  % \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Buyer}
+  % \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Lot}
+  % \umlassoc[mult1=1, mult2=*,name=ordered]{AuctionHouseImp}{CatalogueEntry}
+  % % \node[below] at (ordered-1) {ordered};
+  % \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Auctioneer}
+  % \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{MemberOfPublic}
+  % \umlassoc{AuctionHouseImp}{Parameters}
   
-  \umlassoc[mult1=*, mult2=1]{Bid}{Lot}
-  \umlassoc[mult1=*, mult2=1]{Lot}{Seller}
-  \umlassoc[mult1=1, mult2=1]{CatalogueEntry}{Lot}
+  % \umlassoc[mult1=*, mult2=1]{Bid}{Lot}
+  % \umlassoc[mult1=*, mult2=1]{Lot}{Seller}
+  % \umlassoc[mult1=1, mult2=1]{CatalogueEntry}{Lot}
 
   \umlinherit{Seller}{Client}
   \umlinherit{Buyer}{Client}
@@ -191,4 +191,66 @@
 
   \umlimpl{AuctionHouseImp}{AuctionHouse}
 \end{tikzpicture}
+\newpage
+\begin{tikzpicture}
+  \umlemptyclass[x=4,y=-4]{Auctioneer}
+
+  \umlemptyclass[x=18,y=-17]{Buyer}
+
+  \umlemptyclass[x=13, y=-10]{Seller}
+
+  \umlemptyclass[x=2.5, y=-10.5]{Lot}
+
+  \umlemptyclass[x=30, y=-18]{Money}
+
+  \umlemptyclass[x=3,y=-21]{Bid}
+
+  \umlemptyclass[x=0,y=-21,type=enum]{BidType}{}
+
+  \umlemptyclass[x=0, y=-17,type=enum]{LotStatus}{}
+  
+  \umlemptyclass[x=15,y=-3]{AuctionHouseImp}
+
+  \umlemptyclass[x=13, y=-1]{Actor}
+
+  \umlemptyclass[type = interface, x=31,y=-4]{MessagingService}
+
+  \umlemptyclass[type = interface, x=31,y=-1]{BankingService}
+  
+  \umlemptyclass[x=0,y=-1]{CatalogueEntry}
+
+  \umlemptyclass[x=23,y=-8]{Parameters}
+
+  % AuctionHouseImp
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Seller}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Buyer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Lot}
+  \umlassoc[mult1=1, mult2=*,name=ordered]{AuctionHouseImp}{CatalogueEntry}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Auctioneer}
+  \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Actor}
+  \umlassoc{AuctionHouseImp}{Parameters}
+  \umlassoc{AuctionHouseImp}{BankingService}
+  \umlassoc{AuctionHouseImp}{MessagingService}
+  
+  % Lot
+  \umlassoc[mult1=*, mult2=1]{Bid}{Lot}
+  \umlassoc[mult1=*, mult2=1]{Lot}{Seller}
+  \umlassoc[mult1=1, mult2=*]{Lot}{Buyer}
+  \umlassoc[mult1=1, mult2=1]{CatalogueEntry}{Lot}
+  \umlassoc{Lot}{Auctioneer}
+  \umlassoc{Lot}{Money}
+  \umlassoc{LotStatus}{Lot}
+
+  % Bid
+  \umlassoc{Bid}{Money}
+  \umlassoc{Bid}{BidType}
+  \umlassoc[mult1=*, mult2=1]{Bid}{Buyer}
+
+  % Parameters
+  \umlassoc{Parameters}{Money}
+
+  % CatalogueEntry
+  \umlassoc{CatalogueEntry}{LotStatus}
+\end{tikzpicture}
+\setcounter{page}{5}
 \end{document}
