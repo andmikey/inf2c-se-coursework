@@ -16,7 +16,6 @@
 \setcounter{page}{4}
 \begin{tikzpicture}
   \umlclass[x=23.5,y=-10]{Auctioneer}{
-    assignedLots : List Lot \\
     isActive : Boolean
   }{
     
@@ -48,25 +47,23 @@
     uniqueId : int \\
   }
   {
-    receiveBid()  \\
-    open()  \\
-    close()  \\
-    payment\_failed()  \\
-    addInterestedBuyer() 
+    receiveBid() : Status \\
+    open() : Status \\
+    close() : Status \\
+    payment\_failed() : Status  \\
+    addInterestedBuyer() : Status 
   }
 
   \umlclass[x=6, y=-2]{Money}{
     value : double 
   }
   {
-    getNearestPence() \\
-    normalise() \\
-    add() \\
-    subtract()\\
-    addPercent() \\
-    compareTo() \\
-    lessEqual() \\
-    equals()
+    add() : Money \\
+    subtract() : Money \\
+    addPercent() : Money \\
+    compareTo() : int \\
+    lessEqual() : boolean\\
+    equals() : boolean
   }
 
   \umlclass[x=27,y=-7.5]{MemberOfPublic}{
@@ -99,18 +96,17 @@
   {
   }
   
-  \umlclass[type = interface, x=32,y=-19]{AuctionHouse}{
+  \umlclass[type = interface, x=30,y=-19]{AuctionHouse}{
   }
   {
-    registerBuyer() \\
-    registerSeller() \\
-    addLot() \\
-    viewCatalogue() \\
-    noteInterest()\\
-    openAuction() \\
-    makeBid() \\
-    closeAuction() \\
-
+    registerBuyer() : Status \\
+    registerSeller() : Status \\
+    addLot() : Status \\
+    viewCatalogue() : List CatalogueEntry \\
+    noteInterest() : Status \\
+    openAuction() : Status \\
+    makeBid() : Status \\
+    closeAuction() : Status \\
   }
 
   \umlclass[x=27, y=-1]{Actor}{
@@ -118,7 +114,6 @@
     auctionhouse : AuctionHouse 
   }
   {
-    viewCatalogue() % TODO check
   }
 
   \umlclass[x=24,y=-5]{RegisteredUser}{
@@ -144,7 +139,7 @@
   \umlclass[type = interface, x=23,y=-15]{BankingService}{
   }
   {
-    transfer()
+    transfer() : Status
   }
   
   \umlclass[x=8,y=-17]{CatalogueEntry}{
@@ -226,11 +221,10 @@
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Buyer}
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Lot}
   \umlassoc[mult1=1, mult2=*,name=ordered]{AuctionHouseImp}{CatalogueEntry}
+  \node[above, rotate=-10] at (ordered-1) {\{ordered\}};
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Auctioneer}
   \umlassoc[mult1=1, mult2=*]{AuctionHouseImp}{Actor}
   \umlassoc{AuctionHouseImp}{Parameters}
-  \umlassoc{AuctionHouseImp}{BankingService}
-  \umlassoc{AuctionHouseImp}{MessagingService}
   
   % Lot
   \umlassoc[mult1=*, mult2=1]{Bid}{Lot}
@@ -248,6 +242,8 @@
 
   % Parameters
   \umlassoc{Parameters}{Money}
+  \umlassoc{Parameters}{BankingService}
+  \umlassoc{Parameters}{MessagingService}
 
   % CatalogueEntry
   \umlassoc{CatalogueEntry}{LotStatus}
